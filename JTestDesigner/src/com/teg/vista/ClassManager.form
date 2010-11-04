@@ -124,9 +124,9 @@
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="jScrollPane3" alignment="0" pref="383" max="32767" attributes="1"/>
+                          <Component id="jScrollPane3" alignment="0" pref="385" max="32767" attributes="1"/>
                           <Component id="jPanel3" alignment="1" max="32767" attributes="1"/>
-                          <Component id="jScrollPane1" alignment="0" pref="383" max="32767" attributes="1"/>
+                          <Component id="jScrollPane1" alignment="0" pref="385" max="32767" attributes="1"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -200,7 +200,7 @@
                           <Component id="removerTodas" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="removerClases" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="101" max="32767" attributes="0"/>
+                          <EmptySpace pref="103" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>

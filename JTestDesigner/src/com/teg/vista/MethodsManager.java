@@ -10,7 +10,7 @@
  */
 package com.teg.vista;
 
-import com.teg.dominio.Assert;
+import com.teg.dominio.AssertTest;
 import com.teg.dominio.Metodo;
 import com.teg.logica.CodeGenerator;
 import com.teg.logica.XmlManager;
@@ -26,8 +26,11 @@ import javax.swing.DefaultListModel;
 public class MethodsManager extends javax.swing.JInternalFrame {
 
     private Inicio inicio;
+
     private ArrayList<Class> clases = new ArrayList<Class>();
+
     public static DefaultListModel modelo = new DefaultListModel();
+
     public static ArrayList listaTDev = new ArrayList();
 
     /** Creates new form MethodsManager */
@@ -303,9 +306,12 @@ public class MethodsManager extends javax.swing.JInternalFrame {
 
     private void classListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_classListMouseClicked
         ArrayList<String> metodosDerecha = new ArrayList<String>();
+
         if (MouseEvent.BUTTON1 == 1) {
+
             Method[] methods = null;
             String nameClass = classList.getSelectedValue().toString();
+
             for (Class clazz : clases) {
                 if (clazz.getName().equals(nameClass)) {
                     methods = clazz.getDeclaredMethods();
@@ -336,21 +342,25 @@ public class MethodsManager extends javax.swing.JInternalFrame {
         this.inicio.cambioMethodsCaseTest(this, metodos);
 
         /**
-         *
+         * Prueba para verificar que se genere el XML y el codigo
+         * ESTO NO VA
          */
-//        ArrayList<Metodo> metodosTest = new ArrayList<Metodo>();
-//        XmlManager xmlManager = new XmlManager();
-//
-//        metodosTest = xmlManager.agregarMetodoALista(metodosTest, metodos.get(0), new Integer(1), new Assert("miMensaje1", "var1.x", "AssertNotNull"));
-//        metodosTest = xmlManager.agregarMetodoALista(metodosTest, metodos.get(1), new Integer(2), new Assert("miMensaje2", "var1.y", "AssertNotNull"));
-//
-//        xmlManager.crearCasoPrueba("pruebaAnimal", metodosTest);
-//
-//        CodeGenerator cg = new CodeGenerator();
-//        cg.generateTest("/home/maya/pruebaAnimal.xml");
+        ArrayList<Metodo> metodosTest = new ArrayList<Metodo>();
+        XmlManager xmlManager = new XmlManager();
+
+        metodosTest = xmlManager.agregarMetodoALista(metodosTest, metodos.get(0), new Integer(1), new AssertTest("miMensaje1", "var1.x", "AssertNotNull"));
+        
+        xmlManager.crearCasoPrueba("pruebaAnimal", metodosTest);
+
+        CodeGenerator cg = new CodeGenerator();
+        cg.generateTest("/home/maya/pruebaAnimal.xml");
 
     }//GEN-LAST:event_continuarActionPerformed
 
+    /**
+     * Metodo para obtener los metodos seleccionados
+     * @return Lista con los metodos seleccionados
+     */
     public ArrayList<Method> getMetodos() {
         ArrayList<Method> metodos = new ArrayList<Method>();
         ArrayList<String> metodosDerecha = new ArrayList<String>();
@@ -372,8 +382,9 @@ public class MethodsManager extends javax.swing.JInternalFrame {
         return metodos;
     }
 
-    /*
+    /**
      * Metodo para agregar en un arreglo las clases de la izquierda
+     * @return Lista de Metodos del panel izquierdo
      */
     public ArrayList<String> getMetodosIzquierda() {
         ArrayList<String> metodosIzquierda = new ArrayList<String>();
@@ -384,8 +395,9 @@ public class MethodsManager extends javax.swing.JInternalFrame {
         return metodosIzquierda;
     }
 
-    /*
+    /**
      * Metodo para agregar en un arreglo las clases de la derecha
+     * @return Lista de Metodos del panel derecho
      */
     public ArrayList<String> getMetodosDerecha() {
         ArrayList<String> metodosDerecha = new ArrayList<String>();
@@ -395,6 +407,7 @@ public class MethodsManager extends javax.swing.JInternalFrame {
         }
         return metodosDerecha;
     }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JList classList;
     private javax.swing.JButton continuar;

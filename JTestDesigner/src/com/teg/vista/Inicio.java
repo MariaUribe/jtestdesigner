@@ -1,13 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
- * Inicio.java
- *
- * Created on Oct 25, 2010, 2:59:01 PM
- */
 package com.teg.vista;
 
 import java.beans.PropertyVetoException;
@@ -26,13 +16,16 @@ import javax.swing.JInternalFrame;
 public class Inicio extends javax.swing.JFrame {
 
     private ArrayList<String> nombresJar = new ArrayList<String>();
+
     private ArrayList<File> jarsRuta = new ArrayList<File>();
+
     private ClassManager classManager = new ClassManager(this, jarsRuta, nombresJar);
 
     /** Creates new form Inicio */
     public Inicio() {
         try {
             initComponents();
+
             this.classManager.setVisible(Boolean.TRUE);
             this.jDesktopPane.add(this.classManager);
             this.classManager.setMaximum(true);
