@@ -150,6 +150,7 @@ public class Inicio extends javax.swing.JFrame {
             caseTest.setVisible(Boolean.TRUE);
             this.getjDesktopPane().add(caseTest);
             caseTest.setMaximum(Boolean.TRUE);
+            caseTest.cargarMetodos();
 
         } catch (PropertyVetoException ex) {
             Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
