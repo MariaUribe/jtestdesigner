@@ -362,7 +362,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
     public void cargarMetodos() {
         int panelHeight = this.panel.getHeight();
-        
+
         for (Method method : metodos) {
             panelHeight = panelHeight + 25;
             addMethodPanel(method.getName(), panelHeight);
