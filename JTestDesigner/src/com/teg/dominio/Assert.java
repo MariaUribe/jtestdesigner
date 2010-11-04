@@ -1,0 +1,69 @@
+package com.teg.dominio;
+
+/**
+ *
+ * @author maya
+ */
+public class Assert {
+
+    private String mensaje;
+
+    private String variable;
+
+    private String condicion;
+
+    /**
+     *
+     * @param mensaje the mensaje to set
+     * @param variable the variable to set
+     * @param condicion the condicion to set
+     */
+    public Assert(String mensaje, String variable, String condicion) {
+        this.mensaje = mensaje;
+        this.variable = variable;
+        this.condicion = condicion;
+    }
+
+    /**
+     * @return the mensaje
+     */
+    public String getMensaje() {
+        return mensaje;
+    }
+
+    /**
+     * @param mensaje the mensaje to set
+     */
+    public void setMensaje(String mensaje) {
+        this.mensaje = mensaje;
+    }
+
+    /**
+     * @return the variable
+     */
+    public String getVariable() {
+        return variable;
+    }
+
+    /**
+     * @param variable the variable to set
+     */
+    public void setVariable(String variable) {
+        this.variable = variable;
+    }
+
+    /**
+     * @return the condicion
+     */
+    public String getCondicion() {
+        return condicion;
+    }
+
+    /**
+     * @param condicion the condicion to set
+     */
+    public void setCondicion(String condicion) {
+        this.condicion = condicion;
+    }
+
+}
