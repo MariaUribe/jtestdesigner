@@ -338,16 +338,16 @@ public class MethodsManager extends javax.swing.JInternalFrame {
         /**
          *
          */
-        ArrayList<Metodo> metodosTest = new ArrayList<Metodo>();
-        XmlManager xmlManager = new XmlManager();
-
-        metodosTest = xmlManager.agregarMetodoALista(metodosTest, metodos.get(0), new Integer(1), new Assert("miMensaje1", "var1.x", "AssertNotNull"));
-        metodosTest = xmlManager.agregarMetodoALista(metodosTest, metodos.get(1), new Integer(2), new Assert("miMensaje2", "var1.y", "AssertNotNull"));
-
-        xmlManager.crearCasoPrueba("pruebaAnimal", metodosTest);
-
-        CodeGenerator cg = new CodeGenerator();
-        cg.generateTest("/home/maya/pruebaAnimal.xml");
+//        ArrayList<Metodo> metodosTest = new ArrayList<Metodo>();
+//        XmlManager xmlManager = new XmlManager();
+//
+//        metodosTest = xmlManager.agregarMetodoALista(metodosTest, metodos.get(0), new Integer(1), new Assert("miMensaje1", "var1.x", "AssertNotNull"));
+//        metodosTest = xmlManager.agregarMetodoALista(metodosTest, metodos.get(1), new Integer(2), new Assert("miMensaje2", "var1.y", "AssertNotNull"));
+//
+//        xmlManager.crearCasoPrueba("pruebaAnimal", metodosTest);
+//
+//        CodeGenerator cg = new CodeGenerator();
+//        cg.generateTest("/home/maya/pruebaAnimal.xml");
 
     }//GEN-LAST:event_continuarActionPerformed
 

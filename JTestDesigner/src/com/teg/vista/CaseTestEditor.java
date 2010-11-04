@@ -1,9 +1,4 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
  * CaseTestEditor.java
  *
  * Created on Oct 28, 2010, 3:24:27 PM
@@ -13,10 +8,16 @@ package com.teg.vista;
 import com.teg.util.SwingUtils;
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.event.MouseAdapter;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JComboBox;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
@@ -25,16 +26,16 @@ import javax.swing.JTextField;
 public class CaseTestEditor extends javax.swing.JInternalFrame {
 
     private ArrayList<Method> metodos = new ArrayList<Method>();
+    private static int varId = 0;
+    private Class tipoVarRetorno;
+    private DefaultTableModel tableModel;
 
     /** Creates new form CaseTestEditor */
     public CaseTestEditor(ArrayList<Method> metodos) {
         initComponents();
-        this.hola.setVisible(false);
         this.metodos = metodos;
-
         javax.swing.plaf.InternalFrameUI ifu = this.getUI();
         ((javax.swing.plaf.basic.BasicInternalFrameUI) ifu).setNorthPane(null);
-        this.listarMetodos();
     }
 
     /** This method is called from within the constructor to
@@ -55,17 +56,19 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaArgumentos = new javax.swing.JTable();
         panelAssert = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        assertMensaje = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        assertCondiciones = new javax.swing.JComboBox();
-        jLabel3 = new javax.swing.JLabel();
+        lbAssertVariables = new javax.swing.JLabel();
         assertVariables = new javax.swing.JComboBox();
-        jPanel3 = new javax.swing.JPanel();
-        hola = new javax.swing.JLabel();
+        lbAssertCondiciones = new javax.swing.JLabel();
+        assertCondiciones = new javax.swing.JComboBox();
+        lbResultadoAssert = new javax.swing.JLabel();
+        resultadoAssert = new javax.swing.JTextField();
+        assertMensaje = new javax.swing.JTextField();
+        lbAssertMensaje = new javax.swing.JLabel();
+        jButton4 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         scroll = new javax.swing.JScrollPane();
         panel = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Historial de Variables", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 1, 12))); // NOI18N
 
@@ -83,20 +86,20 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        panelMetodoInfo.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder()));
+        panelMetodoInfo.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
         panelTablaArgumentos.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Argumentos", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 1, 12))); // NOI18N
 
@@ -116,7 +119,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
             panelTablaArgumentosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelTablaArgumentosLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 432, Short.MAX_VALUE)
                 .addContainerGap())
         );
         panelTablaArgumentosLayout.setVerticalGroup(
@@ -129,17 +132,28 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
         panelAssert.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Assert", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 1, 12))); // NOI18N
 
-        jLabel1.setText("Mensaje :");
+        lbAssertVariables.setText("Variable: ");
+
+        assertVariables.setEditable(true);
+
+        lbAssertCondiciones.setText("Condicion: ");
+
+        assertCondiciones.setFont(new java.awt.Font("Calibri", 1, 12));
+        assertCondiciones.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Elige una opcion..", "Igual", "No Igual", "Nulo", "No Nulo", "Verdadero", "Falso", " " }));
+        assertCondiciones.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                assertCondicionesActionPerformed(evt);
+            }
+        });
+
+        lbResultadoAssert.setText("Resultado: ");
+        lbResultadoAssert.setEnabled(false);
+
+        resultadoAssert.setEnabled(false);
 
         assertMensaje.setText("jTextField1");
 
-        jLabel2.setText("Condicion: ");
-
-        assertCondiciones.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jLabel3.setText("Variables: ");
-
-        assertVariables.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        lbAssertMensaje.setText("Mensaje :");
 
         javax.swing.GroupLayout panelAssertLayout = new javax.swing.GroupLayout(panelAssert);
         panelAssert.setLayout(panelAssertLayout);
@@ -148,81 +162,69 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
             .addGroup(panelAssertLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelAssertLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3))
+                    .addComponent(lbAssertCondiciones)
+                    .addComponent(lbAssertVariables)
+                    .addComponent(lbAssertMensaje))
                 .addGap(18, 18, 18)
-                .addGroup(panelAssertLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(assertMensaje, javax.swing.GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE)
-                    .addComponent(assertCondiciones, 0, 262, Short.MAX_VALUE)
-                    .addComponent(assertVariables, 0, 262, Short.MAX_VALUE))
-                .addContainerGap())
+                .addGroup(panelAssertLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(assertMensaje)
+                    .addComponent(assertCondiciones, 0, 0, Short.MAX_VALUE)
+                    .addComponent(assertVariables, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lbResultadoAssert)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(resultadoAssert, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(21, 21, 21))
         );
         panelAssertLayout.setVerticalGroup(
             panelAssertLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelAssertLayout.createSequentialGroup()
-                .addGap(22, 22, 22)
+                .addGap(21, 21, 21)
                 .addGroup(panelAssertLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(assertMensaje, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lbAssertVariables)
+                    .addComponent(assertVariables, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(panelAssertLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(assertCondiciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(29, 29, 29)
+                    .addComponent(lbAssertCondiciones)
+                    .addComponent(assertCondiciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(resultadoAssert, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbResultadoAssert))
+                .addGap(18, 18, 18)
                 .addGroup(panelAssertLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(assertVariables, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(39, Short.MAX_VALUE))
+                    .addComponent(lbAssertMensaje)
+                    .addComponent(assertMensaje, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(53, Short.MAX_VALUE))
         );
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Documentacion (HTML)", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 1, 12))); // NOI18N
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 311, Short.MAX_VALUE)
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 553, Short.MAX_VALUE)
-        );
-
-        hola.setText("Hola");
+        jButton4.setText("Guardar");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelMetodoInfoLayout = new javax.swing.GroupLayout(panelMetodoInfo);
         panelMetodoInfo.setLayout(panelMetodoInfoLayout);
         panelMetodoInfoLayout.setHorizontalGroup(
             panelMetodoInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelMetodoInfoLayout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(panelMetodoInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelMetodoInfoLayout.createSequentialGroup()
-                        .addGap(13, 13, 13)
-                        .addComponent(panelTablaArgumentos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(panelMetodoInfoLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(panelAssert, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(panelMetodoInfoLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(hola)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                    .addComponent(jButton4, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(panelAssert, 0, 468, Short.MAX_VALUE)
+                    .addComponent(panelTablaArgumentos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelMetodoInfoLayout.setVerticalGroup(
             panelMetodoInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelMetodoInfoLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panelMetodoInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelMetodoInfoLayout.createSequentialGroup()
-                        .addComponent(panelTablaArgumentos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(panelAssert, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(hola)))
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addComponent(panelTablaArgumentos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(panelAssert, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton4)
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Metodos", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 12))); // NOI18N
@@ -252,15 +254,28 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(scroll, javax.swing.GroupLayout.DEFAULT_SIZE, 245, Short.MAX_VALUE)
+                .addComponent(scroll, javax.swing.GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(scroll, javax.swing.GroupLayout.DEFAULT_SIZE, 287, Short.MAX_VALUE)
+                .addComponent(scroll)
                 .addContainerGap())
+        );
+
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Documentacion (HTML)", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 1, 12))); // NOI18N
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 268, Short.MAX_VALUE)
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 516, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -269,25 +284,30 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jPanel2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(1, 1, 1))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelMetodoInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(panelMetodoInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(19, 19, 19)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(panelMetodoInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(panelMetodoInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
 
@@ -305,14 +325,21 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void assertCondicionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_assertCondicionesActionPerformed
+        // TODO add your handling code here:
+}//GEN-LAST:event_assertCondicionesActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+
+        DialogoArgumentoComplejo dialogo = new DialogoArgumentoComplejo(this, true);
+        dialogo.setVisible(true);
+
+    }//GEN-LAST:event_jButton4ActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox assertCondiciones;
     private javax.swing.JTextField assertMensaje;
     private javax.swing.JComboBox assertVariables;
-    private javax.swing.JLabel hola;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -320,73 +347,172 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
+    private javax.swing.JLabel lbAssertCondiciones;
+    private javax.swing.JLabel lbAssertMensaje;
+    private javax.swing.JLabel lbAssertVariables;
+    private javax.swing.JLabel lbResultadoAssert;
     private javax.swing.JPanel panel;
     private javax.swing.JPanel panelAssert;
     private javax.swing.JPanel panelMetodoInfo;
     private javax.swing.JPanel panelTablaArgumentos;
+    private javax.swing.JTextField resultadoAssert;
     private javax.swing.JScrollPane scroll;
     private javax.swing.JTable tablaArgumentos;
     // End of variables declaration//GEN-END:variables
 
-    private void listarMetodos() {
-
+    public void cargarMetodos() {
         int panelHeight = this.panel.getHeight();
-
+        
         for (Method method : metodos) {
-
-            List<JTextField> components = SwingUtils.getDescendantsOfType(JTextField.class, panel, true);
-            JTextField lastTextField = null;
-            JTextField casoPrueba;
-
-            if (!components.isEmpty()) {
-                lastTextField = components.get(components.size() - 1);
-            }
-
-            if (lastTextField != null) {
-                Point point = lastTextField.getLocation();
-                int pointY = point.y + 45;
-                casoPrueba = new JTextField();
-                casoPrueba.setName(method.getName());
-                casoPrueba.setLocation(point.x, pointY);
-                casoPrueba.setSize(192, 27);
-                casoPrueba.setText(method.getName());
-                casoPrueba.setVisible(Boolean.TRUE);
-                this.panel.add(casoPrueba);
-                int scrollHeight = this.scroll.getHeight();
-
-                if ((pointY > scrollHeight) || (pointY == scroll.getHeight())) {
-                    panelHeight = panelHeight + 50;
-
-                    Dimension dmnsn = new Dimension(panel.getWidth(), panelHeight);
-                    panel.setPreferredSize(dmnsn);
-                    scroll.setViewportView(panel);
-                    this.repaint();
-                }
-
-            } else {
-                Point point = new Point(12, 12);
-
-                casoPrueba = new JTextField();
-                casoPrueba.setName(method.getName());
-                casoPrueba.setLocation(point);
-                casoPrueba.setSize(192, 27);
-                casoPrueba.setText(method.getName());
-                casoPrueba.setVisible(Boolean.TRUE);
-                this.panel.add(casoPrueba);
-                this.repaint();
-            }
-
-            casoPrueba.addMouseListener(new java.awt.event.MouseAdapter() {
-
-                @Override
-                public void mouseClicked(java.awt.event.MouseEvent evt) {
-                    casoPruebaMouseClicked(evt);
-                }
-            });
+            panelHeight = panelHeight + 25;
+            addMethodPanel(method.getName(), panelHeight);
         }
     }
 
-    public void casoPruebaMouseClicked(java.awt.event.MouseEvent evt) {
-        hola.setVisible(Boolean.TRUE);
+    public void addMethodPanel(String methodName, int panelHeight) {
+
+        List<JTextField> components = SwingUtils.getDescendantsOfType(JTextField.class, this.panel, true);
+        JTextField lastTextField = null;
+        final JTextField metodoTest;
+
+        if (!components.isEmpty()) {
+            lastTextField = components.get(components.size() - 1);
+        }
+
+        if (lastTextField != null) {
+
+            Point point = lastTextField.getLocation();
+            int pointY = point.y + 40;
+
+            metodoTest = new JTextField();
+
+            metodoTest.setName("metodo:" + methodName);
+            metodoTest.setLocation(point.x, pointY);
+            metodoTest.setSize(192, 27);
+            metodoTest.setText(methodName);
+            metodoTest.setVisible(Boolean.TRUE);
+
+            this.panel.add(metodoTest);
+
+            if ((pointY > scroll.getHeight()) || (pointY == scroll.getHeight())) {
+
+                Dimension dmnsn = new Dimension(panel.getWidth(), panelHeight);
+                panel.setPreferredSize(dmnsn);
+                scroll.setViewportView(panel);
+                panel.repaint();
+            }
+        } else {
+
+            Point point = new Point(12, 12);
+
+            metodoTest = new JTextField();
+            metodoTest.setName("metodo:" + methodName);
+            metodoTest.setLocation(point);
+            metodoTest.setSize(192, 27);
+            metodoTest.setText(methodName);
+            metodoTest.setVisible(Boolean.TRUE);
+            panel.add(metodoTest);
+            panel.repaint();
+        }
+
+        metodoTest.addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cargarTablaArgumentos(metodoTest.getText());
+            }
+        });
+    }
+
+    public Method getMethodSelected(String text) {
+        Method method = null;
+
+        for (Method method1 : metodos) {
+            if (text.equals(method1.getName())) {
+                method = method1;
+            }
+        }
+        return method;
+    }
+
+    public void cargarAssert(Class metodoRetorno) {
+        assertVariables.removeAllItems();
+        if (metodoRetorno.isPrimitive()) {
+
+            assertVariables.setSelectedItem("Var" + varId);
+            System.out.println("Retorno primitivo");
+
+        } else {
+            Field[] fields = metodoRetorno.getDeclaredFields();
+            for (Field field : fields) {
+
+                assertVariables.addItem(metodoRetorno.getSimpleName()
+                        + "." + field.getName());
+            }
+            System.out.println("Retorna algo complejo");
+            assertVariables.setSelectedItem("Seleccione el campo a evaluar");
+
+        }
+    }
+
+    public void cargarComboItems(JComboBox combo) {
+    }
+
+    public void cargarTablaArgumentos(String text) {
+
+        Method metodo;
+        JComboBox comboParametros;
+        TableColumn comboColumn;
+        String name;
+
+        metodo = getMethodSelected(text);
+        Class[] parameterTypes = metodo.getParameterTypes();
+
+        tipoVarRetorno = metodo.getReturnType();
+        cargarAssert(tipoVarRetorno);
+
+        DefaultTableModel tableGrid = new DefaultTableModel();
+        tableModel = new DefaultTableModel(new Object[]{"Argumentos", "Valores"}, parameterTypes.length);
+        tablaArgumentos.setModel(tableModel);
+
+        for (int i = 0; i < parameterTypes.length; i++) {
+
+            int lastPoint = parameterTypes[i].getName().lastIndexOf(".");
+
+            Class t = parameterTypes[i];
+            System.out.println(t.getName());
+
+            for (Field field : t.getDeclaredFields()) {
+                System.out.println(field.getName());
+            }
+
+            if (lastPoint > 0) {
+
+                comboParametros = new JComboBox();
+
+                cargarComboItems(comboParametros);
+                comboParametros.setEditable(true);
+                name = parameterTypes[i].getName().substring(lastPoint + 1);
+                tablaArgumentos.setValueAt(name, i, 0);
+                comboColumn = tablaArgumentos.getColumnModel().getColumn(1);
+                comboColumn.setCellEditor(new DefaultCellEditor(comboParametros));
+
+                tableGrid.addColumn(comboColumn);
+
+            } else {
+
+                comboParametros = new JComboBox();
+                comboParametros.addItem("Peo");
+                comboParametros.setEditable(true);
+
+                name = parameterTypes[i].getName().substring(lastPoint + 1);
+                tablaArgumentos.setValueAt(name, i, 0);
+                comboColumn = tablaArgumentos.getColumnModel().getColumn(1);
+                comboColumn.setCellEditor(new DefaultCellEditor(comboParametros));
+
+            }
+
+        }
+        tablaArgumentos.repaint();
     }
 }
