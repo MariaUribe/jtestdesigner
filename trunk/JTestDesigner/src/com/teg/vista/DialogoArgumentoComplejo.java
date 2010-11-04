@@ -1,8 +1,3 @@
-/*
- * DialogoArgumentoComplejo.java
- *
- * Created on 02/11/2010, 05:04:33 PM
- */
 package com.teg.vista;
 
 import javax.swing.JInternalFrame;

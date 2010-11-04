@@ -1,7 +1,7 @@
 package com.teg.logica;
 
 import com.teg.dominio.Argumento;
-import com.teg.dominio.Assert;
+import com.teg.dominio.AssertTest;
 import com.teg.dominio.CasoPrueba;
 import com.teg.dominio.Metodo;
 import com.teg.dominio.Retorno;
@@ -29,7 +29,7 @@ public class XmlManager {
         xstream.alias("metodo", Metodo.class);
         xstream.alias("retorno", Retorno.class);
         xstream.alias("argumento", Argumento.class);
-        xstream.alias("assert", Assert.class);
+        xstream.alias("assert", AssertTest.class);
 
         String xml = xstream.toXML(casoPrueba);
 
@@ -48,7 +48,7 @@ public class XmlManager {
         xstream.alias("metodo", Metodo.class);
         xstream.alias("retorno", Retorno.class);
         xstream.alias("argumento", Argumento.class);
-        xstream.alias("assert", Assert.class);
+        xstream.alias("assert", AssertTest.class);
 
         CasoPrueba casoPrueba = null;
 
@@ -70,7 +70,7 @@ public class XmlManager {
 
     }
 
-    public ArrayList<Metodo> agregarMetodoALista(ArrayList<Metodo> metodos, Method method, Integer numVariable, Assert condAssert) {
+    public ArrayList<Metodo> agregarMetodoALista(ArrayList<Metodo> metodos, Method method, Integer numVariable, AssertTest condAssert) {
 
         Metodo miMetodo = new Metodo(method.getName(), method.getDeclaringClass().getName(), method.getDeclaringClass().getSimpleName());
         miMetodo.setRetorno(new Retorno(method.getReturnType().getName(), "var" + numVariable));

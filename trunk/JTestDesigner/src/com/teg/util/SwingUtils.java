@@ -6,7 +6,6 @@ package com.teg.util;
 
 import java.awt.Component;
 import java.awt.Container;
-import java.awt.Point;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;

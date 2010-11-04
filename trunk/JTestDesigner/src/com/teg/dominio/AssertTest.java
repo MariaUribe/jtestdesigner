@@ -4,7 +4,7 @@ package com.teg.dominio;
  *
  * @author maya
  */
-public class Assert {
+public class AssertTest {
 
     private String mensaje;
 
@@ -18,7 +18,7 @@ public class Assert {
      * @param variable the variable to set
      * @param condicion the condicion to set
      */
-    public Assert(String mensaje, String variable, String condicion) {
+    public AssertTest(String mensaje, String variable, String condicion) {
         this.mensaje = mensaje;
         this.variable = variable;
         this.condicion = condicion;

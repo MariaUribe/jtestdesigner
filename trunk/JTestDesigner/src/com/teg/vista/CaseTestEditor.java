@@ -26,8 +26,11 @@ import javax.swing.table.TableColumn;
 public class CaseTestEditor extends javax.swing.JInternalFrame {
 
     private ArrayList<Method> metodos = new ArrayList<Method>();
+
     private static int varId = 0;
+
     private Class tipoVarRetorno;
+
     private DefaultTableModel tableModel;
 
     /** Creates new form CaseTestEditor */

@@ -13,7 +13,7 @@ public class Metodo {
     private String claseSimpleName;
     private Retorno retorno;
     private ArrayList<Argumento> argumentos;
-    private Assert assertLinea;
+    private AssertTest assertLinea;
 
     /**
      * 
@@ -99,14 +99,14 @@ public class Metodo {
     /**
      * @return the assertLinea
      */
-    public Assert getAssertLinea() {
+    public AssertTest getAssertLinea() {
         return assertLinea;
     }
 
     /**
      * @param assertLinea the assertLinea to set
      */
-    public void setAssertLinea(Assert assertLinea) {
+    public void setAssertLinea(AssertTest assertLinea) {
         this.assertLinea = assertLinea;
     }
 }

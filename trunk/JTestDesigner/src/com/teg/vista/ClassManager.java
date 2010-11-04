@@ -35,9 +35,11 @@ public class ClassManager extends javax.swing.JInternalFrame {
     /** Creates new form ClassManager */
     public ClassManager(Inicio inicio, ArrayList<File> jarsRuta, ArrayList<String> nombresJar) {
         initComponents();
+
         this.inicio = inicio;
         this.jarsRuta = jarsRuta;
         this.nombresJar = nombresJar;
+
         javax.swing.plaf.InternalFrameUI ifu = this.getUI();
         ((javax.swing.plaf.basic.BasicInternalFrameUI) ifu).setNorthPane(null);
     }
@@ -223,7 +225,9 @@ public class ClassManager extends javax.swing.JInternalFrame {
 
     private void jarListaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jarListaMouseClicked
         if (this.jarLista.getModel().getSize() > 0) {
+
             ArrayList<String> clasesDerecha = new ArrayList<String>();
+
             if (MouseEvent.BUTTON1 == 1) {
                 try {
                     String jarSeleccionado = this.jarLista.getSelectedValue().toString();
@@ -346,6 +350,7 @@ public class ClassManager extends javax.swing.JInternalFrame {
     // End of variables declaration//GEN-END:variables
 
     public ArrayList<Class> getClases() {
+
         ArrayList<Class> clases = new ArrayList<Class>();
         ArrayList<String> clasesDerecha = new ArrayList<String>();
         ArrayList<Class> clasesJarActual = new ArrayList<Class>();
@@ -374,8 +379,9 @@ public class ClassManager extends javax.swing.JInternalFrame {
         return clases;
     }
 
-    /*
+    /**
      * Metodo para agregar en un arreglo las clases de la izquierda
+     * @return Lista de las clases del panel izquierdo
      */
     public ArrayList<String> getClasesIzquierda() {
         ArrayList<String> clasesIzquierda = new ArrayList<String>();
@@ -386,8 +392,9 @@ public class ClassManager extends javax.swing.JInternalFrame {
         return clasesIzquierda;
     }
 
-    /*
+    /**
      * Metodo para agregar en un arreglo las clases de la derecha
+     * @return Lista de las clases del panel derecho
      */
     public ArrayList<String> getClasesDerecha() {
         ArrayList<String> clasesDerecha = new ArrayList<String>();
