@@ -109,4 +109,5 @@ public class Metodo {
     public void setAssertLinea(AssertTest assertLinea) {
         this.assertLinea = assertLinea;
     }
+
 }
