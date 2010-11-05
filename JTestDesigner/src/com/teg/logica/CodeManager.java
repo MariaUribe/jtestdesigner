@@ -5,16 +5,25 @@ import com.teg.dominio.Metodo;
 import java.util.ArrayList;
 
 /**
- *
+ * Clase para el manejo del codigo a imprimir en el template
  * @author maya
  */
 public class CodeManager {
 
     private ArrayList<String> classesNoRepetidas = new ArrayList<String>();
 
+    /**
+     * Constructor por defecto
+     */
     public CodeManager() {
     }
 
+    /**
+     * Metodo para obtener las clases a la que pertenecen los metodos
+     * dado el caso de prueba
+     * @param casoPrueba el caso de prueba a examinar
+     * @return arreglo de las clases del caso de prueba
+     */
     public ArrayList<String> getClases(CasoPrueba casoPrueba) {
 
         ArrayList<Metodo> metodos = casoPrueba.getMetodos();
@@ -28,6 +37,11 @@ public class CodeManager {
         return clases;
     }
 
+    /**
+     * Metodo para verificar la existencia de una clase
+     * @param clase la clase a comprobar
+     * @return true existe, false no existe
+     */
     public Boolean existeClase(String clase) {
 
         Boolean flag = Boolean.FALSE;
@@ -44,6 +58,11 @@ public class CodeManager {
         return flag;
     }
 
+    /**
+     * Metodo para obtener las clases no repetidas
+     * @param casoPrueba el caso de prueba a examinar
+     * @return arreglo con las clases no repetidas
+     */
     public ArrayList<String> clasesNoRepetidas(CasoPrueba casoPrueba) {
 
         ArrayList<String> clases = new ArrayList<String>();
@@ -57,14 +76,10 @@ public class CodeManager {
                 classesNoRepetidas.add(clase);
 
             } else {
-
-                    if (!existeClase(clase)) {
-                        classesNoRepetidas.add(clase);
-                    }
+                if (!existeClase(clase)) {
+                    classesNoRepetidas.add(clase);
+                }
             }
-        }
-        for (String string : classesNoRepetidas) {
-            System.out.println(string);
         }
         return classesNoRepetidas;
     }
