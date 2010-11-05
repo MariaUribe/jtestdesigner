@@ -26,11 +26,8 @@ import javax.swing.DefaultListModel;
 public class MethodsManager extends javax.swing.JInternalFrame {
 
     private Inicio inicio;
-
     private ArrayList<Class> clases = new ArrayList<Class>();
-
     public static DefaultListModel modelo = new DefaultListModel();
-
     public static ArrayList listaTDev = new ArrayList();
 
     /** Creates new form MethodsManager */
@@ -348,12 +345,13 @@ public class MethodsManager extends javax.swing.JInternalFrame {
         ArrayList<Metodo> metodosTest = new ArrayList<Metodo>();
         XmlManager xmlManager = new XmlManager();
 
-        metodosTest = xmlManager.agregarMetodoALista(metodosTest, metodos.get(0), new Integer(1), new AssertTest("miMensaje1", "var1.x", "AssertNotNull"));
-        
-        xmlManager.crearCasoPrueba("pruebaAnimal", metodosTest);
+//        for (Method method : metodos) {
+//            metodosTest = xmlManager.agregarMetodoALista(metodosTest, method, new Integer(1), new AssertTest("miMensaje1", "var1.x", "AssertNotNull"));
+//        }
+//
+//        xmlManager.crearCasoPrueba("pruebaAnimal", metodosTest);
 
-        CodeGenerator cg = new CodeGenerator();
-        cg.generateTest("/home/maya/pruebaAnimal.xml");
+        
 
     }//GEN-LAST:event_continuarActionPerformed
 
@@ -407,7 +405,6 @@ public class MethodsManager extends javax.swing.JInternalFrame {
         }
         return metodosDerecha;
     }
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JList classList;
     private javax.swing.JButton continuar;
