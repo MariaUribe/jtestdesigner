@@ -10,6 +10,7 @@
  */
 package com.teg.vista;
 
+import com.teg.dominio.Argumento;
 import com.teg.dominio.AssertTest;
 import com.teg.dominio.Metodo;
 import com.teg.logica.CodeGenerator;
@@ -344,16 +345,33 @@ public class MethodsManager extends javax.swing.JInternalFrame {
          */
         ArrayList<Metodo> metodosTest = new ArrayList<Metodo>();
         XmlManager xmlManager = new XmlManager();
+        Integer cont = 0;
 
-//        for (Method method : metodos) {
-//            metodosTest = xmlManager.agregarMetodoALista(metodosTest, method, new Integer(1), new AssertTest("miMensaje1", "var1.x", "AssertNotNull"));
-//        }
-//
-//        xmlManager.crearCasoPrueba("pruebaAnimal", metodosTest);
+        for (Method method : metodos) {
+            cont++;
+            metodosTest = xmlManager.agregarMetodoALista(metodosTest, method, cont, this.getArgumentos(method), new AssertTest("miMensaje1", "var1.x", "AssertNotNull"));
+        }
 
-        
+        xmlManager.crearCasoPrueba("pruebaAnimal", metodosTest);
 
     }//GEN-LAST:event_continuarActionPerformed
+
+    /**
+     * ESTE METODO VA EN CaseTestEditor.java
+     */
+    public ArrayList getArgumentos(Method method) {
+        Integer cont = 1;
+
+        ArrayList<Argumento> argumentos = new ArrayList<Argumento>();
+
+        Class[] parametros = method.getParameterTypes();
+
+        for (Class clazz : parametros) {
+            argumentos.add(new Argumento("arg" + cont, clazz.getName(), "tablaArgumentos.getValueAt(1, cont - 1).toString()"));
+            cont++;
+        }
+        return argumentos;
+    }
 
     /**
      * Metodo para obtener los metodos seleccionados
