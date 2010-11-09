@@ -46,6 +46,12 @@ public class CodeGenerator {
             root.put("claseTemplate", claseTemplate);
             root.put("casoPrueba", casoPrueba);
             root.put("clasesNoRepetidas", codeManager.clasesNoRepetidas(casoPrueba));
+
+            ArrayList<Metodo> metodos = casoPrueba.getMetodos();
+            for (Metodo metodo : metodos) {
+                ArrayList<Metodo> metodosLinea = this.generarPrueba(metodos, metodo);
+            }
+
             freemarkerDo(root);
 
         } catch (IOException ex) {
@@ -91,9 +97,11 @@ public class CodeGenerator {
 
     public Metodo getMetodoEnLista(Argumento arg, ArrayList<Metodo> metodos) {
         Metodo metodo = null;
+        String[] argValue = arg.getValor().split(".");
+        String argumento = argValue[0];
 
         for (Metodo method : metodos) {
-            if (method.getRetorno().getNombreVariable().equals(arg.getValor())) {
+            if (method.getRetorno().getNombreVariable().equals(argumento)) {
                 metodo = method;
                 break;
             }
@@ -108,8 +116,6 @@ public class CodeGenerator {
      */
     public ArrayList<Metodo> generarLinea(Metodo metodo, ArrayList<Metodo> metodosDividos, ArrayList<Metodo> ordenMetodos) {
 
-//        Boolean flag = Boolean.FALSE; //true: depende de otro, false; no depende de ninguno
-
         ArrayList<Argumento> argumentos = metodo.getArgumentos();
 
         for (Argumento argumento : argumentos) {
@@ -122,24 +128,18 @@ public class CodeGenerator {
             }
         }
 
-       return ordenMetodos;
+        return ordenMetodos;
     }
 
-    public void generarPrueba(ArrayList<Metodo> metodos) {
+    public ArrayList<Metodo> generarPrueba(ArrayList<Metodo> metodos, Metodo metodo) {
 
         ArrayList<Metodo> ordenMetodos = new ArrayList<Metodo>();
 
-        for (Metodo metodo : metodos) {
-            ArrayList<Metodo> metodosDivididos = this.dividirLista(metodos, metodo);
-            ordenMetodos = this.generarLinea(metodo, metodosDivididos, ordenMetodos);
-        }
-        System.out.println("");
-        System.out.println("\nORDEN METODOS:");
-        for (Metodo metodo : ordenMetodos) {
-            System.out.println(metodo.getNombre());
-        }
-        System.out.println("");
-    }
+        ordenMetodos.add(metodo);
+        ArrayList<Metodo> metodosDivididos = this.dividirLista(metodos, metodo);
+        ordenMetodos = this.generarLinea(metodo, metodosDivididos, ordenMetodos);
 
-    
+
+        return ordenMetodos;
+    }
 }
