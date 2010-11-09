@@ -139,7 +139,7 @@ public class Inicio extends javax.swing.JFrame {
         try {
             methodsManager.setVisible(false);
 
-            CaseTestEditor caseTest = new CaseTestEditor(metodos);
+            CaseTestEditor caseTest = new CaseTestEditor(metodos, this);
             caseTest.setVisible(Boolean.TRUE);
             this.getjDesktopPane().add(caseTest);
             caseTest.setMaximum(Boolean.TRUE);
