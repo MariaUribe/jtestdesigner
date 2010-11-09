@@ -96,21 +96,12 @@ public class XmlManager {
      * @return ArrayList<Metodo> la nueva lista de metodos con el metodo agregado 
      */
     public ArrayList<Metodo> agregarMetodoALista(ArrayList<Metodo> metodos,
-            Method method, Integer numVariable, AssertTest condAssert) {
+            Method method, Integer numVariable, ArrayList<Argumento> argumentos, AssertTest condAssert) {
 
         Metodo miMetodo = new Metodo(method.getName(), method.getDeclaringClass().getName(),
                 method.getDeclaringClass().getSimpleName());
         miMetodo.setRetorno(new Retorno(method.getReturnType().getName(),
                 "var" + numVariable));
-
-        ArrayList<Argumento> argumentos = new ArrayList<Argumento>();
-        Class[] parameterTypes = method.getParameterTypes();
-        Integer cont = 0;
-
-        for (Class clazz : parameterTypes) {
-            cont += 1;
-            argumentos.add(new Argumento("arg" + cont, clazz.getName()));
-        }
 
         miMetodo.setArgumentos(argumentos);
         miMetodo.setAssertLinea(condAssert);

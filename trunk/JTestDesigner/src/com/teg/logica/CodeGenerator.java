@@ -1,7 +1,9 @@
 package com.teg.logica;
 
+import com.teg.dominio.Argumento;
 import com.teg.dominio.CasoPrueba;
 import com.teg.dominio.ClaseTemplate;
+import com.teg.dominio.Metodo;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -10,6 +12,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -30,7 +33,7 @@ public class CodeGenerator {
     public void generateTest(String rutaXmlCasoPrueba) {
 
         CasoPrueba casoPrueba = xmlManager.getCasoPruebaXML(rutaXmlCasoPrueba);
-        
+
         CodeManager codeManager = new CodeManager();
 
         try {
@@ -53,7 +56,7 @@ public class CodeGenerator {
     }
 
     /**
-     * Metodo para crear la clase .java
+     * Metodo para crear la clase .java 
      * @param datamodel
      * @throws IOException
      * @throws TemplateException
@@ -70,4 +73,73 @@ public class CodeGenerator {
 
         tpl.process(datamodel, output);
     }
+
+    public ArrayList<Metodo> dividirLista(ArrayList<Metodo> metodos, Metodo metodo) {
+
+        ArrayList<Metodo> metodosDivididos = new ArrayList<Metodo>();
+
+        for (Metodo method : metodos) {
+            if (method.getNombre().equals(metodo.getNombre())) {
+                break;
+            } else {
+                metodosDivididos.add(method);
+            }
+        }
+
+        return metodos;
+    }
+
+    public Metodo getMetodoEnLista(Argumento arg, ArrayList<Metodo> metodos) {
+        Metodo metodo = null;
+
+        for (Metodo method : metodos) {
+            if (method.getRetorno().getNombreVariable().equals(arg.getValor())) {
+                metodo = method;
+                break;
+            }
+        }
+        return metodo;
+    }
+
+    /**
+     * TODO: falta que guarde el orden de los metodos a ejecutar
+     * @param metodo
+     * @param metodosDividos
+     */
+    public ArrayList<Metodo> generarLinea(Metodo metodo, ArrayList<Metodo> metodosDividos, ArrayList<Metodo> ordenMetodos) {
+
+//        Boolean flag = Boolean.FALSE; //true: depende de otro, false; no depende de ninguno
+
+        ArrayList<Argumento> argumentos = metodo.getArgumentos();
+
+        for (Argumento argumento : argumentos) {
+
+            Metodo newMetodo = this.getMetodoEnLista(argumento, metodosDividos);
+
+            if (newMetodo != null) {
+                ordenMetodos.add(newMetodo);
+                ordenMetodos = generarLinea(newMetodo, this.dividirLista(metodosDividos, newMetodo), ordenMetodos);
+            }
+        }
+
+       return ordenMetodos;
+    }
+
+    public void generarPrueba(ArrayList<Metodo> metodos) {
+
+        ArrayList<Metodo> ordenMetodos = new ArrayList<Metodo>();
+
+        for (Metodo metodo : metodos) {
+            ArrayList<Metodo> metodosDivididos = this.dividirLista(metodos, metodo);
+            ordenMetodos = this.generarLinea(metodo, metodosDivididos, ordenMetodos);
+        }
+        System.out.println("");
+        System.out.println("\nORDEN METODOS:");
+        for (Metodo metodo : ordenMetodos) {
+            System.out.println(metodo.getNombre());
+        }
+        System.out.println("");
+    }
+
+    
 }
