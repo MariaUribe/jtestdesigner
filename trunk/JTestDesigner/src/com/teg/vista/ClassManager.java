@@ -88,7 +88,7 @@ public class ClassManager extends javax.swing.JInternalFrame {
 
         jScrollPane3.setViewportView(clasesSeleccionadasLista);
 
-        seleccionarTodas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/teg/recursos/rightAll.png"))); // NOI18N
+        seleccionarTodas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/teg/recursos/imagenes/rightAll.png"))); // NOI18N
         seleccionarTodas.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         seleccionarTodas.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -96,7 +96,7 @@ public class ClassManager extends javax.swing.JInternalFrame {
             }
         });
 
-        removerTodas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/teg/recursos/leftAll.png"))); // NOI18N
+        removerTodas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/teg/recursos/imagenes/leftAll.png"))); // NOI18N
         removerTodas.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         removerTodas.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -104,7 +104,7 @@ public class ClassManager extends javax.swing.JInternalFrame {
             }
         });
 
-        removerClases.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/teg/recursos/left.png"))); // NOI18N
+        removerClases.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/teg/recursos/imagenes/left.png"))); // NOI18N
         removerClases.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         removerClases.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -112,7 +112,7 @@ public class ClassManager extends javax.swing.JInternalFrame {
             }
         });
 
-        seleccionarClases.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/teg/recursos/right.png"))); // NOI18N
+        seleccionarClases.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/teg/recursos/imagenes/right.png"))); // NOI18N
         seleccionarClases.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         seleccionarClases.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -148,7 +148,7 @@ public class ClassManager extends javax.swing.JInternalFrame {
                 .addComponent(removerTodas)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(removerClases)
-                .addContainerGap(97, Short.MAX_VALUE))
+                .addContainerGap(83, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -166,13 +166,13 @@ public class ClassManager extends javax.swing.JInternalFrame {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 379, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 379, Short.MAX_VALUE))
-                .addContainerGap())
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 365, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         continuar.setText("Continuar");
@@ -189,11 +189,14 @@ public class ClassManager extends javax.swing.JInternalFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(continuar, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 429, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(971, Short.MAX_VALUE)
+                .addComponent(continuar)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -203,10 +206,10 @@ public class ClassManager extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(continuar)
-                .addGap(27, 27, 27))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
