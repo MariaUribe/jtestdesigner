@@ -80,6 +80,13 @@ public class CodeGenerator {
         tpl.process(datamodel, output);
     }
 
+    /**
+     * Metodo para dividir la lista obteniendo una mas reducida en la cual se
+     * hara la comparacion de metodos y argumentos
+     * @param metodos la lista completa de metodos a probar
+     * @param metodo el metodo que sera la division de la lista 
+     * @return ArrayList<Metodo> lista de metodos dividida 
+     */
     public ArrayList<Metodo> dividirLista(ArrayList<Metodo> metodos, Metodo metodo) {
 
         ArrayList<Metodo> metodosDivididos = new ArrayList<Metodo>();
@@ -95,7 +102,15 @@ public class CodeGenerator {
         return metodos;
     }
 
+    /**
+     * Metodo para verificar si el argumento arg se encuentra en la lista de
+     * metodos
+     * @param arg argumento a verificar
+     * @param metodos metodos a comparar
+     * @return Metodo metodo que es llamado para asignar el valor del argumento
+     */
     public Metodo getMetodoEnLista(Argumento arg, ArrayList<Metodo> metodos) {
+
         Metodo metodo = null;
         String[] argValue = arg.getValor().split(".");
         String argumento = argValue[0];
@@ -110,9 +125,13 @@ public class CodeGenerator {
     }
 
     /**
-     * TODO: falta que guarde el orden de los metodos a ejecutar
-     * @param metodo
-     * @param metodosDividos
+     * Metodo para generar un ArrayList que contendra los metodos involucrados
+     * para la ejecucion del Metodo metodo
+     * @param metodo el metodo a crear posibles dependencias
+     * @param metodosDividos lista con los metodos divididos 
+     * @param ordenMetodos arraylist que contendra los metodos involucrados 
+     * @return ArrayList<Metodo> que contendra los metodos involucrados
+     * para la ejecucion del Metodo metodo
      */
     public ArrayList<Metodo> generarLinea(Metodo metodo, ArrayList<Metodo> metodosDividos, ArrayList<Metodo> ordenMetodos) {
 
@@ -127,10 +146,16 @@ public class CodeGenerator {
                 ordenMetodos = generarLinea(newMetodo, this.dividirLista(metodosDividos, newMetodo), ordenMetodos);
             }
         }
-
         return ordenMetodos;
     }
 
+    /**
+     * Metodo para generar una Prueba
+     * @param metodos lista de metodos que seran ejecutados en la prueba 
+     * @param metodo metodo al cual se generara el escenario de prueba
+     * @return ArrayList<Metodo> metodos involucrados para crear el escenario
+     * de prueba del Metodo metodo 
+     */
     public ArrayList<Metodo> generarPrueba(ArrayList<Metodo> metodos, Metodo metodo) {
 
         ArrayList<Metodo> ordenMetodos = new ArrayList<Metodo>();
@@ -138,7 +163,6 @@ public class CodeGenerator {
         ordenMetodos.add(metodo);
         ArrayList<Metodo> metodosDivididos = this.dividirLista(metodos, metodo);
         ordenMetodos = this.generarLinea(metodo, metodosDivididos, ordenMetodos);
-
 
         return ordenMetodos;
     }

@@ -13,7 +13,6 @@ package com.teg.vista;
 import com.teg.dominio.Argumento;
 import com.teg.dominio.AssertTest;
 import com.teg.dominio.Metodo;
-import com.teg.logica.CodeGenerator;
 import com.teg.logica.XmlManager;
 import java.awt.event.MouseEvent;
 import java.lang.reflect.Method;

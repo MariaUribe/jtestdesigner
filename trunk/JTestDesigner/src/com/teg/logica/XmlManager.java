@@ -92,6 +92,7 @@ public class XmlManager {
      * @param metodos lista de metodos donde se agregara el metodo
      * @param method el metodo a setear
      * @param numVariable numero de la variable a crear
+     * @param argumentos lista de argumentos del metodo a setear 
      * @param condAssert condicion de Assert para crear la variable
      * @return ArrayList<Metodo> la nueva lista de metodos con el metodo agregado 
      */
