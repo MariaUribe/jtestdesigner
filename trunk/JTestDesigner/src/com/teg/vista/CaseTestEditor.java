@@ -46,11 +46,14 @@ public class CaseTestEditor extends javax.swing.JInternalFrame  {
 
     private JComboBox comboParametros;
 
+    private Inicio ini;
+
     /** Creates new form CaseTestEditor */
     @SuppressWarnings("LeakingThisInConstructor")
-    public CaseTestEditor(ArrayList<Method> metodos) {
+    public CaseTestEditor(ArrayList<Method> metodos, Inicio inicio) {
         initComponents();
         this.metodos = metodos;
+        this.ini = inicio;
         
         javax.swing.plaf.InternalFrameUI ifu = this.getUI();
         ((javax.swing.plaf.basic.BasicInternalFrameUI) ifu).setNorthPane(null);
@@ -535,6 +538,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame  {
         //d.setContentPane(panelInicial);
         
        labelTest.setText(eva);
+       NewDialog dialogo = new NewDialog(ini, true);
     }
 
     public void cargarTablaArgumentos(String text) {
