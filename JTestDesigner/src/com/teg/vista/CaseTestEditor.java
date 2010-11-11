@@ -11,8 +11,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Point;
 
-
-
 import java.awt.event.MouseAdapter;
 
 import java.lang.reflect.Field;
@@ -22,12 +20,13 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
-import javax.swing.JPanel;
 import javax.swing.JTable;
 
 
 import javax.swing.JTextField;
 import javax.swing.border.Border;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import javax.swing.table.DefaultTableModel;
 
 import javax.swing.table.TableCellEditor;
@@ -36,32 +35,18 @@ import javax.swing.table.TableCellEditor;
  *
  * @author maya
  */
-public class CaseTestEditor extends javax.swing.JInternalFrame  {
+public class CaseTestEditor extends javax.swing.JInternalFrame {
 
     private ArrayList<Method> metodos = new ArrayList<Method>();
     private ArrayList<DefaultCellEditor> editores = new ArrayList<DefaultCellEditor>();
-
     private static int varId = 0;
-
-    private Class tipoVarRetorno;
-
-    //private DefaultTableModel tableModel;
-
-    //private JComboBox comboParametros;
-
-    //private  JTable tabla;
-
+    private Class tipoVarRetorno;  
     private String valorFila;
-    private JTable tabla;
-
-    //private JComboBox comboParametros;
-
-    //private  String name;
-
-    
-
+    private String actualNameMethod;
+    private JTable tabla;  
     private Inicio ini;
-    //private Object filaValor;
+  
+
 
     /** Creates new form CaseTestEditor */
     @SuppressWarnings("LeakingThisInConstructor")
@@ -69,14 +54,13 @@ public class CaseTestEditor extends javax.swing.JInternalFrame  {
         initComponents();
         this.metodos = metodos;
         this.ini = inicio;
-        //Dimension dimension = tablaArgs.getSize();
-        //Point loc = tablaArgs.getLocation();
+       
 
 
 
- 
-        
-        
+
+
+
         javax.swing.plaf.InternalFrameUI ifu = this.getUI();
         ((javax.swing.plaf.basic.BasicInternalFrameUI) ifu).setNorthPane(null);
     }
@@ -116,6 +100,8 @@ public class CaseTestEditor extends javax.swing.JInternalFrame  {
         jButton3 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+
+        setTitle("Case Test Editor");
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Historial de Variables", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 1, 12))); // NOI18N
 
@@ -163,7 +149,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame  {
                 .addComponent(jLabel1)
                 .addGap(146, 146, 146)
                 .addComponent(jLabel2)
-                .addContainerGap(165, Short.MAX_VALUE))
+                .addContainerGap(157, Short.MAX_VALUE))
         );
         panelTablaArgumentosLayout.setVerticalGroup(
             panelTablaArgumentosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -228,7 +214,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame  {
                     .addComponent(assertMensaje)
                     .addComponent(assertCondiciones, 0, 0, Short.MAX_VALUE)
                     .addComponent(assertVariables, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 104, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 96, Short.MAX_VALUE)
                 .addComponent(lbResultadoAssert)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(resultadoAssert, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -271,7 +257,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame  {
                     .addComponent(jButton4, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(panelAssert, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(panelTablaArgumentos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelMetodoInfoLayout.setVerticalGroup(
             panelMetodoInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -360,7 +346,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame  {
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(43, 43, 43)
-                .addComponent(panelMetodoInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 592, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(panelMetodoInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(39, 39, 39)
                 .addGroup(panelInicialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(panelInicialLayout.createSequentialGroup()
@@ -409,42 +395,34 @@ public class CaseTestEditor extends javax.swing.JInternalFrame  {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-     
-
     private void assertCondicionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_assertCondicionesActionPerformed
-
         // TODO add your handling code here:
 }//GEN-LAST:event_assertCondicionesActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-NewDialog dialogo = new NewDialog(ini, true);
-dialogo.setVisible(true);
-       
+        //NewDialog dialogo = new NewDialog(ini, true);
+        //dialogo.setVisible(true);
+
 
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void assertVariablesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_assertVariablesActionPerformed
         // TODO add your handling code here:
-
     }//GEN-LAST:event_assertVariablesActionPerformed
 
     private void assertCondicionesPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_assertCondicionesPopupMenuWillBecomeInvisible
         // TODO add your handling code here:
-        if (assertCondiciones.getSelectedItem().equals("Igual") ||
-                assertCondiciones.getSelectedItem().equals("No Igual"))
-        {
+        if (assertCondiciones.getSelectedItem().equals("Igual")
+                || assertCondiciones.getSelectedItem().equals("No Igual")) {
             lbResultadoAssert.setEnabled(true);
             resultadoAssert.setEnabled(true);
-        }
- else
-        {
+        } else {
             lbResultadoAssert.setEnabled(false);
             resultadoAssert.setEnabled(false);
 
- }
+        }
 
     }//GEN-LAST:event_assertCondicionesPopupMenuWillBecomeInvisible
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox assertCondiciones;
     private javax.swing.JTextField assertMensaje;
@@ -483,6 +461,17 @@ dialogo.setVisible(true);
         }
     }
 
+    public Method getActualMethod()
+    {
+        Method m = null;
+        for (Method method : metodos) {
+            if (method.getName().equals(actualNameMethod)){
+                m = method;
+            }
+
+        }
+        return m;
+    }
     public void addMethodPanel(String methodName, int panelHeight) {
 
         List<JTextField> components = SwingUtils.getDescendantsOfType(JTextField.class, this.panel, true);
@@ -534,7 +523,9 @@ dialogo.setVisible(true);
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 cargarTablaArgumentos(metodoTest.getText());
- 
+                actualNameMethod = metodoTest.getText();
+              
+
             }
         });
     }
@@ -570,57 +561,81 @@ dialogo.setVisible(true);
         }
         assertVariables.repaint();
 
-        
+
     }
 
-   
     public void cargarComboItems(JComboBox combo) {
-
     }
 
-    public void Evaluar(String eva)
-    {
-
-        //if (comboParametros.getSelectedItem().equals("Crear: "+ name)){
-           // Method metodo = getMethodSelected(name);
-            //Class claseMetodo = metodo.getClass();
-            //Field[] campos = claseMetodo.getDeclaredFields();
-
-            
-       // }
-        //d.setContentPane(panelInicial);
-        
-       //labelTest.setText(eva);
-       //NewDialog dialogo = new NewDialog(ini, true);
+    public void Evaluar(String eva) {
+       
     }
 
     @SuppressWarnings("empty-statement")
     public void cargarTablaArgumentos(String text) {
 
-        panelTablaArgumentos.removeAll();
+        for (Component component : panelTablaArgumentos.getComponents()) {
+            if(component.getClass().getName().equals("JTable"))
+            {
+                panelTablaArgumentos.remove(component);
+            }
+
+
+        }
+
+
         editores.clear();
         Method metodo;
-     
+
         metodo = getMethodSelected(text);
         final Class[] parameterTypes = metodo.getParameterTypes();
 
         for (int i = 0; i < parameterTypes.length; i++) {
 
-            Class parameter = parameterTypes[i];
-            int lastPoint = parameterTypes[i].getName().lastIndexOf(".");
-            if (!parameter.isPrimitive())
-            {
+            final Class parameter = parameterTypes[i];
+            //int lastPoint = parameterTypes[i].getName().lastIndexOf(".");
+            if (!parameter.isPrimitive()) {
                 JComboBox combo = new JComboBox();
+                combo.addPopupMenuListener(new PopupMenuListener() {
+
+                    public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+                    }
+
+                    public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+
+
+                        /*JComboBox cb = (JComboBox) e.getSource();
+                        String selected = (String) cb.getSelectedItem();
+                        if (selected.equals("Crear: " + parameter.getName())) {
+                            dialogoValores = new GetDialogValues();
+                            NewDialog dialogo = new NewDialog(ini, true, dialogoValores);
+
+                            dialogo.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+
+
+
+
+                            dialogo.setCamposClase(parameter.getDeclaredFields());
+                            dialogo.LlenarTabla();
+
+                            dialogo.setVisible(true);
+                           
+                        }*/
+                    }
+
+                    public void popupMenuCanceled(PopupMenuEvent e) {
+                       
+                    }
+                });
+
                 combo.setEditable(true);
-                combo.addItem("Crear: " +parameterTypes[i].getName().substring(lastPoint + 1));
+                combo.addItem("Crear: " + parameterTypes[i].getName());
                 DefaultCellEditor editor = new DefaultCellEditor(combo);
                 editores.add(editor);
-            }
- else
-            {
+            } else {
                 JComboBox combo = new JComboBox();
                 combo.setEditable(true);
-                //combo.addItem("Crear: " +parameterTypes[i].getName().substring(lastPoint + 1));
+              
                 DefaultCellEditor editor = new DefaultCellEditor(combo);
                 editores.add(editor);
             }
@@ -629,21 +644,18 @@ dialogo.setVisible(true);
 
         tipoVarRetorno = metodo.getReturnType();
         cargarAssert(tipoVarRetorno);
-        DefaultTableModel model = new DefaultTableModel(new Object[]{"Argumento","Valor"}, parameterTypes.length);
-        tabla = new JTable(model)
+        DefaultTableModel model = new DefaultTableModel(new Object[]{"Argumento", "Valor"}, parameterTypes.length);
+        tabla = new JTable(model) {
 
-        {
             @Override
-           public TableCellEditor getCellEditor(int row , int column)
-            {
-              int modelColumn = super.convertColumnIndexToModel(column);
-              if (modelColumn ==1 && row < parameterTypes.length)
+            public TableCellEditor getCellEditor(int row, int column) {
+                int modelColumn = super.convertColumnIndexToModel(column);
+                if (modelColumn == 1 && row < parameterTypes.length) {
+                    return editores.get(row);
+                } else {
+                    return super.getCellEditor(row, column);
+                }
 
-              
-                  return editores.get(row);
-              else
-                  return super.getCellEditor(row , column);
-              
             }
         };
 
@@ -653,36 +665,20 @@ dialogo.setVisible(true);
         tabla.setBorder(line);
         tabla.setSelectionMode(0);
         tabla.setGridColor(Color.black);
-        tabla.setSize(new Dimension(450,150));
-        tabla.setLocation(40,40);
-        tabla.setValueAt("ola", 0, 0);
+        tabla.setSize(new Dimension(450, 150));
+        tabla.setLocation(40, 40);
+      
 
         for (int i = 0; i < parameterTypes.length; i++) {
 
-            //int punto = parameterTypes[i].getName().lastIndexOf(".");
-            //if (punto > 0)
+           
             tabla.setValueAt(parameterTypes[i].getName(), i, 0);
-            //else
-              //  tabla.setValueAt(parameterTypes[i].getName(), i, 0);
         }
-        
+
 
         panelTablaArgumentos.repaint();
 
-
-    //private JComboBox comboParametros;
-
-        //JTable tabla = new JTable();
-
-
-
-       
-
-        
     }
-
-
-
-
-   
 }
+
+
