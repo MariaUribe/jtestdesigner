@@ -11,8 +11,13 @@
 
 package com.teg.vista;
 
+import com.teg.logica.GetDialogValues;
+import java.awt.Color;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Vector;
+import javax.swing.BorderFactory;
+import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -21,29 +26,44 @@ import javax.swing.table.DefaultTableModel;
  */
 public class NewDialog extends javax.swing.JDialog {
 
-    private ArrayList<Field> camposClase;
+    private Field[] camposClase;
+    private GetDialogValues valor;
+    //private Vector valores = new Vector();
      
-     private DefaultTableModel tableModel;
+     private DefaultTableModel  tableModel;
+     private DefaultTableModel model = new DefaultTableModel();
     
     /** Creates new form NewDialog */
-    public NewDialog(java.awt.Frame parent, boolean modal) {
+    public NewDialog(java.awt.Frame parent, boolean modal, GetDialogValues valores) {
         super(parent, modal);
         initComponents();
-        LlenarTabla();
+        this.valor = valores;
+
+
+
+        //LlenarTabla();
         
     }
 
-    private void LlenarTabla()
+    public void LlenarTabla()
     {
 
-        tableModel = new DefaultTableModel(new Object[]{"Campo", "Valor"}, camposClase.size());
+        tableModel = new DefaultTableModel(new Object[]{"Campo", "Valor"}, camposClase.length);
+        
         tablaCampos.setModel(tableModel);
 
-        for (int i = 0; i < camposClase.size(); i++) {
+        for (int i = 0; i < camposClase.length; i++) {
 
-            tableModel.setValueAt(camposClase.get(i).getName(), i, 0);
+            tableModel.setValueAt(camposClase[i].getName(), i, 0);
+            //System.out.println(tableModel.getValueAt(i, 0));
         }
+        //model = (DefaultTableModel) tableModel.getDataVector().clone();
+        Border line = BorderFactory.createLineBorder(Color.black);
+        tablaCampos.setBorder(line);
+        tablaCampos.setSelectionMode(0);
+        tablaCampos.setGridColor(Color.black);
         tablaCampos.repaint();
+        this.pack();
 
         
 
@@ -60,11 +80,19 @@ public class NewDialog extends javax.swing.JDialog {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaCampos = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Data Editor");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
+        tablaCampos.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
         tablaCampos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -73,7 +101,16 @@ public class NewDialog extends javax.swing.JDialog {
 
             }
         ));
+        tablaCampos.setCellSelectionEnabled(true);
+        tablaCampos.setGridColor(new java.awt.Color(0, 0, 0));
         jScrollPane1.setViewportView(tablaCampos);
+
+        jButton1.setText("Save");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -81,7 +118,9 @@ public class NewDialog extends javax.swing.JDialog {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(58, 58, 58)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButton1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(64, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -89,7 +128,9 @@ public class NewDialog extends javax.swing.JDialog {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(32, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(74, 74, 74))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton1)
+                .addGap(36, 36, 36))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -112,11 +153,33 @@ public class NewDialog extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    
+      ArrayList<String> values = new ArrayList<String>();
+    
+      for (int i = 0; i < tablaCampos.getRowCount()-1; i++) {
+            values.add(tablaCampos.getValueAt(i, 1).toString());
+        }
+      valor.setValoresDialogo(values);
+     
+        
+        this.dispose();
+
+        
+       
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+    }//GEN-LAST:event_formWindowClosing
+
     /**
     * @param args the command line arguments
     */
   
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tablaCampos;
@@ -125,15 +188,20 @@ public class NewDialog extends javax.swing.JDialog {
     /**
      * @return the camposClase
      */
-    public ArrayList<Field> getCamposClase() {
+    public Field[] getCamposClase() {
         return camposClase;
     }
 
     /**
      * @param camposClase the camposClase to set
      */
-    public void setCamposClase(ArrayList<Field> camposClase) {
+    public void setCamposClase(Field[] camposClase) {
         this.camposClase = camposClase;
     }
 
+    
+
+    
 }
+
+
