@@ -347,16 +347,26 @@ public class MethodsManager extends javax.swing.JInternalFrame {
          */
         ArrayList<Metodo> metodosTest = new ArrayList<Metodo>();
         XmlManager xmlManager = new XmlManager();
-        Integer cont = 0;
 
+        Integer cont = 0;
         for (Method method : metodos) {
-            cont++;
-            metodosTest = xmlManager.agregarMetodoALista(metodosTest, method, cont, this.getArgumentos(method), new AssertTest("miMensaje1", "var1.x", "AssertNotNull"));
+            metodosTest = this.agregarMetodo(method, metodosTest, cont);
         }
 
         xmlManager.crearCasoPrueba("pruebaAnimal", metodosTest);
 
     }//GEN-LAST:event_continuarActionPerformed
+
+    public ArrayList<Metodo> agregarMetodo(Method method, ArrayList<Metodo> metodosTest, Integer cont) {
+
+        cont += 1;
+
+        XmlManager xmlManager = new XmlManager();
+
+        metodosTest = xmlManager.agregarMetodoALista(metodosTest, method, cont, this.getArgumentos(method), new AssertTest("miMensaje1", "var1.x", "AssertNotNull"));
+
+        return metodosTest;
+    }
 
     /**
      * ESTE METODO VA EN CaseTestEditor.java
