@@ -5,6 +5,10 @@
  */
 package com.teg.vista;
 
+import com.teg.dominio.Argumento;
+import com.teg.dominio.AssertTest;
+import com.teg.dominio.Metodo;
+import com.teg.logica.XmlManager;
 import com.teg.util.SwingUtils;
 
 import java.awt.Color;
@@ -37,20 +41,16 @@ import javax.swing.table.TableCellEditor;
 public class CaseTestEditor extends javax.swing.JInternalFrame {
 
     private ArrayList<Method> metodos = new ArrayList<Method>();
-
     private ArrayList<DefaultCellEditor> editores = new ArrayList<DefaultCellEditor>();
-
+    private ArrayList<Metodo> metodosTest = new ArrayList<Metodo>();
+    private Integer contMetodos = 0;
     private static int varId = 0;
-
     private Class tipoVarRetorno;
-
     private String valorFila;
-
     private String actualNameMethod;
-
-    private JTable tabla;
-
+    private JTable tablaArgumentos;
     private Inicio inicio;
+
 
     /** Creates new form CaseTestEditor */
     @SuppressWarnings("LeakingThisInConstructor")
@@ -397,20 +397,35 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void assertCondicionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_assertCondicionesActionPerformed
-        
 }//GEN-LAST:event_assertCondicionesActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        //NewDialog dialogo = new NewDialog(ini, true);
-        //dialogo.setVisible(true);
+
+        XmlManager xmlManager = new XmlManager();
+
+        Method method = this.getActualMethod();
+
+        contMetodos += 1;
+
+        metodosTest = this.agregarMetodo(method, metodosTest, contMetodos);
+
+        for (Metodo metodo : metodosTest) {
+            System.out.println("\nMETODOS TEST: " + metodo.getNombre() + ", " + metodo.getRetorno().getNombreVariable());
+            ArrayList<Argumento> argumentos = metodo.getArgumentos();
+            for (Argumento argumento : argumentos) {
+                System.out.println("arg: " + argumento.getNombre() + ", " + argumento.getValor());
+            }
+        }
+
+//        xmlManager.crearCasoPrueba("pruebaAnimal", metodosTest);
+
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void assertVariablesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_assertVariablesActionPerformed
-        
     }//GEN-LAST:event_assertVariablesActionPerformed
 
     private void assertCondicionesPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_assertCondicionesPopupMenuWillBecomeInvisible
-       if (assertCondiciones.getSelectedItem().equals("Igual")
+        if (assertCondiciones.getSelectedItem().equals("Igual")
                 || assertCondiciones.getSelectedItem().equals("No Igual")) {
             lbResultadoAssert.setEnabled(true);
             resultadoAssert.setEnabled(true);
@@ -447,6 +462,29 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
     private javax.swing.JTextField resultadoAssert;
     private javax.swing.JScrollPane scroll;
     // End of variables declaration//GEN-END:variables
+
+    public ArrayList<Metodo> agregarMetodo(Method method, ArrayList<Metodo> metodosTest, Integer cont) {
+
+        XmlManager xmlManager = new XmlManager();
+
+        metodosTest = xmlManager.agregarMetodoALista(metodosTest, method, cont, this.getArgumentos(method), new AssertTest("miMensaje1", "var1.x", "AssertNotNull"));
+
+        return metodosTest;
+    }
+
+    public ArrayList getArgumentos(Method method) {
+        Integer cont = 1;
+
+        ArrayList<Argumento> argumentos = new ArrayList<Argumento>();
+
+        Class[] parametros = method.getParameterTypes();
+
+        for (Class clazz : parametros) {
+            argumentos.add(new Argumento("arg" + cont, clazz.getName(), tablaArgumentos.getValueAt(cont - 1, 1).toString()));
+            cont++;
+        }
+        return argumentos;
+    }
 
     public void cargarMetodos() {
         int panelHeight = this.panel.getHeight();
@@ -568,7 +606,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
     public void cargarTablaArgumentos(String text) {
 
         for (Component component : panelTablaArgumentos.getComponents()) {
-            if (component.getClass().getName().equals("JTable")) {
+            if (component.getClass().getName().equals("com.teg.vista.CaseTestEditor$7")) {
                 panelTablaArgumentos.remove(component);
             }
         }
@@ -627,7 +665,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
         tipoVarRetorno = metodo.getReturnType();
         cargarAssert(tipoVarRetorno);
         DefaultTableModel model = new DefaultTableModel(new Object[]{"Argumento", "Valor"}, parameterTypes.length);
-        tabla = new JTable(model) {
+        tablaArgumentos = new JTable(model) {
 
             @Override
             public TableCellEditor getCellEditor(int row, int column) {
@@ -641,16 +679,16 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
             }
         };
 
-        panelTablaArgumentos.add(tabla);
+        panelTablaArgumentos.add(tablaArgumentos);
         Border line = BorderFactory.createLineBorder(Color.black);
-        tabla.setBorder(line);
-        tabla.setSelectionMode(0);
-        tabla.setGridColor(Color.black);
-        tabla.setSize(new Dimension(450, 150));
-        tabla.setLocation(40, 40);
+        tablaArgumentos.setBorder(line);
+        tablaArgumentos.setSelectionMode(0);
+        tablaArgumentos.setGridColor(Color.black);
+        tablaArgumentos.setSize(new Dimension(450, 150));
+        tablaArgumentos.setLocation(40, 40);
 
         for (int i = 0; i < parameterTypes.length; i++) {
-            tabla.setValueAt(parameterTypes[i].getName(), i, 0);
+            tablaArgumentos.setValueAt(parameterTypes[i].getName(), i, 0);
         }
         panelTablaArgumentos.repaint();
     }
