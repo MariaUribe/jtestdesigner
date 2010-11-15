@@ -26,6 +26,11 @@ public class Metodo {
         this.claseSimpleName = claseSimpleName;
     }
 
+    public Metodo()
+    {
+    
+    }
+
     /**
      * @return the nombre
      */

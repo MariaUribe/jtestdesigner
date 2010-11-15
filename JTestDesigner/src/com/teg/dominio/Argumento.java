@@ -21,6 +21,11 @@ public class Argumento {
         this.valor = valor;
     }
 
+    public Argumento()
+    {
+
+    }
+
     /**
      * @return the nombre
      */

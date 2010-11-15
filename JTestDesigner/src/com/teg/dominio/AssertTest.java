@@ -12,6 +12,8 @@ public class AssertTest {
 
     private String condicion;
 
+    private String valorAssert;
+
     /**
      *
      * @param mensaje the mensaje to set
@@ -22,6 +24,7 @@ public class AssertTest {
         this.mensaje = mensaje;
         this.variable = variable;
         this.condicion = condicion;
+
     }
 
     /**
@@ -64,6 +67,20 @@ public class AssertTest {
      */
     public void setCondicion(String condicion) {
         this.condicion = condicion;
+    }
+
+    /**
+     * @return the valorAssert
+     */
+    public String getValorAssert() {
+        return valorAssert;
+    }
+
+    /**
+     * @param valorAssert the valorAssert to set
+     */
+    public void setValorAssert(String valorAssert) {
+        this.valorAssert = valorAssert;
     }
 
 }
