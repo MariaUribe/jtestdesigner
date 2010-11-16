@@ -11,7 +11,7 @@
 
 package com.teg.vista;
 
-import com.teg.logica.GetDialogValues;
+//import com.teg.logica.GetDialogValues;
 import java.awt.Color;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -27,17 +27,17 @@ import javax.swing.table.DefaultTableModel;
 public class NewDialog extends javax.swing.JDialog {
 
     private Field[] camposClase;
-    private GetDialogValues valor;
+//    private GetDialogValues valor;
     //private Vector valores = new Vector();
      
      private DefaultTableModel  tableModel;
      private DefaultTableModel model = new DefaultTableModel();
     
     /** Creates new form NewDialog */
-    public NewDialog(java.awt.Frame parent, boolean modal, GetDialogValues valores) {
+    public NewDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        this.valor = valores;
+//        this.valor = valores;
 
 
 
@@ -160,7 +160,7 @@ public class NewDialog extends javax.swing.JDialog {
       for (int i = 0; i < tablaCampos.getRowCount()-1; i++) {
             values.add(tablaCampos.getValueAt(i, 1).toString());
         }
-      valor.setValoresDialogo(values);
+//      valor.setValoresDialogo(values);
      
         
         this.dispose();

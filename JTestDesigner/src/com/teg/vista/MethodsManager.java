@@ -345,45 +345,45 @@ public class MethodsManager extends javax.swing.JInternalFrame {
          * Prueba para verificar que se genere el XML y el codigo
          * ESTO NO VA
          */
-        ArrayList<Metodo> metodosTest = new ArrayList<Metodo>();
-        XmlManager xmlManager = new XmlManager();
+//        ArrayList<Metodo> metodosTest = new ArrayList<Metodo>();
+//        XmlManager xmlManager = new XmlManager();
 
-        Integer cont = 0;
-        for (Method method : metodos) {
-            metodosTest = this.agregarMetodo(method, metodosTest, cont);
-        }
+//        Integer cont = 0;
+//        for (Method method : metodos) {
+//            metodosTest = this.agregarMetodo(method, metodosTest, cont);
+//        }
 
-        xmlManager.crearCasoPrueba("pruebaAnimal", metodosTest);
+//        xmlManager.crearCasoPrueba("pruebaAnimal", metodosTest);
 
     }//GEN-LAST:event_continuarActionPerformed
 
-    public ArrayList<Metodo> agregarMetodo(Method method, ArrayList<Metodo> metodosTest, Integer cont) {
-
-        cont += 1;
-
-        XmlManager xmlManager = new XmlManager();
-
-        metodosTest = xmlManager.agregarMetodoALista(metodosTest, method, cont, this.getArgumentos(method), new AssertTest("miMensaje1", "var1.x", "AssertNotNull"));
-
-        return metodosTest;
-    }
+//    public ArrayList<Metodo> agregarMetodo(Method method, ArrayList<Metodo> metodosTest, Integer cont) {
+//
+//        cont += 1;
+//
+//        XmlManager xmlManager = new XmlManager();
+//
+//        metodosTest = xmlManager.agregarMetodoALista(metodosTest, method, cont, this.getArgumentos(method), new AssertTest("miMensaje1", "var1.x", "AssertNotNull"));
+//
+//        return metodosTest;
+//    }
 
     /**
      * ESTE METODO VA EN CaseTestEditor.java
      */
-    public ArrayList getArgumentos(Method method) {
-        Integer cont = 1;
-
-        ArrayList<Argumento> argumentos = new ArrayList<Argumento>();
-
-        Class[] parametros = method.getParameterTypes();
-
-        for (Class clazz : parametros) {
-            argumentos.add(new Argumento("arg" + cont, clazz.getName(), "tablaArgumentos.getValueAt(1, cont - 1).toString()"));
-            cont++;
-        }
-        return argumentos;
-    }
+//    public ArrayList getArgumentos(Method method) {
+//        Integer cont = 1;
+//
+//        ArrayList<Argumento> argumentos = new ArrayList<Argumento>();
+//
+//        Class[] parametros = method.getParameterTypes();
+//
+//        for (Class clazz : parametros) {
+//            argumentos.add(new Argumento("arg" + cont, clazz.getName(), "tablaArgumentos.getValueAt(1, cont - 1).toString()"));
+//            cont++;
+//        }
+//        return argumentos;
+//    }
 
     /**
      * Metodo para obtener los metodos seleccionados
