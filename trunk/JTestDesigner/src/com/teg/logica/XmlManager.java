@@ -96,8 +96,8 @@ public class XmlManager {
      * @param condAssert condicion de Assert para crear la variable
      * @return ArrayList<Metodo> la nueva lista de metodos con el metodo agregado 
      */
-    public ArrayList<Metodo> agregarMetodoALista(ArrayList<Metodo> metodos,
-            Method method, Integer numVariable, ArrayList<Argumento> argumentos, AssertTest condAssert) {
+    public Metodo agregarMetodoALista(ArrayList<Metodo> metodos,
+            Method method, int numVariable, ArrayList<Argumento> argumentos, AssertTest condAssert) {
 
         Metodo miMetodo = new Metodo(method.getName(), method.getDeclaringClass().getName(),
                 method.getDeclaringClass().getSimpleName());
@@ -109,7 +109,7 @@ public class XmlManager {
 
         metodos.add(miMetodo);
 
-        return metodos;
+        return miMetodo;
     }
 
     /**

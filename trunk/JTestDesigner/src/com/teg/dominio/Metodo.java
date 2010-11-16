@@ -15,6 +15,9 @@ public class Metodo {
     private ArrayList<Argumento> argumentos;
     private AssertTest assertLinea;
 
+    public Metodo() {
+    }
+
     /**
      * 
      * @param nombre the nombre to set
@@ -24,11 +27,6 @@ public class Metodo {
         this.nombre = nombre;
         this.clase = clase;
         this.claseSimpleName = claseSimpleName;
-    }
-
-    public Metodo()
-    {
-    
     }
 
     /**
@@ -114,5 +112,4 @@ public class Metodo {
     public void setAssertLinea(AssertTest assertLinea) {
         this.assertLinea = assertLinea;
     }
-
 }
