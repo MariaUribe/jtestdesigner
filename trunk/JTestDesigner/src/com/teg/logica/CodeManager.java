@@ -4,6 +4,7 @@ import com.teg.dominio.Argumento;
 import com.teg.dominio.CasoPrueba;
 import com.teg.dominio.Metodo;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Clase para el manejo del codigo a imprimir en el template
@@ -117,7 +118,7 @@ public class CodeManager {
     public Metodo getMetodoEnLista(Argumento arg, ArrayList<Metodo> metodos) {
 
         Metodo metodo = null;
-        String[] argValue = arg.getValor().split(".");
+        String[] argValue = arg.getValor().split("\\.");
         String argumento = argValue[0];
 
         for (Metodo method : metodos) {
@@ -127,6 +128,19 @@ public class CodeManager {
             }
         }
         return metodo;
+    }
+
+    public Boolean isMetodoEnLista(Metodo metodo, ArrayList<Metodo> metodos) {
+
+        Boolean flag = Boolean.FALSE;
+
+        for (Metodo method : metodos) {
+            if (method.getNombre().equals(metodo.getNombre())) {
+                flag = Boolean.TRUE;
+                break;
+            }
+        }
+        return flag;
     }
 
     /**
@@ -147,8 +161,10 @@ public class CodeManager {
             Metodo newMetodo = this.getMetodoEnLista(argumento, metodosDividos);
 
             if (newMetodo != null) {
-                ordenMetodos.add(newMetodo);
-                ordenMetodos = generarLinea(newMetodo, this.dividirLista(metodosDividos, newMetodo), ordenMetodos);
+                if (!isMetodoEnLista(newMetodo, ordenMetodos)) {
+                    ordenMetodos = generarLinea(newMetodo, this.dividirLista(metodosDividos, newMetodo), ordenMetodos);
+                    ordenMetodos.add(newMetodo);
+                }
             }
         }
         return ordenMetodos;
@@ -168,9 +184,11 @@ public class CodeManager {
 
         ArrayList<Metodo> ordenMetodos = new ArrayList<Metodo>();
 
+        ArrayList<Metodo> metodosDivididos = this.dividirLista(metodos, metodo);
+        ordenMetodos = this.generarLinea(metodo, metodosDivididos, ordenMetodos);
         ordenMetodos.add(metodo);
-//        ArrayList<Metodo> metodosDivididos = this.dividirLista(metodos, metodo);
-//        ordenMetodos = this.generarLinea(metodo, metodosDivididos, ordenMetodos);
+
+//        Collections.reverse(ordenMetodos);
 
         return ordenMetodos;
     }

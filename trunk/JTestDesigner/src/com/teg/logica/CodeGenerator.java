@@ -2,7 +2,6 @@ package com.teg.logica;
 
 import com.teg.dominio.CasoPrueba;
 import com.teg.dominio.ClaseTemplate;
-import com.teg.dominio.Metodo;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -11,7 +10,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
