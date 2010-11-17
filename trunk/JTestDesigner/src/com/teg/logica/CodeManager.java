@@ -4,7 +4,6 @@ import com.teg.dominio.Argumento;
 import com.teg.dominio.CasoPrueba;
 import com.teg.dominio.Metodo;
 import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  * Clase para el manejo del codigo a imprimir en el template
@@ -130,12 +129,49 @@ public class CodeManager {
         return metodo;
     }
 
+    public Boolean sonArgumentosIguales(Metodo metodo1, Metodo metodo2) {
+
+        Boolean iguales = Boolean.FALSE;
+        ArrayList<Argumento> args1 = metodo1.getArgumentos();
+        ArrayList<Argumento> args2 = metodo2.getArgumentos();
+
+        if ((metodo1.getArgumentos() == null) && (metodo2.getArgumentos() == null)) {
+            iguales = Boolean.TRUE;
+        } else if (args1.size() == args2.size()) {
+
+            for (int i = 0; i < args1.size(); i++) {
+                if (args1.get(i).getTipo().equals(args2.get(i).getTipo())) {
+                    iguales = Boolean.TRUE;
+                } else {
+                    iguales = Boolean.FALSE;
+                    break;
+                }
+            }
+        }
+        return iguales;
+    }
+
+    public Boolean sonMetodosIguales(Metodo metodo1, Metodo metodo2) {
+
+        Boolean sonIguales = Boolean.FALSE;
+
+        // si pertenecen a la misma clase
+        if (metodo1.getClase().equals(metodo2.getClase())) {
+            // si tienen el mismo nombre y los argumentos son iguales
+            if ((metodo1.getNombre().equals(metodo2.getNombre())) && (sonArgumentosIguales(metodo1, metodo2))) {
+                sonIguales = Boolean.TRUE;
+            }
+        }
+
+        return sonIguales;
+    }
+
     public Boolean isMetodoEnLista(Metodo metodo, ArrayList<Metodo> metodos) {
 
         Boolean flag = Boolean.FALSE;
 
         for (Metodo method : metodos) {
-            if (method.getNombre().equals(metodo.getNombre())) {
+            if (sonMetodosIguales(method, metodo)) {
                 flag = Boolean.TRUE;
                 break;
             }

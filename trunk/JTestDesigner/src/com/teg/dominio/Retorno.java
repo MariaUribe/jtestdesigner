@@ -8,6 +8,8 @@ public class Retorno {
 
     private String retorno;
 
+    private String retornoSimpleName;
+
     private String nombreVariable;
 
     /**
@@ -15,8 +17,9 @@ public class Retorno {
      * @param retorno the retorno to set
      * @param nombreVariable the nombreVariable to set
      */
-    public Retorno(String retorno, String nombreVariable) {
+    public Retorno(String retorno, String retornoSimpleName, String nombreVariable) {
         this.retorno = retorno;
+        this.retornoSimpleName = retornoSimpleName;
         this.nombreVariable = nombreVariable;
     }
     
@@ -46,6 +49,20 @@ public class Retorno {
      */
     public void setNombreVariable(String nombreVariable) {
         this.nombreVariable = nombreVariable;
+    }
+
+    /**
+     * @return the retornoSimpleName
+     */
+    public String getRetornoSimpleName() {
+        return retornoSimpleName;
+    }
+
+    /**
+     * @param retornoSimpleName the retornoSimpleName to set
+     */
+    public void setRetornoSimpleName(String retornoSimpleName) {
+        this.retornoSimpleName = retornoSimpleName;
     }
 
 }

@@ -30,16 +30,15 @@ public class ${claseTemplate.nombreClase?cap_first}Test {
 
 	<#list casoPrueba.metodos as method>
 	/**
-	 * Test of generateTest method, of class ${claseTemplate.nombreClase}.
+	 * Test of ${method.nombre} method, of class ${method.claseSimpleName}.
 	 */
 	@Test
-	public void testEscenario1(){
+	public void ${method.nombre}Test(){
 		<#assign ordenMetodos = codeManager.generarPrueba(casoPrueba, method) />
 
 		<#list ordenMetodos as metodo>
-			${metodo.getNombre()};
+		${metodo.retorno.retornoSimpleName} ${metodo.retorno.nombreVariable} = ${metodo.claseSimpleName?uncap_first}.${metodo.getNombre()}(<#list metodo.argumentos as arg>${arg.valor}<#if arg_has_next>, </#if></#list>);
 		</#list>
 	}
 	</#list>
 }
-
