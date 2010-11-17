@@ -21,9 +21,7 @@ public class Argumento {
         this.valor = valor;
     }
 
-    public Argumento()
-    {
-
+    public Argumento() {
     }
 
     /**

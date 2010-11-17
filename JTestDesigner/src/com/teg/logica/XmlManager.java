@@ -102,7 +102,7 @@ public class XmlManager {
 
         Metodo miMetodo = new Metodo(method.getName(), method.getDeclaringClass().getName(),
                 method.getDeclaringClass().getSimpleName());
-        miMetodo.setRetorno(new Retorno(method.getReturnType().getName(),
+        miMetodo.setRetorno(new Retorno(method.getReturnType().getName(), method.getReturnType().getSimpleName(),
                 "var" + numVariable));
 
         miMetodo.setArgumentos(argumentos);

@@ -45,12 +45,6 @@ public class CodeGenerator {
             root.put("clasesNoRepetidas", codeManager.clasesNoRepetidas(casoPrueba));
             root.put("codeManager", codeManager);
 
-//            ArrayList<Metodo> metodos = casoPrueba.getMetodos();
-
-//            for (Metodo metodo : metodos) {
-//                ArrayList<Metodo> metodosLinea = codeManager.generarPrueba(metodos, metodo);
-//            }
-
             freemarkerDo(root);
 
         } catch (IOException ex) {

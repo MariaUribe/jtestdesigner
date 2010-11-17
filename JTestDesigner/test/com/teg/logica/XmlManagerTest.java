@@ -41,7 +41,7 @@ public class XmlManagerTest {
         CasoPrueba casoPrueba = new CasoPrueba("miCasoPrueba");
         ArrayList<Metodo> metodos = new ArrayList<Metodo>();
         Metodo miMetodo1 = new Metodo("miMetodo", "java.lang.String", "String");
-        miMetodo1.setRetorno(new Retorno("java.lang.String", "var1"));
+        miMetodo1.setRetorno(new Retorno("java.lang.String", "String", "var1"));
 
         ArrayList<Argumento> argumentos = new ArrayList<Argumento>();
         argumentos.add(new Argumento("arg1", "java.lang.String", "var"));
@@ -51,7 +51,7 @@ public class XmlManagerTest {
         metodos.add(miMetodo1);
 
         Metodo miMetodo2 = new Metodo("miMetodo2", "java.lang.String", "String");
-        miMetodo2.setRetorno(new Retorno("Object", "var2"));
+        miMetodo2.setRetorno(new Retorno("Object", "Object", "var2"));
 
         ArrayList<Argumento> argumentos2 = new ArrayList<Argumento>();
         argumentos2.add(new Argumento("arg1", "java.lang.String", "var"));
