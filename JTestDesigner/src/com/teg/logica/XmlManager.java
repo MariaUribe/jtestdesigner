@@ -80,10 +80,11 @@ public class XmlManager {
 
         CasoPrueba casoPrueba = new CasoPrueba(nombreCasoPrueba);
         CodeGenerator cg = new CodeGenerator();
-        casoPrueba.setMetodos(metodos);
 
+        casoPrueba.setMetodos(metodos);
         this.crearXml(casoPrueba);
-        cg.generateTest("/home/maya/pruebaAnimal.xml");
+        
+        cg.generateTest("/home/maya/miCasoPrueba.xml");
 
     }
 
