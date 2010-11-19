@@ -721,7 +721,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelInicial, javax.swing.GroupLayout.DEFAULT_SIZE, 1346, Short.MAX_VALUE)
+            .addComponent(panelInicial, javax.swing.GroupLayout.DEFAULT_SIZE, 1216, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
