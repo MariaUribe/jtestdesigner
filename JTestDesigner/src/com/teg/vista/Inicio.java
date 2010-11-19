@@ -21,6 +21,8 @@ public class Inicio extends javax.swing.JFrame {
 
     private ClassManager classManager = new ClassManager(this, jarsRuta, nombresJar);
 
+    private ArrayList<File> archivosJavaDoc = new ArrayList<File>();
+
     /** Creates new form Inicio */
     public Inicio() {
         try {
@@ -49,6 +51,7 @@ public class Inicio extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         seleccionarJar = new javax.swing.JMenuItem();
+        menuJavaDoc = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -80,6 +83,14 @@ public class Inicio extends javax.swing.JFrame {
             }
         });
         jMenu1.add(seleccionarJar);
+
+        menuJavaDoc.setText("Cargar Javadoc");
+        menuJavaDoc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuJavaDocActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menuJavaDoc);
 
         jMenuBar1.add(jMenu1);
 
@@ -120,6 +131,50 @@ public class Inicio extends javax.swing.JFrame {
             this.classManager.getJarLista().setListData(nombresJar.toArray());
         }
     }//GEN-LAST:event_seleccionarJarActionPerformed
+
+    private void menuJavaDocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuJavaDocActionPerformed
+
+        JFileChooser fc = new JFileChooser();
+        fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+        int returnVal = fc.showOpenDialog(Inicio.this);
+
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+
+            File directory = fc.getSelectedFile();
+
+            String pathDirectory = directory.getPath();
+
+            setArchivosJavaDoc(new ArrayList<File>());
+
+            setArchivosJavaDoc(this.leerDirectorio(pathDirectory, getArchivosJavaDoc()));
+
+        }
+
+    }//GEN-LAST:event_menuJavaDocActionPerformed
+
+     public ArrayList<File> leerDirectorio(final String nombreDirectorio, ArrayList<File> archivos) {
+
+        final File directorio = new File(nombreDirectorio);
+
+        if (directorio.exists() && directorio.isDirectory()) {
+
+            final File[] nombreFicherosFile = directorio.listFiles();
+
+            for (File file : nombreFicherosFile) {
+                if (!file.getName().equals("class-use")) {
+                    if (file.isDirectory()) {
+                        archivos = leerDirectorio(file.getPath(), archivos);
+                    } else {
+                        archivos.add(file);
+                    }
+                }
+            }
+        } else {
+            System.out.println("Error: " + nombreDirectorio + " no existe o no corresponde a un directorio");
+        }
+        return archivos;
+    }
 
     public void cambioClassMethods(JInternalFrame classManager, ArrayList<Class> clases) {
         try {
@@ -168,6 +223,7 @@ public class Inicio extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem menuJavaDoc;
     private javax.swing.JMenuItem seleccionarJar;
     private javax.swing.JPanel tapa;
     // End of variables declaration//GEN-END:variables
@@ -198,5 +254,19 @@ public class Inicio extends javax.swing.JFrame {
      */
     public void setjDesktopPane(javax.swing.JDesktopPane jDesktopPane) {
         this.jDesktopPane = jDesktopPane;
+    }
+
+    /**
+     * @return the archivosJavaDoc
+     */
+    public ArrayList<File> getArchivosJavaDoc() {
+        return archivosJavaDoc;
+    }
+
+    /**
+     * @param archivosJavaDoc the archivosJavaDoc to set
+     */
+    public void setArchivosJavaDoc(ArrayList<File> archivosJavaDoc) {
+        this.archivosJavaDoc = archivosJavaDoc;
     }
 }
