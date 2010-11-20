@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
 public class ${claseTemplate.nombreClase?cap_first}Test {
 
 <#list clasesNoRepetidas as clase>
-	private ${clase} ${clase?uncap_first};
+	private ${clase.nombre} ${clase.simpleNombre?uncap_first};
 </#list>
 
 	public ${claseTemplate.nombreClase}Test() {
@@ -20,7 +20,7 @@ public class ${claseTemplate.nombreClase?cap_first}Test {
 	@Before
 	public void setUp(){
 	<#list clasesNoRepetidas as clase>
-		${clase?uncap_first} = new ${clase}();
+		${clase.simpleNombre?uncap_first} = new ${clase.nombre}();
 	</#list>
 	}
 
