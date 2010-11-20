@@ -18,10 +18,12 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -209,6 +211,20 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
             if (retorno.getName().equals(argument.getName())) {
                 combo.addItem(metodo.getRetorno().getNombreVariable());
+            }else
+            {
+                if (retorno.getDeclaredFields().length != 0)
+                {
+                    for (Field field : retorno.getDeclaredFields()) {
+                        if (field.getType().getName().equals(argument.getName()))
+                        {
+                            combo.addItem(metodo.getRetorno().getNombreVariable()
+                                    + "." + field.getName());
+                        }
+                    }
+
+                }
+
             }
         }
     }
@@ -225,10 +241,13 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
                 for (Field field : retorno.getDeclaredFields()) {
 
-                    if (field.getType().getSimpleName().equals(parameter.getName())) {
-                        combo.addItem(metodo.getRetorno().getNombreVariable() + "." + field.getName());
-                    }
-                }
+
+                if (field.getType().getName().equals(parameter.getName()))
+                    combo.addItem(metodo.getRetorno().getNombreVariable()+ "." + field.getName());
+            }
+
+                
+
 
             } else {
                 if (retorno.getName().equals(parameter.getName())) {
@@ -284,51 +303,9 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                     }
 
                     public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-                        /* try {
-                        Object getInstance = argument.newInstance();
-                        Field[] fields = argument.getDeclaredFields();
-                        System.out.println(argument.getName());
-                        for (Field field : fields) {
-                        if (field.getType().getSimpleName().equals("Motor"))
-                        {
-                        field.set(field, field.getType().newInstance());
-                        //field.getType().newInstance();
-                        }
-                        //field.set(field, field.getType().newInstance());
-                        }
-                        GetWidgetValues valores = new GetWidgetValues();
-                        GenericObjectEditor objectEditor = new GenericObjectEditor();
 
-                        JComboBox cb = (JComboBox)e.getSource();
-                        String selectedOption = (String)cb.getSelectedItem();
 
-                        if (selectedOption.equals("Crear: "+ argument.getName())){
 
-                        objectEditor.runEditor(valores, getInstance);
-
-                        }
-
-                        System.out.println(valores.getInstanceWidget());
-                        } catch (InstantiationException ex) {
-                        Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
-                        } catch (IllegalAccessException ex) {
-                        Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        
-                        JComboBox cb = (JComboBox) e.getSource();
-                        String selected = (String) cb.getSelectedItem();
-                        if (selected.equals("Crear: " + argument.getName())) {
-                        dialogoValores = new GetDialogValues();
-                        NewDialog dialogo = new NewDialog(ini, true, dialogoValores);
-
-                        dialogo.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-
-                        dialogo.setCamposClase(argument.getDeclaredFields());
-                        dialogo.LlenarTabla();
-
-                        dialogo.setVisible(true);
-
-                        }*/
                     }
 
                     public void popupMenuCanceled(PopupMenuEvent e) {
@@ -765,11 +742,13 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
         DefaultTableModel model = new DefaultTableModel();
         model = (DefaultTableModel) tablaVariables.getModel();
 
+
         Vector objects = new Vector();
         objects.add(metodoActual.getRetorno().getNombreVariable());
         objects.add(metodoActual.getNombre());
         objects.add(metodoActual.getRetorno().getRetorno());
         model.addRow(objects);
+
 
         for (Component component : panel.getComponents()) {
             if (component.getClass().getName().equals("javax.swing.JTextField")) {
