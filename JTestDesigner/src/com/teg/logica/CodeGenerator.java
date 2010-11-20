@@ -67,7 +67,7 @@ public class CodeGenerator {
         cfg.setDirectoryForTemplateLoading(folder);
 
         Template tpl = cfg.getTemplate("TemplateTest.ftl");
-        OutputStream outputStream = new FileOutputStream("/home/maya/PrimerIntento.java");
+        OutputStream outputStream = new FileOutputStream("/home/maya/MiPrueba.java");
         OutputStreamWriter output = new OutputStreamWriter(outputStream);
 
         tpl.process(datamodel, output);

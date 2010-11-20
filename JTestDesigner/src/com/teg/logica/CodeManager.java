@@ -224,8 +224,6 @@ public class CodeManager {
         ordenMetodos = this.generarLinea(metodo, metodosDivididos, ordenMetodos);
         ordenMetodos.add(metodo);
 
-//        Collections.reverse(ordenMetodos);
-
         return ordenMetodos;
     }
 }
