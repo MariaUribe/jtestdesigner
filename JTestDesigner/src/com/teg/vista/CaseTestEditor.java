@@ -166,18 +166,23 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
         return method;
     }
 
+
+
     public void cargarAssert(Class metodoRetorno) {
         assertVariables.removeAllItems();
+        int countVar = varId;
+        countVar++;
         if (metodoRetorno.isPrimitive()) {
 
-            assertVariables.setSelectedItem("var" + varId);
+            assertVariables.setSelectedItem("var" + countVar);
             System.out.println("Retorno primitivo");
 
         } else {
             Field[] fields = metodoRetorno.getDeclaredFields();
             for (Field field : fields) {
 
-                assertVariables.addItem(metodoRetorno.getSimpleName()
+
+                assertVariables.addItem("Var" + countVar
                         + "." + field.getName());
             }
             System.out.println("Retorna algo complejo");
@@ -733,7 +738,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
 
         Method method = this.getActualMethod();
-        varId++;
+       varId++;
 
         Metodo metodoActual = this.agregarMetodo(method, varId, this.getActualAssert(), this.getArgumentos(method));
 
