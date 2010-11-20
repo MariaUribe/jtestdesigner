@@ -2,6 +2,7 @@ package com.teg.logica;
 
 import com.teg.dominio.Argumento;
 import com.teg.dominio.CasoPrueba;
+import com.teg.dominio.ClaseTest;
 import com.teg.dominio.Metodo;
 import java.util.ArrayList;
 
@@ -11,7 +12,7 @@ import java.util.ArrayList;
  */
 public class CodeManager {
 
-    private ArrayList<String> classesNoRepetidas = new ArrayList<String>();
+    private ArrayList<ClaseTest> classesNoRepetidas = new ArrayList<ClaseTest>();
 
     /**
      * Constructor por defecto
@@ -25,14 +26,14 @@ public class CodeManager {
      * @param casoPrueba el caso de prueba a examinar
      * @return arreglo de las clases del caso de prueba
      */
-    public ArrayList<String> getClases(CasoPrueba casoPrueba) {
+    public ArrayList<ClaseTest> getClases(CasoPrueba casoPrueba) {
 
         ArrayList<Metodo> metodos = casoPrueba.getMetodos();
 
-        ArrayList<String> clases = new ArrayList<String>();
+        ArrayList<ClaseTest> clases = new ArrayList<ClaseTest>();
 
         for (Metodo metodo : metodos) {
-            clases.add(metodo.getClaseSimpleName());
+            clases.add(new ClaseTest(metodo.getClase(), metodo.getClaseSimpleName()));
         }
 
         return clases;
@@ -47,9 +48,9 @@ public class CodeManager {
 
         Boolean flag = Boolean.FALSE;
 
-        for (String clazz : classesNoRepetidas) {
+        for (ClaseTest clazz : classesNoRepetidas) {
 
-            if (clase.equals(clazz)) {
+            if (clase.equals(clazz.getNombre())) {
                 flag = Boolean.TRUE;
                 break;
             } else {
@@ -64,20 +65,20 @@ public class CodeManager {
      * @param casoPrueba el caso de prueba a examinar
      * @return arreglo con las clases no repetidas
      */
-    public ArrayList<String> clasesNoRepetidas(CasoPrueba casoPrueba) {
+    public ArrayList<ClaseTest> clasesNoRepetidas(CasoPrueba casoPrueba) {
 
-        ArrayList<String> clases = new ArrayList<String>();
+        ArrayList<ClaseTest> clases = new ArrayList<ClaseTest>();
 
         clases = this.getClases(casoPrueba);
 
-        for (String clase : clases) {
+        for (ClaseTest clase : clases) {
 
             if (classesNoRepetidas.isEmpty()) {
 
                 classesNoRepetidas.add(clase);
 
             } else {
-                if (!existeClase(clase)) {
+                if (!existeClase(clase.getNombre())) {
                     classesNoRepetidas.add(clase);
                 }
             }
