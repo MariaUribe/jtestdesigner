@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.filechooser.FileSystemView;
 
 /**
  * Clase para la generacion de codigo java 
@@ -62,9 +63,9 @@ public class CodeGenerator {
      */
     public static void freemarkerDo(Map datamodel) throws IOException, TemplateException {
 
-        File folder = new File("/home/maya/");
+        File folder = new File("src/com/teg/recursos/template/");
         Configuration cfg = new Configuration();
-        cfg.setDirectoryForTemplateLoading(folder);
+        cfg.setDirectoryForTemplateLoading(folder.getAbsoluteFile());
 
         Template tpl = cfg.getTemplate("TemplateTest.ftl");
         OutputStream outputStream = new FileOutputStream("/home/maya/MiPrueba.java");
