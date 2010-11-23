@@ -8,6 +8,7 @@ import com.teg.dominio.Metodo;
 import com.teg.dominio.Retorno;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -27,7 +28,7 @@ public class XmlManager {
      * Metodo para crear el XML que contendra la informacion del caso de prueba
      * @param casoPrueba el casoPrueba a agregar
      */
-    public void crearXml(CasoPrueba casoPrueba) {
+    public void crearXml(CasoPrueba casoPrueba, String rutaCasoPrueba) {
 
         XStream xstream = new XStream(new DomDriver());
         xstream.alias("casoPrueba", CasoPrueba.class);
@@ -39,7 +40,7 @@ public class XmlManager {
         String xml = xstream.toXML(casoPrueba);
 
         try {
-            FileOutputStream fos = new FileOutputStream("/home/maya/" + casoPrueba.getNombre() + ".xml");
+            FileOutputStream fos = new FileOutputStream(rutaCasoPrueba);
             xstream.toXML(casoPrueba, fos);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(XmlManager.class.getName()).log(Level.SEVERE, null, ex);
@@ -80,11 +81,16 @@ public class XmlManager {
 
         CasoPrueba casoPrueba = new CasoPrueba(nombreCasoPrueba);
         CodeGenerator cg = new CodeGenerator();
+        File casoPruebaFile = new File(System.getProperty("user.home") + System.getProperty("file.separator") + nombreCasoPrueba + System.getProperty("file.separator"));
+        File metadata = new File(casoPruebaFile.getPath() + System.getProperty("file.separator") + "metadata" + System.getProperty("file.separator"));
 
         casoPrueba.setMetodos(metodos);
-        this.crearXml(casoPrueba);
-
-        cg.generateTest("/home/maya/" + nombreCasoPrueba + ".xml");
+        
+        this.crearXml(casoPrueba, metadata.getPath() + System.getProperty("file.separator") + nombreCasoPrueba + ".xml");
+        //Quede aqui
+        cg.generateTest(metadata.getPath() + System.getProperty("file.separator") + nombreCasoPrueba + ".xml");
+        System.out.println(casoPruebaFile.getPath() + System.getProperty("file.separator") + "metadata" + System.getProperty("file.separator") + nombreCasoPrueba + ".xml");
+//        cg.generateTest("/home/maya/" + nombreCasoPrueba + ".xml");
 
     }
 
