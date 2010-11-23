@@ -10,10 +10,6 @@
  */
 package com.teg.vista;
 
-import com.teg.dominio.Argumento;
-import com.teg.dominio.AssertTest;
-import com.teg.dominio.Metodo;
-import com.teg.logica.XmlManager;
 import java.awt.event.MouseEvent;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -35,7 +31,7 @@ public class MethodsManager extends javax.swing.JInternalFrame {
         initComponents();
         this.inicio = inicio;
         this.clases = clases;
-
+        this.inicio.getSeleccionarJar().setEnabled(false);
         ArrayList<String> nameClass = new ArrayList<String>();
 
         for (Class clazz : clases) {
@@ -339,7 +335,7 @@ public class MethodsManager extends javax.swing.JInternalFrame {
         ArrayList<Method> metodos = new ArrayList<Method>();
         metodos = this.getMetodos();
 
-        this.inicio.cambioMethodsCaseTest(this, metodos);
+        this.inicio.methodsToCaseTest(this, metodos);
 
     }//GEN-LAST:event_continuarActionPerformed
 

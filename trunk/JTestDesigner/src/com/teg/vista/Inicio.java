@@ -16,21 +16,20 @@ import javax.swing.JInternalFrame;
 public class Inicio extends javax.swing.JFrame {
 
     private ArrayList<String> nombresJar = new ArrayList<String>();
-
     private ArrayList<File> jarsRuta = new ArrayList<File>();
-
-    private ClassManager classManager = new ClassManager(this, jarsRuta, nombresJar);
-
+    private MenuPrincipal menuPrincipal = new MenuPrincipal(this);
+    private ClassManager classManager;
     private ArrayList<File> archivosJavaDoc = new ArrayList<File>();
+    private String nombreCasoPrueba;
 
     /** Creates new form Inicio */
     public Inicio() {
         try {
             initComponents();
 
-            this.classManager.setVisible(Boolean.TRUE);
-            this.jDesktopPane.add(this.classManager);
-            this.classManager.setMaximum(true);
+            this.menuPrincipal.setVisible(Boolean.TRUE);
+            this.jDesktopPane.add(this.menuPrincipal);
+            this.menuPrincipal.setMaximum(true);
 
         } catch (PropertyVetoException ex) {
             Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
@@ -77,6 +76,7 @@ public class Inicio extends javax.swing.JFrame {
         jMenu1.setText("Archivo");
 
         seleccionarJar.setText("Abrir");
+        seleccionarJar.setEnabled(false);
         seleccionarJar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 seleccionarJarActionPerformed(evt);
@@ -85,6 +85,7 @@ public class Inicio extends javax.swing.JFrame {
         jMenu1.add(seleccionarJar);
 
         menuJavaDoc.setText("Cargar Javadoc");
+        menuJavaDoc.setEnabled(false);
         menuJavaDoc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuJavaDocActionPerformed(evt);
@@ -130,30 +131,27 @@ public class Inicio extends javax.swing.JFrame {
             this.nombresJar.add(jar.getName());
             this.classManager.getJarLista().setListData(nombresJar.toArray());
         }
+
     }//GEN-LAST:event_seleccionarJarActionPerformed
 
     private void menuJavaDocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuJavaDocActionPerformed
-
-        JFileChooser fc = new JFileChooser();
-        fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-
-        int returnVal = fc.showOpenDialog(Inicio.this);
-
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-
-            File directory = fc.getSelectedFile();
-
-            String pathDirectory = directory.getPath();
-
-            setArchivosJavaDoc(new ArrayList<File>());
-
-            setArchivosJavaDoc(this.leerDirectorio(pathDirectory, getArchivosJavaDoc()));
-
-        }
-
+//        JFileChooser fc = new JFileChooser();
+//        fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+//
+//        int returnVal = fc.showOpenDialog(Inicio.this);
+//
+//        if (returnVal == JFileChooser.APPROVE_OPTION) {
+//
+//            File directory = fc.getSelectedFile();
+//
+//            String pathDirectory = directory.getPath();
+//
+//            setArchivosJavaDoc(this.leerDirectorio(pathDirectory, getArchivosJavaDoc()));
+//
+//        }
     }//GEN-LAST:event_menuJavaDocActionPerformed
 
-     public ArrayList<File> leerDirectorio(final String nombreDirectorio, ArrayList<File> archivos) {
+    public ArrayList<File> leerDirectorio(final String nombreDirectorio, ArrayList<File> archivos) {
 
         final File directorio = new File(nombreDirectorio);
 
@@ -176,7 +174,22 @@ public class Inicio extends javax.swing.JFrame {
         return archivos;
     }
 
-    public void cambioClassMethods(JInternalFrame classManager, ArrayList<Class> clases) {
+    public void principalToClassManager(JInternalFrame menuPrincipal, ArrayList<File> archivosJavaDoc, String nombreCasoPrueba) {
+        try {
+            menuPrincipal.setVisible(false);
+            this.setArchivosJavaDoc(archivosJavaDoc);
+            this.setNombreCasoPrueba(nombreCasoPrueba);
+            classManager = new ClassManager(this, jarsRuta, nombresJar);
+            classManager.setVisible(Boolean.TRUE);
+            this.getjDesktopPane().add(classManager);
+            classManager.setMaximum(Boolean.TRUE);
+
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void classToMethods(JInternalFrame classManager, ArrayList<Class> clases) {
         try {
             classManager.setVisible(false);
 
@@ -190,7 +203,7 @@ public class Inicio extends javax.swing.JFrame {
         }
     }
 
-    public void cambioMethodsCaseTest(JInternalFrame methodsManager, ArrayList<Method> metodos) {
+    public void methodsToCaseTest(JInternalFrame methodsManager, ArrayList<Method> metodos) {
         try {
             methodsManager.setVisible(false);
 
@@ -268,5 +281,33 @@ public class Inicio extends javax.swing.JFrame {
      */
     public void setArchivosJavaDoc(ArrayList<File> archivosJavaDoc) {
         this.archivosJavaDoc = archivosJavaDoc;
+    }
+
+    /**
+     * @return the seleccionarJar
+     */
+    public javax.swing.JMenuItem getSeleccionarJar() {
+        return seleccionarJar;
+    }
+
+    /**
+     * @param seleccionarJar the seleccionarJar to set
+     */
+    public void setSeleccionarJar(javax.swing.JMenuItem seleccionarJar) {
+        this.seleccionarJar = seleccionarJar;
+    }
+
+    /**
+     * @return the nombreCasoPrueba
+     */
+    public String getNombreCasoPrueba() {
+        return nombreCasoPrueba;
+    }
+
+    /**
+     * @param nombreCasoPrueba the nombreCasoPrueba to set
+     */
+    public void setNombreCasoPrueba(String nombreCasoPrueba) {
+        this.nombreCasoPrueba = nombreCasoPrueba;
     }
 }

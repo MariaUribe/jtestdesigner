@@ -83,8 +83,8 @@ public class XmlManager {
 
         casoPrueba.setMetodos(metodos);
         this.crearXml(casoPrueba);
-        
-        cg.generateTest("/home/maya/miCasoPrueba.xml");
+
+        cg.generateTest("/home/maya/" + nombreCasoPrueba + ".xml");
 
     }
 
@@ -119,16 +119,15 @@ public class XmlManager {
      * @param casoPrueba el caso de prueba a agregar
      * @return el nuevo Grupo con el caso de prueba seteado
      */
-    public GrupoCasoPrueba agregarCasoAGrupo(GrupoCasoPrueba grupo, CasoPrueba casoPrueba){
+    public GrupoCasoPrueba agregarCasoAGrupo(GrupoCasoPrueba grupo, CasoPrueba casoPrueba) {
 
         ArrayList<CasoPrueba> casosPrueba = grupo.getCasosPrueba();
 
         casosPrueba.add(casoPrueba);
-        
+
         grupo.setCasosPrueba(casosPrueba);
 
         return grupo;
 
     }
-
 }

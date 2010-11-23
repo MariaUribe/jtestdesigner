@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.filechooser.FileSystemView;
 
 /**
  * Clase para la generacion de codigo java 

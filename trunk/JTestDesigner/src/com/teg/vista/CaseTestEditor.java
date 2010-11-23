@@ -70,6 +70,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
         initComponents();
         this.metodos = metodos;
         this.inicio = inicio;
+        this.inicio.getSeleccionarJar().setEnabled(false);
         archivosJavaDoc = inicio.getArchivosJavaDoc();
         javax.swing.plaf.InternalFrameUI ifu = this.getUI();
         ((javax.swing.plaf.basic.BasicInternalFrameUI) ifu).setNorthPane(null);
@@ -784,7 +785,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
         XmlManager xmlManager = new XmlManager();
 
-        xmlManager.crearCasoPrueba("miCasoPrueba", metodosGuardados);
+        xmlManager.crearCasoPrueba(this.inicio.getNombreCasoPrueba(), metodosGuardados);
 
     }//GEN-LAST:event_generarActionPerformed
 

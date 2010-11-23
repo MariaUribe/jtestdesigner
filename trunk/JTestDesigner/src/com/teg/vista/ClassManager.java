@@ -39,6 +39,7 @@ public class ClassManager extends javax.swing.JInternalFrame {
         this.inicio = inicio;
         this.jarsRuta = jarsRuta;
         this.nombresJar = nombresJar;
+        this.inicio.getSeleccionarJar().setEnabled(true);
 
         javax.swing.plaf.InternalFrameUI ifu = this.getUI();
         ((javax.swing.plaf.basic.BasicInternalFrameUI) ifu).setNorthPane(null);
@@ -328,7 +329,7 @@ public class ClassManager extends javax.swing.JInternalFrame {
         ArrayList<Class> clases = new ArrayList<Class>();
         clases = this.getClases();
 
-        this.inicio.cambioClassMethods(this, clases);
+        this.inicio.classToMethods(this, clases);
 
     }//GEN-LAST:event_continuarActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
