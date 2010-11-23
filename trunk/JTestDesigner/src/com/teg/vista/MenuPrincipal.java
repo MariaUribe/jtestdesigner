@@ -199,9 +199,20 @@ public class MenuPrincipal extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_buscarActionPerformed
 
-    private void crearDirectorios(String nombreCasoPrueba){
-        File directorio = new File("c:\\temp\\directorio");
-        directorio.mkdir();
+    /**
+     * Metodo para la creacion de los directorios de la prueba
+     * @param nombreCasoPrueba nombre del caso de prueba que sera creado
+     */
+    public void crearDirectorios(String nombreCasoPrueba) {
+        
+        File miCasoPrueba = new File(System.getProperty("user.home") + System.getProperty("file.separator") + nombreCasoPrueba + System.getProperty("file.separator"));
+        miCasoPrueba.mkdir();
+
+        File src = new File(miCasoPrueba.getPath() + System.getProperty("file.separator") + "src" + System.getProperty("file.separator"));
+        src.mkdir();
+
+        File metadata = new File(miCasoPrueba.getPath() + System.getProperty("file.separator") + "metadata" + System.getProperty("file.separator"));
+        metadata.mkdir();
     }
 
     public ArrayList<File> leerDirectorio(final String nombreDirectorio, ArrayList<File> archivos) {
