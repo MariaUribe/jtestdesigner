@@ -45,7 +45,7 @@ public class CodeGenerator {
             root.put("clasesNoRepetidas", codeManager.clasesNoRepetidas(casoPrueba));
             root.put("codeManager", codeManager);
 
-            freemarkerDo(root);
+            freemarkerDo(root, casoPrueba.getNombre());
 
         } catch (IOException ex) {
             Logger.getLogger(CodeGenerator.class.getName()).log(Level.SEVERE, null, ex);
@@ -60,14 +60,18 @@ public class CodeGenerator {
      * @throws IOException
      * @throws TemplateException
      */
-    public static void freemarkerDo(Map datamodel) throws IOException, TemplateException {
+    public static void freemarkerDo(Map datamodel, String nombreCasoPrueba) throws IOException, TemplateException {
 
         File folder = new File("src/com/teg/recursos/template/");
         Configuration cfg = new Configuration();
         cfg.setDirectoryForTemplateLoading(folder.getAbsoluteFile());
 
         Template tpl = cfg.getTemplate("TemplateTest.ftl");
-        OutputStream outputStream = new FileOutputStream("/home/maya/MiPrueba.java");
+
+        File casoPruebaFile = new File(System.getProperty("user.home") + System.getProperty("file.separator") + nombreCasoPrueba + System.getProperty("file.separator"));
+        File src = new File(casoPruebaFile.getPath() + System.getProperty("file.separator") + "src" + System.getProperty("file.separator"));
+
+        OutputStream outputStream = new FileOutputStream(src.getPath() + System.getProperty("file.separator") + nombreCasoPrueba + ".java");
         OutputStreamWriter output = new OutputStreamWriter(outputStream);
 
         tpl.process(datamodel, output);
