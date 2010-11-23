@@ -87,11 +87,8 @@ public class XmlManager {
         casoPrueba.setMetodos(metodos);
         
         this.crearXml(casoPrueba, metadata.getPath() + System.getProperty("file.separator") + nombreCasoPrueba + ".xml");
-        //Quede aqui
         cg.generateTest(metadata.getPath() + System.getProperty("file.separator") + nombreCasoPrueba + ".xml");
-        System.out.println(casoPruebaFile.getPath() + System.getProperty("file.separator") + "metadata" + System.getProperty("file.separator") + nombreCasoPrueba + ".xml");
-//        cg.generateTest("/home/maya/" + nombreCasoPrueba + ".xml");
-
+      
     }
 
     /**
