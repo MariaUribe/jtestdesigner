@@ -83,10 +83,12 @@ public class XmlManager {
 
         CasoPrueba casoPrueba = new CasoPrueba(nombreCasoPrueba);
         CodeGenerator cg = new CodeGenerator();
+        
         File casoPruebaFile = new File(System.getProperty("user.home") + 
                 System.getProperty("file.separator") + nombreCasoPrueba +
                 System.getProperty("file.separator"));
-        File metadata = new File(casoPruebaFile.getPath() + 
+
+        File metadata = new File(casoPruebaFile.getPath() +
                 System.getProperty("file.separator") + "metadata" +
                 System.getProperty("file.separator"));
 
@@ -94,6 +96,7 @@ public class XmlManager {
         
         this.crearXml(casoPrueba, metadata.getPath() +
                 System.getProperty("file.separator") + nombreCasoPrueba + ".xml");
+
         cg.generateTest(metadata.getPath() + System.getProperty("file.separator")
                 + nombreCasoPrueba + ".xml");
       

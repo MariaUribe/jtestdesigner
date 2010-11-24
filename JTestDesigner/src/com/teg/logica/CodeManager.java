@@ -136,7 +136,7 @@ public class CodeManager {
         ArrayList<Argumento> args1 = metodo1.getArgumentos();
         ArrayList<Argumento> args2 = metodo2.getArgumentos();
 
-        if ((metodo1.getArgumentos() == null) && (metodo2.getArgumentos() == null)) {
+        if ((metodo1.getArgumentos().isEmpty()) && (metodo2.getArgumentos().isEmpty())) {
             iguales = Boolean.TRUE;
         } else if (args1.size() == args2.size()) {
 
