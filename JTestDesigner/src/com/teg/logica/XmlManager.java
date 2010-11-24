@@ -27,6 +27,8 @@ public class XmlManager {
     /**
      * Metodo para crear el XML que contendra la informacion del caso de prueba
      * @param casoPrueba el casoPrueba a agregar
+     * @param rutaCasoPrueba la ruta donde se creara la metadata del caso de
+     * prueba
      */
     public void crearXml(CasoPrueba casoPrueba, String rutaCasoPrueba) {
 
@@ -81,13 +83,19 @@ public class XmlManager {
 
         CasoPrueba casoPrueba = new CasoPrueba(nombreCasoPrueba);
         CodeGenerator cg = new CodeGenerator();
-        File casoPruebaFile = new File(System.getProperty("user.home") + System.getProperty("file.separator") + nombreCasoPrueba + System.getProperty("file.separator"));
-        File metadata = new File(casoPruebaFile.getPath() + System.getProperty("file.separator") + "metadata" + System.getProperty("file.separator"));
+        File casoPruebaFile = new File(System.getProperty("user.home") + 
+                System.getProperty("file.separator") + nombreCasoPrueba +
+                System.getProperty("file.separator"));
+        File metadata = new File(casoPruebaFile.getPath() + 
+                System.getProperty("file.separator") + "metadata" +
+                System.getProperty("file.separator"));
 
         casoPrueba.setMetodos(metodos);
         
-        this.crearXml(casoPrueba, metadata.getPath() + System.getProperty("file.separator") + nombreCasoPrueba + ".xml");
-        cg.generateTest(metadata.getPath() + System.getProperty("file.separator") + nombreCasoPrueba + ".xml");
+        this.crearXml(casoPrueba, metadata.getPath() +
+                System.getProperty("file.separator") + nombreCasoPrueba + ".xml");
+        cg.generateTest(metadata.getPath() + System.getProperty("file.separator")
+                + nombreCasoPrueba + ".xml");
       
     }
 
@@ -100,13 +108,13 @@ public class XmlManager {
      * @param condAssert condicion de Assert para crear la variable
      * @return ArrayList<Metodo> la nueva lista de metodos con el metodo agregado 
      */
-    public Metodo agregarMetodoALista(ArrayList<Metodo> metodos,
-            Method method, int numVariable, ArrayList<Argumento> argumentos, AssertTest condAssert) {
+    public Metodo agregarMetodoALista(ArrayList<Metodo> metodos, Method method,
+           int numVariable, ArrayList<Argumento> argumentos, AssertTest condAssert) {
 
         Metodo miMetodo = new Metodo(method.getName(), method.getDeclaringClass().getName(),
                 method.getDeclaringClass().getSimpleName());
-        miMetodo.setRetorno(new Retorno(method.getReturnType().getName(), method.getReturnType().getSimpleName(),
-                "var" + numVariable));
+        miMetodo.setRetorno(new Retorno(method.getReturnType().getName(), 
+                method.getReturnType().getSimpleName(), "var" + numVariable));
 
         miMetodo.setArgumentos(argumentos);
         miMetodo.setAssertLinea(condAssert);

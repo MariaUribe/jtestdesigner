@@ -63,7 +63,7 @@ public class XmlManagerTest {
 
         casoPrueba.setMetodos(metodos);
 
-        xmlManager.crearXml(casoPrueba);
+        xmlManager.crearXml(casoPrueba, "ruta");
     }
 
     /**
