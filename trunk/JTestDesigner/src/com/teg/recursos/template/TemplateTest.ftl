@@ -35,10 +35,11 @@ public class ${claseTemplate.nombreClase?cap_first}Test {
 	@Test
 	public void ${method.nombre}Test(){
 		<#assign ordenMetodos = codeManager.generarPrueba(casoPrueba, method) />
-
 		<#list ordenMetodos as metodo>
+
 		${metodo.retorno.retornoSimpleName} ${metodo.retorno.nombreVariable} = ${metodo.claseSimpleName?uncap_first}.${metodo.getNombre()}(<#list metodo.argumentos as arg>${arg.valor}<#if arg_has_next>, </#if></#list>);
-		</#list>
+                ${metodo.assertLinea.condicion}("${metodo.assertLinea.mensaje}",<#if metodo.assertLinea.valorAssert??> ${metodo.assertLinea.valorAssert}, </#if> ${metodo.assertLinea.variable});
+                </#list>
 	}
 	</#list>
 }

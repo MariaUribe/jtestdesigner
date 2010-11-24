@@ -167,8 +167,6 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
         return method;
     }
 
-
-
     public void cargarAssert(Class metodoRetorno) {
         assertVariables.removeAllItems();
         int countVar = varId;
@@ -179,11 +177,12 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
             System.out.println("Retorno primitivo");
 
         } else {
+            assertVariables.addItem("var" + countVar);
             Field[] fields = metodoRetorno.getDeclaredFields();
             for (Field field : fields) {
 
 
-                assertVariables.addItem("Var" + countVar
+                assertVariables.addItem("var" + countVar
                         + "." + field.getName());
             }
             System.out.println("Retorna algo complejo");
@@ -217,13 +216,10 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
             if (retorno.getName().equals(argument.getName())) {
                 combo.addItem(metodo.getRetorno().getNombreVariable());
-            }else
-            {
-                if (retorno.getDeclaredFields().length != 0)
-                {
+            } else {
+                if (retorno.getDeclaredFields().length != 0) {
                     for (Field field : retorno.getDeclaredFields()) {
-                        if (field.getType().getName().equals(argument.getName()))
-                        {
+                        if (field.getType().getName().equals(argument.getName())) {
                             combo.addItem(metodo.getRetorno().getNombreVariable()
                                     + "." + field.getName());
                         }
@@ -248,11 +244,12 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                 for (Field field : retorno.getDeclaredFields()) {
 
 
-                if (field.getType().getName().equals(parameter.getName()))
-                    combo.addItem(metodo.getRetorno().getNombreVariable()+ "." + field.getName());
-            }
+                    if (field.getType().getName().equals(parameter.getName())) {
+                        combo.addItem(metodo.getRetorno().getNombreVariable() + "." + field.getName());
+                    }
+                }
 
-                
+
 
 
             } else {
@@ -309,9 +306,6 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                     }
 
                     public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-
-
-
                     }
 
                     public void popupMenuCanceled(PopupMenuEvent e) {
@@ -739,7 +733,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
 
         Method method = this.getActualMethod();
-       varId++;
+        varId++;
 
         Metodo metodoActual = this.agregarMetodo(method, varId, this.getActualAssert(), this.getArgumentos(method));
 
@@ -863,10 +857,40 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
     private javax.swing.JTable tablaVariables;
     // End of variables declaration//GEN-END:variables
 
+    public String setAssertCondition(String assertCondition){
+        String condicion = "";
+
+        if(assertCondition.equals("Igual")){
+            condicion = "assertEquals";
+        }
+
+        if(assertCondition.equals("No Igual")){
+            condicion = "assertNotSame";
+        }
+
+        if(assertCondition.equals("Nulo")){
+            condicion = "assertNull";
+        }
+        
+        if(assertCondition.equals("No Nulo")){
+            condicion = "assertNotNull";
+        }
+
+        if(assertCondition.equals("Verdadero")){
+            condicion = "assertTrue";
+        }
+
+        if(assertCondition.equals("Falso")){
+            condicion = "assertFalse";
+        }
+
+        return condicion;
+    }
+
     public AssertTest getActualAssert() {
         AssertTest assertion = new AssertTest(assertMensaje.getText(),
                 assertVariables.getSelectedItem().toString(),
-                assertCondiciones.getSelectedItem().toString());
+                setAssertCondition(assertCondiciones.getSelectedItem().toString()));
 
         if (assertCondiciones.getSelectedItem().toString().equals("Igual")
                 || assertCondiciones.getSelectedItem().equals("No Igual")) {

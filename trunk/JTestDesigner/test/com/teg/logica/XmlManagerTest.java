@@ -73,6 +73,12 @@ public class XmlManagerTest {
     public void getCasoPruebaXML(){
         CasoPrueba casoPrueba = xmlManager.getCasoPruebaXML("/home/maya/miCasoPrueba.xml");
         assertNotNull(casoPrueba);
+        assertEquals("mensaje", "objeto esperado", "objeto actual");
+        assertNotSame("mensaje", "objeto inesperado", "objeto actual");
+        assertNull("mensaje", "objeto actual");
+        assertNotNull("mensaje", "objeto actual");
+        assertTrue("mensaje", true);
+        assertFalse("mensaje", true);
         System.out.println(casoPrueba.getNombre());
     }
 
