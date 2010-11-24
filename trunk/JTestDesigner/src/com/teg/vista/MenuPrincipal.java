@@ -205,13 +205,19 @@ public class MenuPrincipal extends javax.swing.JInternalFrame {
      */
     public void crearDirectorios(String nombreCasoPrueba) {
         
-        File miCasoPrueba = new File(System.getProperty("user.home") + System.getProperty("file.separator") + nombreCasoPrueba + System.getProperty("file.separator"));
+        File miCasoPrueba = new File(System.getProperty("user.home") + 
+                System.getProperty("file.separator") + nombreCasoPrueba +
+                System.getProperty("file.separator"));
         miCasoPrueba.mkdir();
 
-        File src = new File(miCasoPrueba.getPath() + System.getProperty("file.separator") + "src" + System.getProperty("file.separator"));
+        File src = new File(miCasoPrueba.getPath() + 
+                System.getProperty("file.separator") + "src" +
+                System.getProperty("file.separator"));
         src.mkdir();
 
-        File metadata = new File(miCasoPrueba.getPath() + System.getProperty("file.separator") + "metadata" + System.getProperty("file.separator"));
+        File metadata = new File(miCasoPrueba.getPath() + 
+                System.getProperty("file.separator") + "metadata" +
+                System.getProperty("file.separator"));
         metadata.mkdir();
     }
 

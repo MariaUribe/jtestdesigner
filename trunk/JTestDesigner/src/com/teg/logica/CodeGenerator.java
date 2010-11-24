@@ -68,10 +68,15 @@ public class CodeGenerator {
 
         Template tpl = cfg.getTemplate("TemplateTest.ftl");
 
-        File casoPruebaFile = new File(System.getProperty("user.home") + System.getProperty("file.separator") + nombreCasoPrueba + System.getProperty("file.separator"));
-        File src = new File(casoPruebaFile.getPath() + System.getProperty("file.separator") + "src" + System.getProperty("file.separator"));
+        File casoPruebaFile = new File(System.getProperty("user.home") + 
+                System.getProperty("file.separator") + nombreCasoPrueba +
+                System.getProperty("file.separator"));
+        File src = new File(casoPruebaFile.getPath() + 
+                System.getProperty("file.separator") + "src" +
+                System.getProperty("file.separator"));
 
-        OutputStream outputStream = new FileOutputStream(src.getPath() + System.getProperty("file.separator") + nombreCasoPrueba + ".java");
+        OutputStream outputStream = new FileOutputStream(src.getPath() +
+                System.getProperty("file.separator") + nombreCasoPrueba + ".java");
         OutputStreamWriter output = new OutputStreamWriter(outputStream);
 
         tpl.process(datamodel, output);
