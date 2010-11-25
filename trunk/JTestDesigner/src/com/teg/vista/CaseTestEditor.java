@@ -235,6 +235,34 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
         }
     }
 
+    public void desahibilitarMetodosData()
+    {
+       for (Component component : panelTablaArgumentos.getComponents())
+       {
+           component.setEnabled(false);
+       }
+        assertVariables.setEnabled(false);
+        assertVariables.removeAllItems();
+        assertCondiciones.setEnabled(false);
+        resultadoAssert.setEnabled(false);
+        assertMensaje.setEnabled(false);
+        guardarBt.setEnabled(false);
+    }
+
+    public void habilitarMetodosData()
+    {
+          for (Component component : panelTablaArgumentos.getComponents())
+       {
+           component.setEnabled(true);
+       }
+        assertVariables.setEnabled(true);
+        assertCondiciones.setEnabled(true);
+        resultadoAssert.setEnabled(true);
+        assertMensaje.setEnabled(true);
+        guardarBt.setEnabled(true);
+
+    }
+
     public void cargarComboItemsPrimitive(JComboBox combo, Class parameter) {
         Method method;
 
@@ -389,7 +417,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
         resultadoAssert = new javax.swing.JTextField();
         assertMensaje = new javax.swing.JTextField();
         lbAssertMensaje = new javax.swing.JLabel();
-        jButton4 = new javax.swing.JButton();
+        guardarBt = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -475,7 +503,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
         lbAssertCondiciones.setText("Condicion: ");
 
-        assertCondiciones.setFont(new java.awt.Font("Calibri", 1, 12));
+        assertCondiciones.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
         assertCondiciones.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Elige una opcion..", "Igual", "No Igual", "Nulo", "No Nulo", "Verdadero", "Falso", " " }));
         assertCondiciones.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
             public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
@@ -557,10 +585,10 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
         panelAssertLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {assertCondiciones, assertMensaje, assertVariables, lbAssertCondiciones, lbAssertMensaje, lbAssertVariables, lbResultadoAssert, resultadoAssert});
 
-        jButton4.setText("Guardar");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        guardarBt.setText("Guardar");
+        guardarBt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                guardarBtActionPerformed(evt);
             }
         });
 
@@ -571,7 +599,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
             .addGroup(panelMetodoInfoLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelMetodoInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(guardarBt, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(panelMetodoInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(panelAssert, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(panelTablaArgumentos, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
@@ -585,7 +613,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelAssert, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
-                .addComponent(jButton4)
+                .addComponent(guardarBt)
                 .addGap(6, 6, 6))
         );
 
@@ -752,7 +780,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
     private void assertCondicionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_assertCondicionesActionPerformed
 }//GEN-LAST:event_assertCondicionesActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void guardarBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarBtActionPerformed
 
         Method method = this.getActualMethod();
         varId++;
@@ -770,16 +798,11 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
         objects.add(metodoActual.getRetorno().getRetorno());
         model.addRow(objects);
 
-        for (Component component : listaMetodos.getComponents()) {
-            if (component.getClass().getName().equals("javax.swing.JTextField")) {
-                JTextField textField = (JTextField) component;
-                if (textField.getText().equals(metodoActual.getNombre())) {
-                    textField.setEnabled(false);
-                }
-            }
-        }
 
-    }//GEN-LAST:event_jButton4ActionPerformed
+       
+        
+
+    }//GEN-LAST:event_guardarBtActionPerformed
 
     private void assertVariablesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_assertVariablesActionPerformed
     }//GEN-LAST:event_assertVariablesActionPerformed
@@ -847,8 +870,32 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
     private void listaMetodosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listaMetodosMouseClicked
 
         String metodoNombre = (String) listaMetodos.getSelectedValue();
+
+        boolean isIn = false;
+
+         for (int i = 0; i < metodosGuardados.size(); i++) {
+            if (metodosGuardados.get(i).getNombre().equals(metodoNombre))
+            {
+            isIn = true;
+             }
+        }
+
+        if (isIn == true)
+        {
+
         cargarTablaArgumentos(metodoNombre);
-        actualNameMethod = metodoNombre;
+        desahibilitarMetodosData();
+
+
+
+        
+        }
+ else
+        {
+            habilitarMetodosData();
+            cargarTablaArgumentos(metodoNombre);
+            actualNameMethod = metodoNombre;
+ }
 
     }//GEN-LAST:event_listaMetodosMouseClicked
 
@@ -884,6 +931,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                     pos--;
                     String valorAntes = metodosLista.get(pos);
                     metodosLista.set(pos, actualNameMethod);
+                    
                     metodosLista.set(i, valorAntes);
                 }
             }
@@ -943,8 +991,8 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
     private javax.swing.JLabel downArrow;
     private javax.swing.JEditorPane editorPane;
     private javax.swing.JButton generar;
+    private javax.swing.JButton guardarBt;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
