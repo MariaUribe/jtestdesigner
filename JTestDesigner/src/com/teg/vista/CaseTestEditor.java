@@ -77,12 +77,16 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
     }
 
     public void cargarMetodos() {
-        int panelHeight = this.panel.getHeight();
+       // int panelHeight = this.panel.getHeight();
+        ArrayList<Object> metodosoLista = new ArrayList<Object>();
 
         for (Method method : metodos) {
-            panelHeight = panelHeight + 25;
-            addMethodPanel(method.getName(), panelHeight);
+           // panelHeight = panelHeight + 25;
+            metodosoLista.add(method.getName());
+
+            
         }
+        addMethodList(metodosoLista);
     }
 
     public Method getActualMethod() {
@@ -95,7 +99,12 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
         return metodo;
     }
 
-    public void addMethodPanel(String methodName, int panelHeight) {
+    public void addMethodList(ArrayList<Object> metodosLista) {
+
+
+        listaMetodos.setListData(metodosLista.toArray());
+
+        /*
 
         List<JTextField> components = SwingUtils.getDescendantsOfType(JTextField.class, this.panel, true);
         JTextField lastTextField = null;
@@ -153,7 +162,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                     javaDocPanel(metodoActual.getDeclaringClass().getSimpleName(), metodoActual.getName(), archivosJavaDoc);
                 }
             }
-        });
+        });*/
     }
 
     public Method getMethodSelected(String text) {
@@ -387,10 +396,10 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
         lbAssertMensaje = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
-        scroll = new javax.swing.JScrollPane();
-        panel = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        listaMetodos = new javax.swing.JList();
         jPanel3 = new javax.swing.JPanel();
         editorPane = new javax.swing.JEditorPane();
         jButton3 = new javax.swing.JButton();
@@ -445,7 +454,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                 .addComponent(jLabel1)
                 .addGap(146, 146, 146)
                 .addComponent(jLabel2)
-                .addContainerGap(145, Short.MAX_VALUE))
+                .addContainerGap(165, Short.MAX_VALUE))
         );
         panelTablaArgumentosLayout.setVerticalGroup(
             panelTablaArgumentosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -584,25 +593,6 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Metodos", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 12))); // NOI18N
 
-        scroll.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        scroll.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-
-        panel.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        panel.setPreferredSize(new java.awt.Dimension(298, 287));
-
-        javax.swing.GroupLayout panelLayout = new javax.swing.GroupLayout(panel);
-        panel.setLayout(panelLayout);
-        panelLayout.setHorizontalGroup(
-            panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 296, Short.MAX_VALUE)
-        );
-        panelLayout.setVerticalGroup(
-            panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 285, Short.MAX_VALUE)
-        );
-
-        scroll.setViewportView(panel);
-
         jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel3MouseClicked(evt);
@@ -615,25 +605,30 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
             }
         });
 
+        listaMetodos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                listaMetodosMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(listaMetodos);
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(scroll, javax.swing.GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel3)))
+                .addContainerGap(266, Short.MAX_VALUE)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel3)
                 .addContainerGap())
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 304, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addComponent(scroll, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
                     .addComponent(jLabel4))
@@ -659,7 +654,12 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
         jButton3.setText("Dependencias");
 
-        jButton2.setText("Nuevo");
+        jButton2.setText("Ver Javadoc");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         generar.setText("Generar");
         generar.addActionListener(new java.awt.event.ActionListener() {
@@ -683,10 +683,10 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelInicialLayout.createSequentialGroup()
-                .addContainerGap(915, Short.MAX_VALUE)
+                .addContainerGap(893, Short.MAX_VALUE)
                 .addComponent(jButton3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(generar, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -696,12 +696,14 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
             .addGroup(panelInicialLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelInicialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelInicialLayout.createSequentialGroup()
+                    .addGroup(panelInicialLayout.createSequentialGroup()
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(panelInicialLayout.createSequentialGroup()
                         .addGroup(panelInicialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 589, Short.MAX_VALUE)
                             .addGroup(panelInicialLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 6, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
                                 .addGroup(panelInicialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(panelMetodoInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
@@ -709,8 +711,8 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                         .addGroup(panelInicialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(generar, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton2)
-                            .addComponent(jButton3))))
-                .addGap(23, 23, 23))
+                            .addComponent(jButton3))
+                        .addGap(23, 23, 23))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -750,7 +752,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
         model.addRow(objects);
 
 
-        for (Component component : panel.getComponents()) {
+        for (Component component : listaMetodos.getComponents()) {
             if (component.getClass().getName().equals("javax.swing.JTextField")) {
                 JTextField textField = (JTextField) component;
                 if (textField.getText().equals(metodoActual.getNombre())) {
@@ -785,14 +787,14 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
     private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
 
-        for (int i = 0; i < panel.getComponents().length; i++) {
-            JTextField text = (JTextField) panel.getComponent(i);
+        for (int i = 0; i < listaMetodos.getComponents().length; i++) {
+            JTextField text = (JTextField) listaMetodos.getComponent(i);
             if (text.getText().equals(actualNameMethod)) {
                 if (i != 0) {
                     int pos = i;
                     pos--;
                     JTextField textAntes = new JTextField();
-                    textAntes = (JTextField) panel.getComponent(pos);
+                    textAntes = (JTextField) listaMetodos.getComponent(pos);
                     String textAntesValue = textAntes.getText();
                     textAntes.setText(actualNameMethod);
                     text.setText(textAntesValue);
@@ -804,14 +806,14 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
 
-        for (int i = 0; i < panel.getComponents().length; i++) {
+        for (int i = 0; i < listaMetodos.getComponents().length; i++) {
 
-            JTextField text = (JTextField) panel.getComponent(i);
+            JTextField text = (JTextField) listaMetodos.getComponent(i);
             if (text.getText().equals(actualNameMethod)) {
-                if (i < panel.getComponents().length) {
+                if (i < listaMetodos.getComponents().length) {
                     //int pos = i;
                     //pos++;
-                    JTextField textDespues = (JTextField) panel.getComponent(i + 1);
+                    JTextField textDespues = (JTextField) listaMetodos.getComponent(i + 1);
                     //JTextField temp = new JTextField();
                     //temp = text;
                     text.setText(textDespues.getText());
@@ -826,6 +828,27 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
     private void assertMensajeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_assertMensajeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_assertMensajeActionPerformed
+
+    private void listaMetodosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listaMetodosMouseClicked
+        // TODO add your handling code here:
+        String metodoNombre = (String) listaMetodos.getSelectedValue();
+        cargarTablaArgumentos(metodoNombre);
+        actualNameMethod = metodoNombre;
+       
+
+
+    }//GEN-LAST:event_listaMetodosMouseClicked
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        if (!actualNameMethod.equals(""))
+        {
+        Method metodoActual = getMethodSelected(actualNameMethod);
+
+        javaDocPanel(metodoActual.getDeclaringClass().getSimpleName(), metodoActual.getName(), archivosJavaDoc);
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox assertCondiciones;
     private javax.swing.JTextField assertMensaje;
@@ -842,18 +865,18 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lbAssertCondiciones;
     private javax.swing.JLabel lbAssertMensaje;
     private javax.swing.JLabel lbAssertVariables;
     private javax.swing.JLabel lbResultadoAssert;
-    private javax.swing.JPanel panel;
+    private javax.swing.JList listaMetodos;
     private javax.swing.JPanel panelAssert;
     private javax.swing.JPanel panelInicial;
     private javax.swing.JPanel panelMetodoInfo;
     private javax.swing.JPanel panelTablaArgumentos;
     private javax.swing.JTextField resultadoAssert;
-    private javax.swing.JScrollPane scroll;
     private javax.swing.JTable tablaVariables;
     // End of variables declaration//GEN-END:variables
 
