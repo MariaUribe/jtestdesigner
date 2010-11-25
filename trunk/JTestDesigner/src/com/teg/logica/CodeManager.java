@@ -4,6 +4,7 @@ import com.teg.dominio.Argumento;
 import com.teg.dominio.CasoPrueba;
 import com.teg.dominio.ClaseTest;
 import com.teg.dominio.Metodo;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 /**
@@ -129,6 +130,46 @@ public class CodeManager {
         }
         return metodo;
     }
+    
+    /*
+     * verificar si funciona
+     */
+    public Boolean sonArgumentosIguales(Method method1, Method method2) {
+        
+        Boolean iguales = Boolean.FALSE;
+        Class[] args1 = method1.getParameterTypes();
+        Class[] args2 = method2.getParameterTypes();
+
+        if ((method1.getParameterTypes() == null) && (method2.getParameterTypes() == null)) {
+            iguales = Boolean.TRUE;
+        } else if (args1.length == args2.length) {
+
+            for (int i = 0; i < args1.length; i++) {
+                if (args1[i].getName().equals(args2[i].getName())) {
+                    iguales = Boolean.TRUE;
+                } else {
+                    iguales = Boolean.FALSE;
+                    break;
+                }
+            }
+        }
+        return iguales;
+    }
+
+    public Boolean sonMetodosIguales(Method method1, Method method2) {
+
+        Boolean sonIguales = Boolean.FALSE;
+
+        // si pertenecen a la misma clase
+        if (method1.getDeclaringClass().getName().equals(method2.getDeclaringClass().getName())) {
+            // si tienen el mismo nombre y los argumentos son iguales
+            if ((method1.getName().equals(method2.getName())) && (sonArgumentosIguales(method1, method2))) {
+                sonIguales = Boolean.TRUE;
+            }
+        }
+
+        return sonIguales;
+    }
 
     public Boolean sonArgumentosIguales(Metodo metodo1, Metodo metodo2) {
 
@@ -163,9 +204,9 @@ public class CodeManager {
                 sonIguales = Boolean.TRUE;
             }
         }
-
         return sonIguales;
     }
+
 
     public Boolean isMetodoEnLista(Metodo metodo, ArrayList<Metodo> metodos) {
 
