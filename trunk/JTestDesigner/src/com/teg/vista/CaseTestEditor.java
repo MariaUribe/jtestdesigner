@@ -1091,9 +1091,18 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                 || assertCondiciones.getSelectedItem().equals("No Igual")) {
             lbResultadoAssert.setEnabled(true);
             resultadoAssert.setEnabled(true);
+
         } else {
+            if (assertCondiciones.getSelectedItem().equals("Elige una opcion.."))
+            {
+                lbResultadoAssert.setEnabled(false);
+            resultadoAssert.setEnabled(false);
+            }
+            else
+            {
             lbResultadoAssert.setEnabled(false);
             resultadoAssert.setEnabled(false);
+            }
         }
     }//GEN-LAST:event_assertCondicionesPopupMenuWillBecomeInvisible
 
