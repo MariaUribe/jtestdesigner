@@ -140,16 +140,17 @@ public class InstanceForm extends javax.swing.JFrame {
         getContentPane().add(buttonPanel, BorderLayout.SOUTH);
 
         setTitle("Editor de Objetos Genericos");
-        setSize(1000, 1000);
+        setSize(500, 500);
     }
 
     private void buttonGuardarActionPerformed(java.awt.event.ActionEvent evt) {
         Object instance = metawidget.getToInspect();
+       
 
         // y aqui en vez de imprimir por consola podrian serializar el
         // objeto con Xstream para utilizarlo como datos de entrada
         // en la prueba
-        System.out.println(instance);
+        System.out.println(instance.toString());
     }
 
     private void buttonCancelarActionPerformed(java.awt.event.ActionEvent evt) {
