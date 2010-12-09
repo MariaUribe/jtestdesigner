@@ -219,6 +219,14 @@ public class MenuPrincipal extends javax.swing.JInternalFrame {
                 System.getProperty("file.separator") + "metadata" +
                 System.getProperty("file.separator"));
         metadata.mkdir();
+
+        File metawidget = new File(miCasoPrueba.getPath()
+                + System.getProperty("file.separator") + "metawidgetData" +
+                System.getProperty("file.separator"));
+        metawidget.mkdir();
+        inicio.setDirectorioCasoPrueba(metawidget);
+       
+
     }
 
     public ArrayList<File> leerDirectorio(final String nombreDirectorio, ArrayList<File> archivos) {
