@@ -433,6 +433,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
             Element prop = new Element("property");
 
             Attribute atr = new Attribute("name", field.getName());
+            Attribute atrSeccion = new Attribute("section", clase.getSimpleName());
 
 
 
@@ -442,7 +443,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
             {
 
 
-                Attribute atr2 = new Attribute("section", field.getName().toUpperCase());
+                Attribute atr2 = new Attribute("section", clase.getSimpleName());
                 Attribute atr3 = new Attribute ("type", field.getType().getName());
 
                 listaAtributosProperty.add(atr);
@@ -460,6 +461,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
             {
 
                 listaAtributosProperty.add(atr);
+                listaAtributosProperty.add(atrSeccion);
                 prop.setAttributes(listaAtributosProperty);
 
                 entidad.addContent("\n \t");
