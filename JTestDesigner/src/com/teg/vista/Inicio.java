@@ -17,16 +17,17 @@ public class Inicio extends javax.swing.JFrame {
 
     private ArrayList<String> nombresJar = new ArrayList<String>();
     private ArrayList<File> jarsRuta = new ArrayList<File>();
-    private MenuPrincipal menuPrincipal = new MenuPrincipal(this);
+    private MenuPrincipal menuPrincipal;
     private ClassManager classManager;
     private ArrayList<File> archivosJavaDoc = new ArrayList<File>();
     private String nombreCasoPrueba;
+    private File directorioCasoPrueba;
 
     /** Creates new form Inicio */
     public Inicio() {
         try {
             initComponents();
-
+            menuPrincipal = new MenuPrincipal(this);
             this.menuPrincipal.setVisible(Boolean.TRUE);
             this.jDesktopPane.add(this.menuPrincipal);
             this.menuPrincipal.setMaximum(true);
@@ -309,5 +310,19 @@ public class Inicio extends javax.swing.JFrame {
      */
     public void setNombreCasoPrueba(String nombreCasoPrueba) {
         this.nombreCasoPrueba = nombreCasoPrueba;
+    }
+
+    /**
+     * @return the directorioCasoPrueba
+     */
+    public File getDirectorioCasoPrueba() {
+        return directorioCasoPrueba;
+    }
+
+    /**
+     * @param directorioCasoPrueba the directorioCasoPrueba to set
+     */
+    public void setDirectorioCasoPrueba(File directorioCasoPrueba) {
+        this.directorioCasoPrueba = directorioCasoPrueba;
     }
 }
