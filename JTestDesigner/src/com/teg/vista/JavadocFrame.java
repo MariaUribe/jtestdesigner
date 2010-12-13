@@ -35,6 +35,7 @@ public final class JavadocFrame extends javax.swing.JFrame {
         javadocsFiles = javadocs;
        metodo = metodoActual;
         initComponents();
+        this.setDefaultCloseOperation(HIDE_ON_CLOSE);
         displayJavadoc();
 
 
@@ -42,7 +43,11 @@ public final class JavadocFrame extends javax.swing.JFrame {
 
     public void displayJavadoc()
     {
+       
+        
          File file = this.getMethodHTML(metodo.getDeclaringClass().getSimpleName());
+         if (file != null)
+         {
 
         BufferedReader reader = null;
 
@@ -67,6 +72,9 @@ public final class JavadocFrame extends javax.swing.JFrame {
             }
         } catch (IOException ex) {
             Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
+        
+        }
+
         }
 
     }
@@ -74,14 +82,17 @@ public final class JavadocFrame extends javax.swing.JFrame {
      public File getMethodHTML(String className) {
 
         File archivo = null;
-
+if (javadocsFiles.size()>0)
+{
         for (File file : javadocsFiles) {
             if (file.getName().equals(className + ".html")) {
                 archivo = file;
                 return archivo;
             }
         }
+        }
         return archivo;
+        
     }
 
 
@@ -104,6 +115,7 @@ public final class JavadocFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         editorPanel.setContentType("text/html");
+        editorPanel.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         jScrollPane1.setViewportView(editorPanel);
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
