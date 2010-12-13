@@ -5,6 +5,7 @@
  */
 package com.teg.vista;
 
+import java.awt.Dimension;
 import java.io.File;
 import java.util.ArrayList;
 import javax.swing.JFileChooser;
@@ -25,6 +26,10 @@ public class MenuPrincipal extends javax.swing.JInternalFrame {
 
         javax.swing.plaf.InternalFrameUI ifu = this.getUI();
         ((javax.swing.plaf.basic.BasicInternalFrameUI) ifu).setNorthPane(null);
+
+        int w = this.getSize().width;
+        int h = this.getSize().height;
+        this.inicio.setSize(new Dimension(w, h));
     }
 
     /** This method is called from within the constructor to
@@ -36,7 +41,6 @@ public class MenuPrincipal extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        continuar = new javax.swing.JButton();
         jPanel = new javax.swing.JPanel();
         panel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -45,13 +49,9 @@ public class MenuPrincipal extends javax.swing.JInternalFrame {
         casoPrueba = new javax.swing.JTextField();
         rutaJavaDoc = new javax.swing.JTextField();
         buscar = new javax.swing.JButton();
+        continuar = new javax.swing.JButton();
 
-        continuar.setText("Continuar");
-        continuar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                continuarActionPerformed(evt);
-            }
-        });
+        setBorder(null);
 
         jPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
@@ -82,7 +82,7 @@ public class MenuPrincipal extends javax.swing.JInternalFrame {
         panelLayout.setHorizontalGroup(
             panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(34, 34, 34)
                 .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
                     .addGroup(panelLayout.createSequentialGroup()
@@ -96,7 +96,7 @@ public class MenuPrincipal extends javax.swing.JInternalFrame {
                                 .addComponent(rutaJavaDoc, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(buscar)))))
-                .addContainerGap(616, Short.MAX_VALUE))
+                .addContainerGap(79, Short.MAX_VALUE))
         );
 
         panelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jLabel1, jLabel2});
@@ -106,7 +106,7 @@ public class MenuPrincipal extends javax.swing.JInternalFrame {
         panelLayout.setVerticalGroup(
             panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(30, 30, 30)
                 .addComponent(jLabel3)
                 .addGap(34, 34, 34)
                 .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -120,49 +120,48 @@ public class MenuPrincipal extends javax.swing.JInternalFrame {
                         .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(rutaJavaDoc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(buscar))))
-                .addContainerGap(390, Short.MAX_VALUE))
+                .addContainerGap(59, Short.MAX_VALUE))
         );
 
         panelLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {buscar, casoPrueba, jLabel1, jLabel2, rutaJavaDoc});
+
+        continuar.setText("Continuar");
+        continuar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                continuarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanelLayout = new javax.swing.GroupLayout(jPanel);
         jPanel.setLayout(jPanelLayout);
         jPanelLayout.setHorizontalGroup(
             jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(29, 29, 29)
+                .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(continuar)
+                    .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
         jPanelLayout.setVerticalGroup(
             jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(29, 29, 29)
+                .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(34, 34, 34)
+                .addComponent(continuar)
+                .addContainerGap(65, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(1079, Short.MAX_VALUE)
-                .addComponent(continuar)
-                .addContainerGap())
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addComponent(jPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addContainerGap()))
+            .addComponent(jPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(564, Short.MAX_VALUE)
-                .addComponent(continuar)
-                .addContainerGap())
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addComponent(jPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(56, Short.MAX_VALUE)))
+            .addComponent(jPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -193,7 +192,7 @@ public class MenuPrincipal extends javax.swing.JInternalFrame {
             String pathDirectory = directory.getPath();
 
             setArchivosJavaDoc(this.leerDirectorio(pathDirectory, getArchivosJavaDoc()));
-            
+
             this.rutaJavaDoc.setText(pathDirectory);
         }
 
@@ -204,28 +203,28 @@ public class MenuPrincipal extends javax.swing.JInternalFrame {
      * @param nombreCasoPrueba nombre del caso de prueba que sera creado
      */
     public void crearDirectorios(String nombreCasoPrueba) {
-        
-        File miCasoPrueba = new File(System.getProperty("user.home") + 
-                System.getProperty("file.separator") + nombreCasoPrueba +
-                System.getProperty("file.separator"));
+
+        File miCasoPrueba = new File(System.getProperty("user.home")
+                + System.getProperty("file.separator") + nombreCasoPrueba
+                + System.getProperty("file.separator"));
         miCasoPrueba.mkdir();
 
-        File src = new File(miCasoPrueba.getPath() + 
-                System.getProperty("file.separator") + "src" +
-                System.getProperty("file.separator"));
+        File src = new File(miCasoPrueba.getPath()
+                + System.getProperty("file.separator") + "src"
+                + System.getProperty("file.separator"));
         src.mkdir();
 
-        File metadata = new File(miCasoPrueba.getPath() + 
-                System.getProperty("file.separator") + "metadata" +
-                System.getProperty("file.separator"));
+        File metadata = new File(miCasoPrueba.getPath()
+                + System.getProperty("file.separator") + "metadata"
+                + System.getProperty("file.separator"));
         metadata.mkdir();
 
         File metawidget = new File(miCasoPrueba.getPath()
-                + System.getProperty("file.separator") + "metawidgetData" +
-                System.getProperty("file.separator"));
+                + System.getProperty("file.separator") + "metawidgetData"
+                + System.getProperty("file.separator"));
         metawidget.mkdir();
         inicio.setDirectorioCasoPrueba(metawidget);
-       
+
 
     }
 

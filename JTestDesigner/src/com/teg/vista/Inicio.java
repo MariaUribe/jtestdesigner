@@ -1,5 +1,7 @@
 package com.teg.vista;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.beans.PropertyVetoException;
 import java.io.File;
 import java.lang.reflect.Method;
@@ -32,6 +34,20 @@ public class Inicio extends javax.swing.JFrame {
             this.jDesktopPane.add(this.menuPrincipal);
             this.menuPrincipal.setMaximum(true);
 
+            // Get the size of the screen
+            Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+
+            // Determine the new location of the window
+            int w = this.getSize().width;
+            int h = this.getSize().height;
+            int x = (dim.width - w) / 2;
+            int y = (dim.height - h) / 2;
+
+            // Move the window
+            this.setLocation(x, y);
+
+            
+
         } catch (PropertyVetoException ex) {
             Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -56,6 +72,7 @@ public class Inicio extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jDesktopPane.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
         jDesktopPane.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jDesktopPane.setNextFocusableComponent(jMenuBar1);
         jDesktopPane.setVerifyInputWhenFocusTarget(false);
@@ -71,7 +88,7 @@ public class Inicio extends javax.swing.JFrame {
             .addGap(0, 50, Short.MAX_VALUE)
         );
 
-        tapa.setBounds(0, 620, 850, 50);
+        tapa.setBounds(40, 440, 850, 50);
         jDesktopPane.add(tapa, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jMenu1.setText("Archivo");
@@ -105,11 +122,11 @@ public class Inicio extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jDesktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 1228, Short.MAX_VALUE)
+            .addComponent(jDesktopPane, javax.swing.GroupLayout.PREFERRED_SIZE, 951, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jDesktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 666, Short.MAX_VALUE)
+            .addComponent(jDesktopPane, javax.swing.GroupLayout.PREFERRED_SIZE, 649, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
