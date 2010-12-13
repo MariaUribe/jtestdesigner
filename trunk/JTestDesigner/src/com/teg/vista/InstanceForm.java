@@ -11,11 +11,13 @@
 
 package com.teg.vista;
 
+import com.teg.logica.WidgetObjectLoading;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import org.jdesktop.beansbinding.AutoBinding.UpdateStrategy;
 import org.metawidget.inspector.composite.CompositeInspector;
 import org.metawidget.inspector.composite.CompositeInspectorConfig;
@@ -38,7 +40,9 @@ public class InstanceForm extends javax.swing.JFrame {
     private Object instanceInspect;
 
     private String path;
-    
+
+    private WidgetObjectLoading listWidget = new WidgetObjectLoading();
+
     private SwingMetawidget metawidget = new SwingMetawidget();
     
     private javax.swing.JButton buttonCancelar;
@@ -48,11 +52,15 @@ public class InstanceForm extends javax.swing.JFrame {
     private javax.swing.JPanel buttonPanel;
 
     private javax.swing.JPanel objectContainer;
+
+
     /** Creates new form InstanceForm */
-    public InstanceForm(Object instance, String dataPath) {
+    public InstanceForm(Object instance, String dataPath,WidgetObjectLoading listObject) {
+        listWidget = listObject;
         instanceInspect = instance;
         path = dataPath;
         initComponents2();
+      
         
         
     }
@@ -61,6 +69,8 @@ public class InstanceForm extends javax.swing.JFrame {
     {
         initComponents();
     }
+
+  
 
     public void InspectObject(Object instance)
     {
@@ -77,7 +87,8 @@ public class InstanceForm extends javax.swing.JFrame {
             System.out.println(file.exists());
 
             xmlConfig.setInputStream(new FileInputStream(new File(path + "/" + "metawidgetData.xml")));
-           
+           PropertyTypeInspector inspector = new PropertyTypeInspector();
+
             inspectorConfig = new CompositeInspectorConfig().setInspectors(
                     new Inspector[]{new PropertyTypeInspector(),
                         new XmlInspector(xmlConfig)});
@@ -106,7 +117,7 @@ public class InstanceForm extends javax.swing.JFrame {
         buttonCancelar = new javax.swing.JButton();
         buttonGuardar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
 
         buttonPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         objectContainer.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -143,7 +154,16 @@ public class InstanceForm extends javax.swing.JFrame {
         setSize(500, 500);
     }
 
+    public void  getObject()
+    {
+        ArrayList<Object> objects = new ArrayList<Object>();
+        objects.add(metawidget.getToInspect());
+        listWidget.setObject(objects);
+
+    }
+
     private void buttonGuardarActionPerformed(java.awt.event.ActionEvent evt) {
+
         Object instance = metawidget.getToInspect();
        
 
@@ -151,6 +171,10 @@ public class InstanceForm extends javax.swing.JFrame {
         // objeto con Xstream para utilizarlo como datos de entrada
         // en la prueba
         System.out.println(instance.toString());
+        this.dispose();
+
+
+       
     }
 
     private void buttonCancelarActionPerformed(java.awt.event.ActionEvent evt) {

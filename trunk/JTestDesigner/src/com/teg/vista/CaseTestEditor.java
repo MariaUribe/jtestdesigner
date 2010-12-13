@@ -10,6 +10,8 @@ import com.teg.dominio.AssertTest;
 import com.teg.dominio.Metodo;
 //import com.teg.logica.GenericObjectEditor;
 //import com.teg.logica.GetWidgetValues;
+import com.teg.dominio.VariableInstancia;
+import com.teg.logica.WidgetObjectLoading;
 import com.teg.logica.XmlManager;
 
 import java.awt.Color;
@@ -17,6 +19,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -59,8 +63,11 @@ import org.jdom.input.SAXBuilder;
 public class CaseTestEditor extends javax.swing.JInternalFrame {
 
     private ArrayList<Method> metodos = new ArrayList<Method>();
+    private ArrayList<Object> objetosGuardados = new ArrayList<Object>();
+    private WidgetObjectLoading listWidget = new WidgetObjectLoading();
     private ArrayList<DefaultCellEditor> editores = new ArrayList<DefaultCellEditor>();
     private ArrayList<Metodo> metodosGuardados = new ArrayList<Metodo>();
+    private ArrayList<VariableInstancia> variablesGuardadas = new ArrayList<VariableInstancia>();
     private ArrayList<File> archivosJavaDoc = new ArrayList<File>();
     private static int varId = 0;
     private Class tipoVarRetorno;
@@ -83,6 +90,10 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
         ((javax.swing.plaf.basic.BasicInternalFrameUI) ifu).setNorthPane(null);
     }
 
+    public void addObject(Object instance)
+    {
+        objetosGuardados.add(instance);
+    }
     public void cargarMetodos() {
         // int panelHeight = this.panel.getHeight();
         ArrayList<Object> metodosoLista = new ArrayList<Object>();
@@ -137,21 +148,25 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
     public void crearMetawidgetMetadata(Document docXml) throws JDOMException, IOException
     {
-        File verificar = new File(inicio.getDirectorioCasoPrueba() + "/" + "metawidgetData.xml");
-        if (verificar.exists()) {
-            SAXBuilder builder = new SAXBuilder(false);
-            Document docRead = builder.build(inicio.getDirectorioCasoPrueba().getPath() + "/" + "metawidgetData.xml");
-            Element raizWriter = docXml.getRootElement();
-            docRead.removeContent();
-            docRead.addContent(raizWriter);
-            BufferedWriter fw = new BufferedWriter(new FileWriter(inicio.getDirectorioCasoPrueba().getPath() + "/" + "metawidgetData.xml"));
-            XMLOutputter outputter = new XMLOutputter();
-            outputter.output(docRead, fw);
-            fw.close();
+       // File verificar = new File(inicio.getDirectorioCasoPrueba() + "/" + "metawidgetData.xml");
+        //if (verificar.exists()) {
+           // SAXBuilder builder = new SAXBuilder(false);
+           // Document docRead = builder.build(inicio.getDirectorioCasoPrueba().getPath() + "/" + "metawidgetData.xml");
+           // Element raizWriter = docXml.getRootElement();
+           // docRead.removeContent();
+           // docRead.detachRootElement();
+            //docRead.setRootElement(raizWriter);
+           
+            //System.out.println(docRead.getParent());
+            //docRead.addContent(docXml.getContent());
+            //BufferedWriter fw = new BufferedWriter(new FileWriter(inicio.getDirectorioCasoPrueba().getPath() + "/" + "metawidgetData.xml"));
+            //XMLOutputter outputter = new XMLOutputter();
+            //outputter.output(docRead, fw);
+            //fw.close();
 
 
 
-        } else {
+      //  } else {
 
 
             try {
@@ -167,7 +182,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
             //return path;
 
 
-        }
+       // }
     }
 
     public void addMethodList(ArrayList<Object> metodosLista) {
@@ -523,6 +538,35 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
     }*/
 
+    public void addInstanceVariable()
+    {
+        if (listWidget.getObject().size() >0 )
+        {
+             DefaultTableModel model = new DefaultTableModel();
+        model = (DefaultTableModel) tablaVariables.getModel();
+
+        Method method = this.getActualMethod();
+
+
+        for (Object object : listWidget.getObject())
+        {
+
+            VariableInstancia varInstancia = new VariableInstancia();
+            varInstancia.setInstancia(object);
+            varInstancia.setNombreVariable("var" + varId + object.getClass().getSimpleName());
+            variablesGuardadas.add(varInstancia);
+            Vector objects = new Vector();
+            objects.add("var" + varId + object.getClass().getSimpleName());
+
+            objects.add(method.getName());
+            objects.add(object.getClass().getName());
+            model.addRow(objects);
+        }
+
+        }
+        varId++;
+    }
+
     @SuppressWarnings("empty-statement")
     public void cargarTablaArgumentos(String text) {
 
@@ -570,8 +614,21 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                                //cargarJar(crearMetawidgetMetadata());
                                
                                
-                               InstanceForm editorInstance = new InstanceForm(claseInstance, inicio.getDirectorioCasoPrueba().getPath());
+                               InstanceForm editorInstance = new InstanceForm(claseInstance, inicio.getDirectorioCasoPrueba().getPath(),listWidget);
+                               
                                 editorInstance.Visible();
+
+                                editorInstance.getObject();
+
+                                System.out.println(listWidget.getObject().size());
+
+                                addInstanceVariable();
+
+                                listWidget.getObject().clear();
+
+                                int row = tablaVariables.getSelectedRow();
+                                //tablaVariables.setValueAt("Ready", row, 1);
+                                
                             } catch (JDOMException ex) {
                                 Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
                             } catch (IOException ex) {
@@ -592,6 +649,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                     }
 
                     public void popupMenuCanceled(PopupMenuEvent e) {
+
 
                     }
                 });
@@ -1240,6 +1298,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
         
         metodosGuardados.clear();
+        variablesGuardadas.clear();
         tablaVariables.setModel(new DefaultTableModel(0,0));
         
         tablaMetodosRegistrados.setModel(new DefaultTableModel(0,0));
