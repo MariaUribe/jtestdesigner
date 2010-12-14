@@ -1305,7 +1305,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
           //  Method metodoActual = getMethodSelected(actualNameMethod);
             //javaDocPanel(metodoActual.getDeclaringClass().getSimpleName(), metodoActual.getName(), archivosJavaDoc);
         //}
-
+        //Aqui 
         varId = 0;
         metodosGuardados.clear();
         variablesGuardadas.clear();
