@@ -20,15 +20,11 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 
 
@@ -55,7 +51,6 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
-import org.jdom.input.SAXBuilder;
 
 /**
  *
@@ -1311,12 +1306,15 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
             //javaDocPanel(metodoActual.getDeclaringClass().getSimpleName(), metodoActual.getName(), archivosJavaDoc);
         //}
 
-        
+        varId = 0;
         metodosGuardados.clear();
         variablesGuardadas.clear();
-        tablaVariables.setModel(new DefaultTableModel(0,0));
-        
-        tablaMetodosRegistrados.setModel(new DefaultTableModel(0,0));
+        DefaultTableModel model = (DefaultTableModel) tablaVariables.getModel();
+        model.setNumRows(0);
+
+        DefaultTableModel model2 = (DefaultTableModel) tablaMetodosRegistrados.getModel();
+        model2.setNumRows(0);
+        //tablaMetodosRegistrados.setModel(new DefaultTableModel(0,0));
         assertVariables.removeAllItems();
         assertMensaje.setText("");
         resultadoAssert.setText("");
