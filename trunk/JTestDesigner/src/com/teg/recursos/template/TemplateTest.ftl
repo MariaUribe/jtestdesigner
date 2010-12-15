@@ -28,18 +28,19 @@ public class ${claseTemplate.nombreClase?cap_first}Test {
 	public void tearDown() {
 	}
 
-	<#list casoPrueba.metodos as method>
+    <#list casoPrueba.escenariosPrueba as escenario>
 	/**
-	 * Test of ${method.nombre} method, of class ${method.claseSimpleName}.
+	 * Test of ${escenario.nombre}.
 	 */
 	@Test
-	public void ${method.nombre}Test(){
-		<#assign ordenMetodos = codeManager.generarPrueba(casoPrueba, method) />
+	public void ${escenario.nombre}Test(){
+		<#assign ordenMetodos = codeManager.generarPrueba(casoPrueba, escenario) />
 		<#list ordenMetodos as metodo>
 
 		${metodo.retorno.retornoSimpleName} ${metodo.retorno.nombreVariable} = ${metodo.claseSimpleName?uncap_first}.${metodo.getNombre()}(<#list metodo.argumentos as arg>${arg.valor}<#if arg_has_next>, </#if></#list>);
-                ${metodo.assertLinea.condicion}("${metodo.assertLinea.mensaje}",<#if metodo.assertLinea.valorAssert??> ${metodo.assertLinea.valorAssert}, </#if> ${metodo.assertLinea.variable});
-                </#list>
+        ${metodo.assertLinea.condicion}("${metodo.assertLinea.mensaje}",<#if metodo.assertLinea.valorAssert??> ${metodo.assertLinea.valorAssert}, </#if> ${metodo.assertLinea.variable});
+        </#list>
 	}
-	</#list>
+	
+    </#list>
 }

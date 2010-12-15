@@ -1,11 +1,12 @@
 package com.teg.logica;
 
+import com.teg.dominio.CasoPrueba;
 import com.teg.dominio.AssertTest;
 import com.teg.dominio.Argumento;
 import com.teg.dominio.Retorno;
 import com.teg.dominio.Metodo;
 import java.util.ArrayList;
-import com.teg.dominio.CasoPrueba;
+import com.teg.dominio.EscenarioPrueba;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,7 +39,7 @@ public class XmlManagerTest {
     public void testCrearXml() {
         System.out.println("crearXml");
 
-        CasoPrueba casoPrueba = new CasoPrueba("miCasoPrueba");
+        EscenarioPrueba casoPrueba = new EscenarioPrueba("miCasoPrueba");
         ArrayList<Metodo> metodos = new ArrayList<Metodo>();
         Metodo miMetodo1 = new Metodo("miMetodo", "java.lang.String", "String");
         miMetodo1.setRetorno(new Retorno("java.lang.String", "String", "var1"));
@@ -63,7 +64,7 @@ public class XmlManagerTest {
 
         casoPrueba.setMetodos(metodos);
 
-        xmlManager.crearXml(casoPrueba, "ruta");
+        //xmlManager.crearXml(casoPrueba, "ruta");
     }
 
     /**

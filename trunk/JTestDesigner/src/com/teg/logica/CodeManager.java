@@ -2,6 +2,7 @@ package com.teg.logica;
 
 import com.teg.dominio.Argumento;
 import com.teg.dominio.CasoPrueba;
+import com.teg.dominio.EscenarioPrueba;
 import com.teg.dominio.ClaseTest;
 import com.teg.dominio.Metodo;
 import java.lang.reflect.Method;
@@ -24,12 +25,12 @@ public class CodeManager {
     /**
      * Metodo para obtener las clases a la que pertenecen los metodos
      * dado el caso de prueba
-     * @param casoPrueba el caso de prueba a examinar
+     * @param escenarioPrueba el caso de prueba a examinar
      * @return arreglo de las clases del caso de prueba
      */
-    public ArrayList<ClaseTest> getClases(CasoPrueba casoPrueba) {
+    public ArrayList<ClaseTest> getClases(EscenarioPrueba escenarioPrueba) {
 
-        ArrayList<Metodo> metodos = casoPrueba.getMetodos();
+        ArrayList<Metodo> metodos = escenarioPrueba.getMetodos();
 
         ArrayList<ClaseTest> clases = new ArrayList<ClaseTest>();
 
@@ -70,17 +71,19 @@ public class CodeManager {
 
         ArrayList<ClaseTest> clases = new ArrayList<ClaseTest>();
 
-        clases = this.getClases(casoPrueba);
+        for (EscenarioPrueba escenario : casoPrueba.getEscenariosPrueba()) {
+            clases = this.getClases(escenario);
 
-        for (ClaseTest clase : clases) {
+            for (ClaseTest clase : clases) {
 
-            if (classesNoRepetidas.isEmpty()) {
+                if (classesNoRepetidas.isEmpty()) {
 
-                classesNoRepetidas.add(clase);
-
-            } else {
-                if (!existeClase(clase.getNombre())) {
                     classesNoRepetidas.add(clase);
+
+                } else {
+                    if (!existeClase(clase.getNombre())) {
+                        classesNoRepetidas.add(clase);
+                    }
                 }
             }
         }
@@ -99,7 +102,7 @@ public class CodeManager {
         ArrayList<Metodo> metodosDivididos = new ArrayList<Metodo>();
 
         for (Metodo method : metodos) {
-            if (method.getNombre().equals(metodo.getNombre())) {
+            if (this.sonMetodosIguales(method, metodo)) {
                 break;
             } else {
                 metodosDivididos.add(method);
@@ -130,12 +133,12 @@ public class CodeManager {
         }
         return metodo;
     }
-    
+
     /*
      * verificar si funciona
      */
     public Boolean sonArgumentosIguales(Method method1, Method method2) {
-        
+
         Boolean iguales = Boolean.FALSE;
         Class[] args1 = method1.getParameterTypes();
         Class[] args2 = method2.getParameterTypes();
@@ -164,6 +167,46 @@ public class CodeManager {
         if (method1.getDeclaringClass().getName().equals(method2.getDeclaringClass().getName())) {
             // si tienen el mismo nombre y los argumentos son iguales
             if ((method1.getName().equals(method2.getName())) && (sonArgumentosIguales(method1, method2))) {
+                sonIguales = Boolean.TRUE;
+            }
+        }
+
+        return sonIguales;
+    }
+
+    /*
+     * verificar si funciona!!!
+     */
+    public Boolean sonArgumentosIguales(Method method, Metodo metodo) {
+
+        Boolean iguales = Boolean.FALSE;
+        Class[] args1 = method.getParameterTypes();
+        ArrayList<Argumento> args2 = metodo.getArgumentos();
+
+        if ((method.getParameterTypes() == null) && (metodo.getArgumentos().isEmpty())) {
+            iguales = Boolean.TRUE;
+        } else if (args1.length == args2.size()) {
+
+            for (int i = 0; i < args1.length; i++) {
+                if (args1[i].getName().equals(args2.get(i).getNombre())) {
+                    iguales = Boolean.TRUE;
+                } else {
+                    iguales = Boolean.FALSE;
+                    break;
+                }
+            }
+        }
+        return iguales;
+    }
+
+    public Boolean sonMetodosIguales(Method method, Metodo metodo) {
+
+        Boolean sonIguales = Boolean.FALSE;
+
+        // si pertenecen a la misma clase
+        if (method.getDeclaringClass().getName().equals(metodo.getClase())) {
+            // si tienen el mismo nombre y los argumentos son iguales
+            if ((method.getName().equals(metodo.getNombre())) && (sonArgumentosIguales(method, metodo))) {
                 sonIguales = Boolean.TRUE;
             }
         }
@@ -207,7 +250,6 @@ public class CodeManager {
         return sonIguales;
     }
 
-
     public Boolean isMetodoEnLista(Metodo metodo, ArrayList<Metodo> metodos) {
 
         Boolean flag = Boolean.FALSE;
@@ -222,7 +264,7 @@ public class CodeManager {
     }
 
     /**
-     * Metodo para generar un ArrayList que contendra los metodos involucrados
+     * Metodo para generarPrueba un ArrayList que contendra los metodos involucrados
      * para la ejecucion del Metodo metodo
      * @param metodo el metodo a crear posibles dependencias
      * @param metodosDividos lista con los metodos divididos
@@ -249,22 +291,72 @@ public class CodeManager {
     }
 
     /**
-     * Metodo para generar una Prueba
-     * @param casoPrueba caso de prueba para obtener los metodos que seran
+     * Metodo para generarPrueba una Prueba
+     * @param escenarioPrueba caso de prueba para obtener los metodos que seran
      * ejecutados en la prueba
      * @param metodo metodo al cual se generara el escenario de prueba
      * @return ArrayList<Metodo> metodos involucrados para crear el escenario
      * de prueba del Metodo metodo
      */
-    public ArrayList<Metodo> generarPrueba(CasoPrueba casoPrueba, Metodo metodo) {
+    public ArrayList<Metodo> generarPrueba(EscenarioPrueba escenarioPrueba, Metodo metodo) {
 
-        ArrayList<Metodo> metodos = casoPrueba.getMetodos();
+        ArrayList<Metodo> metodos = escenarioPrueba.getMetodos();
 
         ArrayList<Metodo> ordenMetodos = new ArrayList<Metodo>();
 
         ArrayList<Metodo> metodosDivididos = this.dividirLista(metodos, metodo);
         ordenMetodos = this.generarLinea(metodo, metodosDivididos, ordenMetodos);
         ordenMetodos.add(metodo);
+
+        return ordenMetodos;
+    }
+
+    /**
+     * Metodo para generar un escenario de prueba
+     * @param casoPrueba caso de prueba para obtener los metodos que seran
+     * @param escenarioActual escenario en el que se esta generando la prueba
+     * @return ArrayList<Metodo> metodos involucrados para crear el escenario
+     * de prueba del Metodo metodo
+     */
+    public ArrayList<Metodo> generarEscenario(CasoPrueba casoPrueba, EscenarioPrueba escenarioActual) {
+
+        ArrayList<EscenarioPrueba> escenarios = casoPrueba.getEscenariosPrueba();
+
+        ArrayList<Metodo> ordenMetodos = new ArrayList<Metodo>();
+
+        ArrayList<Metodo> metodos = new ArrayList<Metodo>();
+
+        for (EscenarioPrueba escenarioPrueba : escenarios) {
+            if (escenarioActual.getNombre().equals(escenarioPrueba.getNombre())) {
+
+                ArrayList<Metodo> metodosEscenario = escenarioPrueba.getMetodos();
+
+                for (Metodo m : metodosEscenario) {
+                    metodos.add(m);
+                }
+            }
+        }
+
+        for (Metodo metodo : metodos) {
+            ArrayList<Metodo> metodosDivididos = this.dividirLista(metodos, metodo);
+            ordenMetodos = this.generarLinea(metodo, metodosDivididos, ordenMetodos);
+            ordenMetodos.add(metodo);
+        }
+
+        return ordenMetodos;
+    }
+
+    /**
+     * Metodo para la generacion de la prueba
+     * @param casoPrueba el caso de prueba donde se encuentran los disntintos
+     * escenarios
+     * @param escenarioActual el escenario de prueba actual
+     * @return Arraylist<Metodo> el orden de los metodos para generar la prueba
+     */
+    public ArrayList<Metodo> generarPrueba(CasoPrueba casoPrueba, EscenarioPrueba escenarioActual) {
+        ArrayList<Metodo> ordenMetodos = new ArrayList<Metodo>();
+
+        ordenMetodos = this.generarEscenario(casoPrueba, escenarioActual);
 
         return ordenMetodos;
     }
