@@ -10,15 +10,14 @@ public class CasoPrueba {
 
     private String nombre;
 
-    private ArrayList<Metodo> metodos;
+    private String nombrePaquete;
+    
+    private ArrayList<EscenarioPrueba> escenariosPrueba;
 
-    /**
-     * 
-     * @param nombre the nombre to set
-     */
     public CasoPrueba(String nombre) {
         this.nombre = nombre;
     }
+
 
     /**
      * @return the nombre
@@ -35,17 +34,31 @@ public class CasoPrueba {
     }
 
     /**
-     * @return the metodos
+     * @return the nombrePaquete
      */
-    public ArrayList<Metodo> getMetodos() {
-        return metodos;
+    public String getNombrePaquete() {
+        return nombrePaquete;
     }
 
     /**
-     * @param metodos the metodos to set
+     * @param nombrePaquete the nombrePaquete to set
      */
-    public void setMetodos(ArrayList<Metodo> metodos) {
-        this.metodos = metodos;
+    public void setNombrePaquete(String nombrePaquete) {
+        this.nombrePaquete = nombrePaquete;
+    }
+
+    /**
+     * @return the escenariosPrueba
+     */
+    public ArrayList<EscenarioPrueba> getEscenariosPrueba() {
+        return escenariosPrueba;
+    }
+
+    /**
+     * @param escenariosPrueba the casosPrueba to set
+     */
+    public void setEscenariosPrueba(ArrayList<EscenarioPrueba> escenariosPrueba) {
+        this.escenariosPrueba = escenariosPrueba;
     }
 
 }

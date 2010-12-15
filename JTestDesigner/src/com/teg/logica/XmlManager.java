@@ -2,8 +2,8 @@ package com.teg.logica;
 
 import com.teg.dominio.Argumento;
 import com.teg.dominio.AssertTest;
+import com.teg.dominio.EscenarioPrueba;
 import com.teg.dominio.CasoPrueba;
-import com.teg.dominio.GrupoCasoPrueba;
 import com.teg.dominio.Metodo;
 import com.teg.dominio.Retorno;
 import com.thoughtworks.xstream.XStream;
@@ -34,6 +34,7 @@ public class XmlManager {
 
         XStream xstream = new XStream(new DomDriver());
         xstream.alias("casoPrueba", CasoPrueba.class);
+        xstream.alias("escenarioPrueba", EscenarioPrueba.class);
         xstream.alias("metodo", Metodo.class);
         xstream.alias("retorno", Retorno.class);
         xstream.alias("argumento", Argumento.class);
@@ -58,6 +59,7 @@ public class XmlManager {
 
         XStream xstream = new XStream(new DomDriver());
         xstream.alias("casoPrueba", CasoPrueba.class);
+        xstream.alias("escenarioPrueba", EscenarioPrueba.class);
         xstream.alias("metodo", Metodo.class);
         xstream.alias("retorno", Retorno.class);
         xstream.alias("argumento", Argumento.class);
@@ -79,12 +81,12 @@ public class XmlManager {
      * @param nombreCasoPrueba el nombre del caso de prueba a crear
      * @param metodos los metodos a setear al caso de prueba
      */
-    public void crearCasoPrueba(String nombreCasoPrueba, ArrayList<Metodo> metodos) {
+    public void crearCasoPrueba(String nombreCasoPrueba, ArrayList<EscenarioPrueba> escenarios) {
 
         CasoPrueba casoPrueba = new CasoPrueba(nombreCasoPrueba);
         CodeGenerator cg = new CodeGenerator();
-        
-        File casoPruebaFile = new File(System.getProperty("user.home") + 
+
+        File casoPruebaFile = new File(System.getProperty("user.home") +
                 System.getProperty("file.separator") + nombreCasoPrueba +
                 System.getProperty("file.separator"));
 
@@ -92,14 +94,15 @@ public class XmlManager {
                 System.getProperty("file.separator") + "metadata" +
                 System.getProperty("file.separator"));
 
-        casoPrueba.setMetodos(metodos);
-        
+        casoPrueba.setNombrePaquete("com.test.prueba");
+        casoPrueba.setEscenariosPrueba(escenarios);
+
         this.crearXml(casoPrueba, metadata.getPath() +
                 System.getProperty("file.separator") + nombreCasoPrueba + ".xml");
 
         cg.generateTest(metadata.getPath() + System.getProperty("file.separator")
                 + nombreCasoPrueba + ".xml");
-      
+
     }
 
     /**
@@ -129,19 +132,19 @@ public class XmlManager {
 
     /**
      * Metodo para agregar un caso de prueba a un grupo de prueba
-     * @param grupo el grupo al cual se agregara el caso de prueba
-     * @param casoPrueba el caso de prueba a agregar
+     * @param casoPrueba el grupo al cual se agregara el caso de prueba
+     * @param escenarioPrueba el caso de prueba a agregar
      * @return el nuevo Grupo con el caso de prueba seteado
      */
-    public GrupoCasoPrueba agregarCasoAGrupo(GrupoCasoPrueba grupo, CasoPrueba casoPrueba) {
+    public CasoPrueba agregarEscenarioACaso(CasoPrueba casoPrueba, EscenarioPrueba escenarioPrueba) {
 
-        ArrayList<CasoPrueba> casosPrueba = grupo.getCasosPrueba();
+        ArrayList<EscenarioPrueba> casosPrueba = casoPrueba.getEscenariosPrueba();
 
-        casosPrueba.add(casoPrueba);
+        casosPrueba.add(escenarioPrueba);
 
-        grupo.setCasosPrueba(casosPrueba);
+        casoPrueba.setEscenariosPrueba(casosPrueba);
 
-        return grupo;
+        return casoPrueba;
 
     }
 }

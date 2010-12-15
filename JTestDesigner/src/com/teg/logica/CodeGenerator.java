@@ -1,6 +1,7 @@
 package com.teg.logica;
 
 import com.teg.dominio.CasoPrueba;
+import com.teg.dominio.EscenarioPrueba;
 import com.teg.dominio.ClaseTemplate;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -24,7 +25,7 @@ public class CodeGenerator {
     private XmlManager xmlManager = new XmlManager();
 
     /**
-     * Metodo para generar la prueba unitaria 
+     * Metodo para generarPrueba la prueba unitaria
      * @param rutaXmlCasoPrueba la ruta en la cual se generara la clase
      */
     public void generateTest(String rutaXmlCasoPrueba) {
