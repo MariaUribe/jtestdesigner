@@ -46,8 +46,6 @@ public class Inicio extends javax.swing.JFrame {
             // Move the window
             this.setLocation(x, y);
 
-            
-
         } catch (PropertyVetoException ex) {
             Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -234,6 +232,39 @@ public class Inicio extends javax.swing.JFrame {
         } catch (PropertyVetoException ex) {
             Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public void caseTestToMethods(JInternalFrame caseTestEditor, ArrayList<Class> clases) {
+        try {
+            caseTestEditor.setVisible(false);
+            MethodsManager methodsManager = new MethodsManager(this, clases);
+            methodsManager.setVisible(true);
+            this.getjDesktopPane().add(methodsManager);
+            methodsManager.setMaximum(true);
+
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void methodsToClass(JInternalFrame methodsManager) {
+        try {
+            methodsManager.setVisible(false);
+            classManager = new ClassManager(this, jarsRuta, nombresJar);
+            this.classManager.getJarLista().setListData(nombresJar.toArray());
+            classManager.setVisible(true);
+            this.getjDesktopPane().add(classManager);
+            classManager.setMaximum(true);
+
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public ArrayList<Class> getClasesManager() {
+        ArrayList<Class> clases = classManager.getClases();
+
+        return clases;
     }
 
     /**

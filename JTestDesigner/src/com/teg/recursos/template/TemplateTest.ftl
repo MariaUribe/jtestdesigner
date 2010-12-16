@@ -1,6 +1,6 @@
 package ${claseTemplate.nombrePaquete};
 
-import org.junit.Test;
+import import org.testng.*;
 import static org.junit.Assert.*;
 
 /**

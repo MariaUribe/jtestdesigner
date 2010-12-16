@@ -558,6 +558,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
         tablaMetodosRegistrados = new javax.swing.JTable();
         nombreEscenario = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
+        volver = new javax.swing.JButton();
 
         setBorder(null);
         setTitle("Case Test Editor");
@@ -848,6 +849,13 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
         jLabel5.setText("Nombre Escenario de Prueba :");
 
+        volver.setText("Volver");
+        volver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                volverActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelInicialLayout = new javax.swing.GroupLayout(panelInicial);
         panelInicial.setLayout(panelInicialLayout);
         panelInicialLayout.setHorizontalGroup(
@@ -856,16 +864,15 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                 .addGap(39, 39, 39)
                 .addGroup(panelInicialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelInicialLayout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                    .addGroup(panelInicialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(panelInicialLayout.createSequentialGroup()
-                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                        .addGroup(panelInicialLayout.createSequentialGroup()
-                            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))))
-                .addGap(29, 29, 29)
+                        .addGroup(panelInicialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(panelInicialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(29, 29, 29))
+                    .addGroup(panelInicialLayout.createSequentialGroup()
+                        .addComponent(volver)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addGroup(panelInicialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelInicialLayout.createSequentialGroup()
                         .addComponent(jLabel5)
@@ -900,8 +907,8 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                         .addGap(18, 18, 18)
                         .addGroup(panelInicialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton1)
-                            .addComponent(jButton3)
                             .addComponent(newTestEscenario)
+                            .addComponent(jButton3)
                             .addComponent(generar, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(panelInicialLayout.createSequentialGroup()
                         .addComponent(jPanel4, 0, 182, Short.MAX_VALUE)
@@ -909,7 +916,8 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(14, 14, 14)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(47, 47, 47)))
+                        .addGap(18, 18, 18)
+                        .addComponent(volver)))
                 .addGap(100, 100, 100))
         );
 
@@ -971,7 +979,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
             resultadoAssert.setEnabled(true);
 
         } else {
-            if (assertCondiciones.getSelectedItem().equals("Elige una opcion..")) {
+            if (assertCondiciones.getSelectedItem().equals("Elige una opcion")) {
                 lbResultadoAssert.setEnabled(false);
                 resultadoAssert.setEnabled(false);
             } else {
@@ -1121,6 +1129,18 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
         }
 
     }//GEN-LAST:event_newTestEscenarioActionPerformed
+
+    private void volverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_volverActionPerformed
+        varId = 0;
+        metodosGuardados = new ArrayList<Metodo>();
+        variablesGuardadas.clear();
+        nombreEscenario.setText("");
+
+        ArrayList<Class> clases = this.inicio.getClasesManager();
+
+        this.inicio.caseTestToMethods(this, clases);
+    }//GEN-LAST:event_volverActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox assertCondiciones;
     private javax.swing.JTextField assertMensaje;
@@ -1155,6 +1175,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
     private javax.swing.JTextField resultadoAssert;
     private javax.swing.JTable tablaMetodosRegistrados;
     private javax.swing.JTable tablaVariables;
+    private javax.swing.JButton volver;
     // End of variables declaration//GEN-END:variables
 
     public String setAssertCondition(String assertCondition) {
