@@ -85,6 +85,7 @@ public class MethodsManager extends javax.swing.JInternalFrame {
         classList = new javax.swing.JList();
         jLabel1 = new javax.swing.JLabel();
         continuar = new javax.swing.JButton();
+        volver = new javax.swing.JButton();
 
         setBorder(null);
 
@@ -207,6 +208,13 @@ public class MethodsManager extends javax.swing.JInternalFrame {
             }
         });
 
+        volver.setText("Volver");
+        volver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                volverActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelLayout = new javax.swing.GroupLayout(jPanel);
         jPanel.setLayout(jPanelLayout);
         jPanelLayout.setHorizontalGroup(
@@ -216,8 +224,11 @@ public class MethodsManager extends javax.swing.JInternalFrame {
                 .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 383, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(continuar)
+                    .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(jPanelLayout.createSequentialGroup()
+                            .addComponent(volver)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(continuar))
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(44, 44, 44))
         );
@@ -231,7 +242,9 @@ public class MethodsManager extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27)
-                .addComponent(continuar)
+                .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(continuar)
+                    .addComponent(volver))
                 .addContainerGap(67, Short.MAX_VALUE))
         );
 
@@ -357,6 +370,10 @@ public class MethodsManager extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_continuarActionPerformed
 
+    private void volverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_volverActionPerformed
+        this.inicio.methodsToClass(this);
+    }//GEN-LAST:event_volverActionPerformed
+
     /**
      * Metodo para obtener los metodos seleccionados
      * @return Lista con los metodos seleccionados
@@ -423,5 +440,6 @@ public class MethodsManager extends javax.swing.JInternalFrame {
     private javax.swing.JList selectedMethodsList;
     private javax.swing.JLabel unselectAllOption;
     private javax.swing.JLabel unselectOption;
+    private javax.swing.JButton volver;
     // End of variables declaration//GEN-END:variables
 }
