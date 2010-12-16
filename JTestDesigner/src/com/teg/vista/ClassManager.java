@@ -88,6 +88,7 @@ public class ClassManager extends javax.swing.JInternalFrame {
         removerTodas = new javax.swing.JLabel();
         removerClases = new javax.swing.JLabel();
         seleccionarClases = new javax.swing.JLabel();
+        volver = new javax.swing.JButton();
 
         setBorder(null);
 
@@ -204,6 +205,13 @@ public class ClassManager extends javax.swing.JInternalFrame {
                 .addContainerGap(30, Short.MAX_VALUE))
         );
 
+        volver.setText("Volver");
+        volver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                volverActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -213,8 +221,11 @@ public class ClassManager extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(continuar)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(volver)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(continuar))
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(37, Short.MAX_VALUE))
         );
@@ -228,7 +239,9 @@ public class ClassManager extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(continuar)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(continuar)
+                    .addComponent(volver))
                 .addContainerGap(75, Short.MAX_VALUE))
         );
 
@@ -354,6 +367,11 @@ public class ClassManager extends javax.swing.JInternalFrame {
         this.inicio.classToMethods(this, clases);
 
     }//GEN-LAST:event_continuarActionPerformed
+
+    private void volverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_volverActionPerformed
+        this.inicio.classToPrincipal(this);
+    }//GEN-LAST:event_volverActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JList clasesLista;
     private javax.swing.JList clasesSeleccionadasLista;
@@ -370,6 +388,7 @@ public class ClassManager extends javax.swing.JInternalFrame {
     private javax.swing.JLabel removerTodas;
     private javax.swing.JLabel seleccionarClases;
     private javax.swing.JLabel seleccionarTodas;
+    private javax.swing.JButton volver;
     // End of variables declaration//GEN-END:variables
 
     public ArrayList<Class> getClases() {

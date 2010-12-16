@@ -6,6 +6,7 @@
 package com.teg.vista;
 
 import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.io.File;
 import java.util.ArrayList;
 import javax.swing.JFileChooser;
