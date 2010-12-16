@@ -51,8 +51,12 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="jScrollPane2" alignment="0" min="-2" pref="381" max="-2" attributes="0"/>
-                      <Group type="103" alignment="0" groupAlignment="1" attributes="0">
-                          <Component id="continuar" alignment="1" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                          <Group type="102" alignment="1" attributes="1">
+                              <Component id="volver" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="continuar" min="-2" max="-2" attributes="0"/>
+                          </Group>
                           <Component id="jPanel2" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -70,7 +74,10 @@
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="continuar" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="continuar" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="volver" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
                   <EmptySpace pref="75" max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -277,6 +284,14 @@
             </Container>
           </SubComponents>
         </Container>
+        <Component class="javax.swing.JButton" name="volver">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Volver"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="volverActionPerformed"/>
+          </Events>
+        </Component>
       </SubComponents>
     </Container>
   </SubComponents>

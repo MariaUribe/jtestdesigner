@@ -120,11 +120,11 @@ public class Inicio extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jDesktopPane, javax.swing.GroupLayout.PREFERRED_SIZE, 951, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jDesktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 951, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jDesktopPane, javax.swing.GroupLayout.PREFERRED_SIZE, 649, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jDesktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 649, Short.MAX_VALUE)
         );
 
         pack();
@@ -256,6 +256,27 @@ public class Inicio extends javax.swing.JFrame {
             this.getjDesktopPane().add(classManager);
             classManager.setMaximum(true);
 
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void classToPrincipal(JInternalFrame classManager) {
+        try {
+            classManager.setVisible(false);
+            menuPrincipal = new MenuPrincipal(this);
+            this.menuPrincipal.setVisible(Boolean.TRUE);
+            this.jDesktopPane.add(this.menuPrincipal);
+            this.menuPrincipal.setMaximum(true);
+
+            Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+
+            int w = this.getSize().width;
+            int h = this.getSize().height;
+            int x = (dim.width - w) / 2;
+            int y = (dim.height - h) / 2;
+
+            this.setLocation(x, y);
         } catch (PropertyVetoException ex) {
             Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
         }
