@@ -403,14 +403,14 @@
                     </Property>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                       <StringArray count="8">
-                        <StringItem index="0" value="Elige una opcion.."/>
+                        <StringItem index="0" value="Seleccione una opcion..."/>
                         <StringItem index="1" value="Igual"/>
                         <StringItem index="2" value="No Igual"/>
                         <StringItem index="3" value="Nulo"/>
                         <StringItem index="4" value="No Nulo"/>
                         <StringItem index="5" value="Verdadero"/>
                         <StringItem index="6" value="Falso"/>
-                        <StringItem index="7" value=" "/>
+                        <StringItem index="7" value=""/>
                       </StringArray>
                     </Property>
                   </Properties>

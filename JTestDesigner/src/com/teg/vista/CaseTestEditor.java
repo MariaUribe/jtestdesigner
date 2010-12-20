@@ -63,7 +63,6 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
     private ArrayList<VariableInstancia> variablesGuardadas = new ArrayList<VariableInstancia>();
     private ArrayList<File> archivosJavaDoc = new ArrayList<File>();
     private ArrayList<EscenarioPrueba> escenariosPrueba = new ArrayList<EscenarioPrueba>();
-
     private WidgetObjectLoading listWidget = new WidgetObjectLoading();
     private static int varId = 0;
     private Class tipoVarRetorno;
@@ -122,7 +121,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
     }
 
     public void crearMetawidgetMetadata(Document docXml) throws JDOMException, IOException {
-     
+
         try {
             XMLOutputter out = new XMLOutputter();
             FileOutputStream file = new FileOutputStream(inicio.getDirectorioCasoPrueba().getPath() + "/" + "metawidgetData.xml");
@@ -209,7 +208,18 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
         }
     }
 
-    public void desahibilitarMetodosData() {
+    public void deshabilitarMetodos() {
+        for (Component component : panelTablaArgumentos.getComponents()) {
+            component.setEnabled(false);
+        }
+        assertVariables.setEnabled(false);
+        assertCondiciones.setEnabled(false);
+        resultadoAssert.setEnabled(false);
+        assertMensaje.setEnabled(false);
+        guardarBt.setEnabled(false);
+    }
+
+    public void deshabilitarMetodosData() {
         for (Component component : panelTablaArgumentos.getComponents()) {
             component.setEnabled(false);
         }
@@ -290,7 +300,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
     public Element getEntity(Class clase) {
         Element entidad = new Element("entity");
         Attribute tipoEntidad = new Attribute("type", clase.getName());
-        
+
         entidad.setAttribute(tipoEntidad);
         entidad.addContent("\n \t");
         Field[] fields = clase.getDeclaredFields();
@@ -300,7 +310,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
             Attribute atr = new Attribute("name", field.getName());
             Attribute atrSeccion = new Attribute("section", clase.getSimpleName());
             ArrayList<Attribute> listaAtributosProperty = new ArrayList<Attribute>();
-            
+
             if (!field.getType().isPrimitive() && !field.getType().getName().equals("java.lang.String")
                     && !field.getType().getName().equals("java.lang.Integer")) {
 
@@ -633,8 +643,8 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
         lbAssertCondiciones.setText("Condicion: ");
 
-        assertCondiciones.setFont(new java.awt.Font("Calibri", 1, 12));
-        assertCondiciones.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Elige una opcion..", "Igual", "No Igual", "Nulo", "No Nulo", "Verdadero", "Falso", " " }));
+        assertCondiciones.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
+        assertCondiciones.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Seleccione una opcion...", "Igual", "No Igual", "Nulo", "No Nulo", "Verdadero", "Falso", "" }));
         assertCondiciones.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
             public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
             }
@@ -941,7 +951,9 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 }//GEN-LAST:event_assertCondicionesActionPerformed
 
     private void guardarBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarBtActionPerformed
-
+        this.deshabilitarMetodos();
+        this.limpiarFormulario();
+        
         Method method = this.getActualMethod();
         varId++;
 
@@ -1089,7 +1101,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
                 if (isIn == true) {
                     cargarTablaArgumentos(metodoNombre);
-                    desahibilitarMetodosData();
+                    deshabilitarMetodosData();
 
                 } else {
                     habilitarMetodosData();
@@ -1105,7 +1117,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
         EscenarioPrueba escenarioPrueba = new EscenarioPrueba(this.nombreEscenario.getText());
         escenarioPrueba.setMetodos(metodosGuardados);
         escenariosPrueba.add(escenarioPrueba);
-        //Aqui 
+
         varId = 0;
         metodosGuardados = new ArrayList<Metodo>();
         variablesGuardadas.clear();
@@ -1116,11 +1128,11 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
         DefaultTableModel model2 = (DefaultTableModel) tablaMetodosRegistrados.getModel();
         model2.setNumRows(0);
-        
+
         assertVariables.removeAllItems();
         assertMensaje.setText("");
         resultadoAssert.setText("");
-        
+
         for (Component component : panelTablaArgumentos.getComponents()) {
             if (!component.getClass().getName().equals("javax.swing.JLabel")) {
                 panelTablaArgumentos.remove(component);
@@ -1140,7 +1152,6 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
         this.inicio.caseTestToMethods(this, clases);
     }//GEN-LAST:event_volverActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox assertCondiciones;
     private javax.swing.JTextField assertMensaje;
@@ -1177,6 +1188,20 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
     private javax.swing.JTable tablaVariables;
     private javax.swing.JButton volver;
     // End of variables declaration//GEN-END:variables
+
+    public void limpiarFormulario() {
+
+        assertMensaje.setText("");
+        resultadoAssert.setText("");
+        assertCondiciones.setSelectedItem("Seleccione una opcion...");
+
+        for (Component component : panelTablaArgumentos.getComponents()) {
+//            if (!component.getClass().getName().equals("javax.swing.JLabel")) {
+//                panelTablaArgumentos.remove(component);
+//            }
+            this.repaint();
+        }
+    }
 
     public String setAssertCondition(String assertCondition) {
         String condicion = "";
