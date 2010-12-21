@@ -643,7 +643,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
         lbAssertCondiciones.setText("Condicion: ");
 
-        assertCondiciones.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
+        assertCondiciones.setFont(new java.awt.Font("Calibri", 1, 12));
         assertCondiciones.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Seleccione una opcion...", "Igual", "No Igual", "Nulo", "No Nulo", "Verdadero", "Falso", "" }));
         assertCondiciones.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
             public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
@@ -811,6 +811,11 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
         );
 
         jButton3.setText("Dependencias");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         newTestEscenario.setText("Nuevo Escenario");
         newTestEscenario.addActionListener(new java.awt.event.ActionListener() {
@@ -953,7 +958,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
     private void guardarBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarBtActionPerformed
         this.deshabilitarMetodos();
         this.limpiarFormulario();
-        
+
         Method method = this.getActualMethod();
         varId++;
 
@@ -1059,7 +1064,6 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
         if (evt.getButton() == MouseEvent.BUTTON3) {
 
-
             JMenuItem item = new JMenuItem();
             item.setText("Ver Javadoc");
             item.addMouseListener(new MouseListener() {
@@ -1152,6 +1156,9 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
         this.inicio.caseTestToMethods(this, clases);
     }//GEN-LAST:event_volverActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_jButton3ActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox assertCondiciones;
     private javax.swing.JTextField assertMensaje;
@@ -1189,18 +1196,35 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
     private javax.swing.JButton volver;
     // End of variables declaration//GEN-END:variables
 
+    public ArrayList<File> getJarsRuta() {
+        return this.inicio.getJarsRuta();
+    }
+
+    /**
+     * FALTA LIMPIAR ASSERT VARIABLE EN ESTE METODO
+     */
+    public void disableAssert() {
+        this.lbAssertVariables.setEnabled(false);
+        this.assertVariables.setEnabled(false);
+
+        this.lbAssertCondiciones.setEnabled(false);
+        this.assertCondiciones.setEnabled(false);
+
+        this.lbResultadoAssert.setEnabled(false);
+        this.resultadoAssert.setEnabled(false);
+
+        this.lbAssertMensaje.setEnabled(false);
+        this.assertMensaje.setEnabled(false);
+
+        this.limpiarFormulario();
+    }
+
     public void limpiarFormulario() {
 
         assertMensaje.setText("");
         resultadoAssert.setText("");
         assertCondiciones.setSelectedItem("Seleccione una opcion...");
-
-        for (Component component : panelTablaArgumentos.getComponents()) {
-//            if (!component.getClass().getName().equals("javax.swing.JLabel")) {
-//                panelTablaArgumentos.remove(component);
-//            }
-            this.repaint();
-        }
+        this.repaint();
     }
 
     public String setAssertCondition(String assertCondition) {
