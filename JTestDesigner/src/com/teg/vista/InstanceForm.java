@@ -17,6 +17,9 @@ import java.awt.FlowLayout;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import org.jdesktop.beansbinding.AutoBinding.UpdateStrategy;
 import org.metawidget.inspector.composite.CompositeInspector;
@@ -53,12 +56,15 @@ public class InstanceForm extends javax.swing.JFrame {
 
     private javax.swing.JPanel objectContainer;
 
+    private Method metodoActual;
+
 
     /** Creates new form InstanceForm */
-    public InstanceForm(Object instance, String dataPath,WidgetObjectLoading listObject) {
+    public InstanceForm(Object instance, String dataPath,WidgetObjectLoading listObject, Method metodo) {
         listWidget = listObject;
         instanceInspect = instance;
         path = dataPath;
+        metodoActual = metodo;
         initComponents2();
       
         
@@ -182,6 +188,19 @@ public class InstanceForm extends javax.swing.JFrame {
 
     public void Visible()
     {
+
+        Type[] genericParameterTypes = metodoActual.getGenericParameterTypes();
+
+        for (Type genericParameterType : genericParameterTypes) {
+            if (genericParameterType instanceof ParameterizedType) {
+                ParameterizedType aType = (ParameterizedType) genericParameterType;
+                Type[] parameterArgTypes = aType.getActualTypeArguments();
+                for (Type parameterArgType : parameterArgTypes) {
+                    Class parameterArgClass = (Class) parameterArgType;
+                    System.out.println("parameterArgClass = " + parameterArgClass);
+                }
+            }
+        }
         InspectObject(instanceInspect);
         this.setVisible(true);
     }
