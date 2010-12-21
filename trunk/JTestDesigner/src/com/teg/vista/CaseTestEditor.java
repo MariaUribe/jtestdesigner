@@ -239,7 +239,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
         }
 
         Method metodo = getMethodSelected(nombreMetodo);
-        if (metodo.getReturnType().getName().equals("void"))
+        if (!metodo.getReturnType().getName().equals("void"))
         {
         assertVariables.setEnabled(true);
         assertCondiciones.setEnabled(true);
