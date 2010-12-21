@@ -45,6 +45,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import javax.swing.table.DefaultTableModel;
@@ -231,15 +233,28 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
         guardarBt.setEnabled(false);
     }
 
-    public void habilitarMetodosData() {
+    public void habilitarMetodosData(String nombreMetodo) {
         for (Component component : panelTablaArgumentos.getComponents()) {
             component.setEnabled(true);
         }
+
+        Method metodo = getMethodSelected(nombreMetodo);
+        if (metodo.getReturnType().getName().equals("void"))
+        {
         assertVariables.setEnabled(true);
         assertCondiciones.setEnabled(true);
         resultadoAssert.setEnabled(true);
         assertMensaje.setEnabled(true);
         guardarBt.setEnabled(true);
+        }
+        else
+        {
+            assertVariables.setEnabled(false);
+        assertCondiciones.setEnabled(false);
+        resultadoAssert.setEnabled(false);
+        assertMensaje.setEnabled(false);
+        guardarBt.setEnabled(true);
+        }
 
     }
 
@@ -442,7 +457,9 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
                                 System.out.println(claseInstance.getClass().getName());
 
-                                InstanceForm editorInstance = new InstanceForm(claseInstance, inicio.getDirectorioCasoPrueba().getPath(), listWidget);
+                                Method metodo = getActualMethod();
+
+                                InstanceForm editorInstance = new InstanceForm(claseInstance, inicio.getDirectorioCasoPrueba().getPath(), listWidget, metodo);
 
                                 editorInstance.Visible();
 
@@ -583,6 +600,11 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                 "Variable", "Metodo", "Tipo Retorno"
             }
         ));
+        tablaVariables.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaVariablesMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tablaVariables);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -599,7 +621,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(8, 8, 8)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         panelMetodoInfo.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
@@ -859,7 +881,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(8, 8, 8)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         jLabel5.setText("Nombre Escenario de Prueba :");
@@ -1108,7 +1130,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                     deshabilitarMetodosData();
 
                 } else {
-                    habilitarMetodosData();
+                    habilitarMetodosData(metodoNombre);
                     cargarTablaArgumentos(metodoNombre);
                     actualNameMethod = metodoNombre;
                 }
@@ -1159,6 +1181,38 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void tablaVariablesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaVariablesMouseClicked
+        // TODO add your handling code here:
+         if (evt.getClickCount() == 2 && evt.getButton() == MouseEvent.BUTTON1)
+        {
+            if (tablaVariables.getSelectedColumn() == 0 && tablaVariables.getSelectedRow() == 0)
+            {
+                final JTextField text = (JTextField)tablaVariables.getComponentAt(evt.getX(), evt.getY());
+                String actualVar = text.getText();
+                text.getDocument().addDocumentListener(new DocumentListener() {
+
+                    public void insertUpdate(DocumentEvent e) {
+
+                    }
+
+                    public void removeUpdate(DocumentEvent e) {
+
+                    }
+
+                    public void changedUpdate(DocumentEvent e) {
+                        String nuevaVar = text.getText();
+                    }
+                });
+            }
+            else
+            {
+                evt.consume();
+            }
+
+        }
+    }//GEN-LAST:event_tablaVariablesMouseClicked
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox assertCondiciones;
     private javax.swing.JTextField assertMensaje;
