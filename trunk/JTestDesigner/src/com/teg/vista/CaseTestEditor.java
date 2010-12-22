@@ -233,27 +233,33 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
         guardarBt.setEnabled(false);
     }
 
+    /**
+     * 
+     * @param nombreMetodo
+     */
     public void habilitarMetodosData(String nombreMetodo) {
         for (Component component : panelTablaArgumentos.getComponents()) {
             component.setEnabled(true);
         }
 
         Method metodo = getMethodSelected(nombreMetodo);
-        if (!metodo.getReturnType().getName().equals("void"))
-        {
-        assertVariables.setEnabled(true);
-        assertCondiciones.setEnabled(true);
-        resultadoAssert.setEnabled(true);
-        assertMensaje.setEnabled(true);
-        guardarBt.setEnabled(true);
-        }
-        else
-        {
+        if (!metodo.getReturnType().getName().equals("void")) {
+            assertVariables.setEnabled(true);
+            assertCondiciones.setEnabled(true);
+            resultadoAssert.setEnabled(true);
+            assertMensaje.setEnabled(true);
+            guardarBt.setEnabled(true);
+        } else {
+            assertVariables.setSelectedItem(null);
             assertVariables.setEnabled(false);
-        assertCondiciones.setEnabled(false);
-        resultadoAssert.setEnabled(false);
-        assertMensaje.setEnabled(false);
-        guardarBt.setEnabled(true);
+            assertCondiciones.setSelectedItem("");
+            assertCondiciones.setEnabled(false);
+            resultadoAssert.setText("");
+            resultadoAssert.setEnabled(false);
+            assertMensaje.setText("");
+            assertMensaje.setEnabled(false);
+            guardarBt.setEnabled(true);
+            assertVariables.repaint();
         }
 
     }
@@ -948,7 +954,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                             .addComponent(jButton3)
                             .addComponent(generar, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(panelInicialLayout.createSequentialGroup()
-                        .addComponent(jPanel4, 0, 182, Short.MAX_VALUE)
+                        .addComponent(jPanel4, 0, 185, Short.MAX_VALUE)
                         .addGap(10, 10, 10)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(14, 14, 14)
@@ -979,7 +985,6 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
     private void guardarBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarBtActionPerformed
         this.deshabilitarMetodos();
-        this.limpiarFormulario();
 
         Method method = this.getActualMethod();
         varId++;
@@ -1130,8 +1135,8 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                     deshabilitarMetodosData();
 
                 } else {
-                    habilitarMetodosData(metodoNombre);
                     cargarTablaArgumentos(metodoNombre);
+                    habilitarMetodosData(metodoNombre);//ver orden
                     actualNameMethod = metodoNombre;
                 }
             }
@@ -1184,35 +1189,28 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
     private void tablaVariablesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaVariablesMouseClicked
         // TODO add your handling code here:
-         if (evt.getClickCount() == 2 && evt.getButton() == MouseEvent.BUTTON1)
-        {
-            if (tablaVariables.getSelectedColumn() == 0 && tablaVariables.getSelectedRow() == 0)
-            {
-                final JTextField text = (JTextField)tablaVariables.getComponentAt(evt.getX(), evt.getY());
+        if (evt.getClickCount() == 2 && evt.getButton() == MouseEvent.BUTTON1) {
+            if (tablaVariables.getSelectedColumn() == 0 && tablaVariables.getSelectedRow() == 0) {
+                final JTextField text = (JTextField) tablaVariables.getComponentAt(evt.getX(), evt.getY());
                 String actualVar = text.getText();
                 text.getDocument().addDocumentListener(new DocumentListener() {
 
                     public void insertUpdate(DocumentEvent e) {
-
                     }
 
                     public void removeUpdate(DocumentEvent e) {
-
                     }
 
                     public void changedUpdate(DocumentEvent e) {
                         String nuevaVar = text.getText();
                     }
                 });
-            }
-            else
-            {
+            } else {
                 evt.consume();
             }
 
         }
     }//GEN-LAST:event_tablaVariablesMouseClicked
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox assertCondiciones;
     private javax.swing.JTextField assertMensaje;
@@ -1312,13 +1310,16 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
     }
 
     public AssertTest getActualAssert() {
-        AssertTest assertion = new AssertTest(assertMensaje.getText(),
-                assertVariables.getSelectedItem().toString(),
-                setAssertCondition(assertCondiciones.getSelectedItem().toString()));
+        AssertTest assertion = null;
+        if (this.assertVariables.getSelectedItem() != null) {
+            assertion = new AssertTest(assertMensaje.getText(),
+                    assertVariables.getSelectedItem().toString(),
+                    setAssertCondition(assertCondiciones.getSelectedItem().toString()));
 
-        if (assertCondiciones.getSelectedItem().toString().equals("Igual")
-                || assertCondiciones.getSelectedItem().equals("No Igual")) {
-            assertion.setValorAssert(resultadoAssert.getText());
+            if (assertCondiciones.getSelectedItem().toString().equals("Igual")
+                    || assertCondiciones.getSelectedItem().equals("No Igual")) {
+                assertion.setValorAssert(resultadoAssert.getText());
+            }
         }
         return assertion;
     }
@@ -1346,7 +1347,13 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
             Argumento argumento = new Argumento();
             argumento.setNombre("arg" + cont);
             argumento.setTipo(clazz.getName());
-            argumento.setValor(tablaArgumentos.getValueAt(cont - 1, 1).toString());
+            if (clazz.getSimpleName().equals("String")) {
+                argumento.setValor("\"" + tablaArgumentos.getValueAt(cont - 1, 1).toString() + "\"");
+            } else if(clazz.getSimpleName().equals("char")){
+                argumento.setValor("\'" + tablaArgumentos.getValueAt(cont - 1, 1).toString() + "\'");
+            } else {
+                argumento.setValor(tablaArgumentos.getValueAt(cont - 1, 1).toString());
+            }
             argumentos.add(argumento);
             cont++;
         }

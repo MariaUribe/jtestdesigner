@@ -37,8 +37,8 @@ public class ${claseTemplate.nombreClase?cap_first}Test {
 		<#assign ordenMetodos = codeManager.generarPrueba(casoPrueba, escenario) />
 		<#list ordenMetodos as metodo>
 
-		${metodo.retorno.retornoSimpleName} ${metodo.retorno.nombreVariable} = ${metodo.claseSimpleName?uncap_first}.${metodo.getNombre()}(<#list metodo.argumentos as arg>${arg.valor}<#if arg_has_next>, </#if></#list>);
-        ${metodo.assertLinea.condicion}("${metodo.assertLinea.mensaje}",<#if metodo.assertLinea.valorAssert??> ${metodo.assertLinea.valorAssert}, </#if> ${metodo.assertLinea.variable});
+		<#if metodo.assertLinea??>${metodo.retorno.retornoSimpleName} ${metodo.retorno.nombreVariable} = </#if>${metodo.claseSimpleName?uncap_first}.${metodo.getNombre()}(<#list metodo.argumentos as arg>${arg.valor}<#if arg_has_next>, </#if></#list>);
+        <#if metodo.assertLinea??>${metodo.assertLinea.condicion}("${metodo.assertLinea.mensaje}",<#if metodo.assertLinea.valorAssert??> ${metodo.assertLinea.valorAssert}, </#if> ${metodo.assertLinea.variable});</#if>
         </#list>
 	}
 	
