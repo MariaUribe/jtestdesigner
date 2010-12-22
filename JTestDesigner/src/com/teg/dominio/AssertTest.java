@@ -14,6 +14,9 @@ public class AssertTest {
 
     private String valorAssert;
 
+    public AssertTest() {
+    }
+    
     /**
      *
      * @param mensaje the mensaje to set
