@@ -4,6 +4,7 @@ import com.teg.dominio.Argumento;
 import com.teg.dominio.AssertTest;
 import com.teg.dominio.EscenarioPrueba;
 import com.teg.dominio.CasoPrueba;
+import com.teg.dominio.ClaseTest;
 import com.teg.dominio.Metodo;
 import com.teg.dominio.Retorno;
 import com.thoughtworks.xstream.XStream;
@@ -35,6 +36,7 @@ public class XmlManager {
         XStream xstream = new XStream(new DomDriver());
         xstream.alias("casoPrueba", CasoPrueba.class);
         xstream.alias("escenarioPrueba", EscenarioPrueba.class);
+        xstream.alias("claseTest", ClaseTest.class);
         xstream.alias("metodo", Metodo.class);
         xstream.alias("retorno", Retorno.class);
         xstream.alias("argumento", Argumento.class);
@@ -60,6 +62,7 @@ public class XmlManager {
         XStream xstream = new XStream(new DomDriver());
         xstream.alias("casoPrueba", CasoPrueba.class);
         xstream.alias("escenarioPrueba", EscenarioPrueba.class);
+        xstream.alias("claseTest", ClaseTest.class);
         xstream.alias("metodo", Metodo.class);
         xstream.alias("retorno", Retorno.class);
         xstream.alias("argumento", Argumento.class);
@@ -117,13 +120,22 @@ public class XmlManager {
     public Metodo agregarMetodoALista(ArrayList<Metodo> metodos, Method method,
            int numVariable, ArrayList<Argumento> argumentos, AssertTest condAssert) {
 
-        Metodo miMetodo = new Metodo(method.getName(), method.getDeclaringClass().getName(),
-                method.getDeclaringClass().getSimpleName());
+        Metodo miMetodo = new Metodo(method.getName(), new ClaseTest(method.getDeclaringClass().getName(),
+                method.getDeclaringClass().getSimpleName()));
         miMetodo.setRetorno(new Retorno(method.getReturnType().getName(), 
                 method.getReturnType().getSimpleName(), "var" + numVariable));
-
         miMetodo.setArgumentos(argumentos);
         miMetodo.setAssertLinea(condAssert);
+
+        ArrayList<ClaseTest> excepciones = new ArrayList<ClaseTest>();
+
+        Class[] methodExcepcions = method.getExceptionTypes();
+        
+        for (Class clazz : methodExcepcions) {
+            excepciones.add(new ClaseTest(clazz.getName(), clazz.getSimpleName()));
+        }
+
+        miMetodo.setExcepciones(excepciones);
 
         metodos.add(miMetodo);
 

@@ -1347,6 +1347,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
             Argumento argumento = new Argumento();
             argumento.setNombre("arg" + cont);
             argumento.setTipo(clazz.getName());
+            //quede aqui
             if (clazz.getSimpleName().equals("String")) {
                 argumento.setValor("\"" + tablaArgumentos.getValueAt(cont - 1, 1).toString() + "\"");
             } else if(clazz.getSimpleName().equals("char")){

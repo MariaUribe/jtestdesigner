@@ -15,11 +15,95 @@ import java.util.ArrayList;
 public class CodeManager {
 
     private ArrayList<ClaseTest> classesNoRepetidas = new ArrayList<ClaseTest>();
+    private ArrayList<ClaseTest> excepcionesNoRepetidas = new ArrayList<ClaseTest>();
 
     /**
      * Constructor por defecto
      */
     public CodeManager() {
+    }
+
+    public boolean escenarioVacio(EscenarioPrueba escenario){
+        boolean isEmpty = true;
+
+        ArrayList<ClaseTest> excepciones = this.generarExcepciones(escenario);
+        if(excepciones.isEmpty()){
+            isEmpty = true;
+        } else {
+            isEmpty = false;
+        }
+        
+        return isEmpty;
+    }
+
+    /**
+     * Metodo para verificar la existencia de una excepcion
+     * @param ex la excepcion a comprobar
+     * @return true si existe, false de lo contrario
+     */
+    public Boolean existeExcepcion(String ex) {
+
+        Boolean flag = Boolean.FALSE;
+
+        for (ClaseTest e : excepcionesNoRepetidas) {
+
+            if (ex.equals(e.getNombre())) {
+                flag = Boolean.TRUE;
+                break;
+            } else {
+                flag = Boolean.FALSE;
+            }
+        }
+        return flag;
+    }
+
+    /**
+     * Metodo para generar excepciones no repetidas
+     * @param excepciones las excepciones a ser filtradas
+     * @return ArrayList<ClaseTest> arraylist con las excepciones no repetidas
+     */
+    public ArrayList<ClaseTest> excepcionesNoRepetidas(ArrayList<ClaseTest> excepciones) {
+
+        for (ClaseTest ex : excepciones) {
+            if (excepcionesNoRepetidas.isEmpty()) {
+
+                excepcionesNoRepetidas.add(ex);
+
+            } else {
+                if (!existeExcepcion(ex.getNombre())) {
+                    excepcionesNoRepetidas.add(ex);
+                }
+            }
+        }
+        for (ClaseTest claseTest : excepcionesNoRepetidas) {
+            System.out.println("ex: " + claseTest.getNombre());
+        }
+
+        return excepcionesNoRepetidas;
+    }
+
+    /**
+     * Metodo para generar las excepciones dado un escenario de prueba
+     * @param escenario el escenario a generar excepciones
+     * @return ArrayList<ClaseTest> arraylist con las excepciones 
+     */
+    public ArrayList<ClaseTest> generarExcepciones(EscenarioPrueba escenario) {
+
+        ArrayList<ClaseTest> excepciones = new ArrayList<ClaseTest>();
+        ArrayList<ClaseTest> exs = new ArrayList<ClaseTest>();
+        ArrayList<Metodo> metodos = escenario.getMetodos();
+
+        for (Metodo metodo : metodos) {
+            ArrayList<ClaseTest> methodExcepcions = metodo.getExcepciones();
+            for (ClaseTest excepcion : methodExcepcions) {
+                excepciones.add(excepcion);
+            }
+        }
+
+        if (!excepciones.isEmpty()) {
+            exs = this.excepcionesNoRepetidas(excepciones);
+        }
+        return exs;
     }
 
     /**
@@ -35,7 +119,7 @@ public class CodeManager {
         ArrayList<ClaseTest> clases = new ArrayList<ClaseTest>();
 
         for (Metodo metodo : metodos) {
-            clases.add(new ClaseTest(metodo.getClase(), metodo.getClaseSimpleName()));
+            clases.add(new ClaseTest(metodo.getClase().getNombre(), metodo.getClase().getSimpleNombre()));
         }
 
         return clases;
@@ -204,7 +288,7 @@ public class CodeManager {
         Boolean sonIguales = Boolean.FALSE;
 
         // si pertenecen a la misma clase
-        if (method.getDeclaringClass().getName().equals(metodo.getClase())) {
+        if (method.getDeclaringClass().getName().equals(metodo.getClase().getNombre())) {
             // si tienen el mismo nombre y los argumentos son iguales
             if ((method.getName().equals(metodo.getNombre())) && (sonArgumentosIguales(method, metodo))) {
                 sonIguales = Boolean.TRUE;
@@ -287,27 +371,6 @@ public class CodeManager {
                 }
             }
         }
-        return ordenMetodos;
-    }
-
-    /**
-     * Metodo para generarPrueba una Prueba
-     * @param escenarioPrueba caso de prueba para obtener los metodos que seran
-     * ejecutados en la prueba
-     * @param metodo metodo al cual se generara el escenario de prueba
-     * @return ArrayList<Metodo> metodos involucrados para crear el escenario
-     * de prueba del Metodo metodo
-     */
-    public ArrayList<Metodo> generarPrueba(EscenarioPrueba escenarioPrueba, Metodo metodo) {
-
-        ArrayList<Metodo> metodos = escenarioPrueba.getMetodos();
-
-        ArrayList<Metodo> ordenMetodos = new ArrayList<Metodo>();
-
-        ArrayList<Metodo> metodosDivididos = this.dividirLista(metodos, metodo);
-        ordenMetodos = this.generarLinea(metodo, metodosDivididos, ordenMetodos);
-        ordenMetodos.add(metodo);
-
         return ordenMetodos;
     }
 
