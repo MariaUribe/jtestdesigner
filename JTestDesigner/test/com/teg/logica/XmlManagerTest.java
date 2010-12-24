@@ -3,6 +3,7 @@ package com.teg.logica;
 import com.teg.dominio.CasoPrueba;
 import com.teg.dominio.AssertTest;
 import com.teg.dominio.Argumento;
+import com.teg.dominio.ClaseTest;
 import com.teg.dominio.Retorno;
 import com.teg.dominio.Metodo;
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class XmlManagerTest {
 
         EscenarioPrueba casoPrueba = new EscenarioPrueba("miCasoPrueba");
         ArrayList<Metodo> metodos = new ArrayList<Metodo>();
-        Metodo miMetodo1 = new Metodo("miMetodo", "java.lang.String", "String");
+        Metodo miMetodo1 = new Metodo("miMetodo", new ClaseTest("java.lang.String", "String"));
         miMetodo1.setRetorno(new Retorno("java.lang.String", "String", "var1"));
 
         ArrayList<Argumento> argumentos = new ArrayList<Argumento>();
@@ -51,7 +52,7 @@ public class XmlManagerTest {
 
         metodos.add(miMetodo1);
 
-        Metodo miMetodo2 = new Metodo("miMetodo2", "java.lang.String", "String");
+        Metodo miMetodo2 = new Metodo("miMetodo2", new ClaseTest("java.lang.String", "String"));
         miMetodo2.setRetorno(new Retorno("Object", "Object", "var2"));
 
         ArrayList<Argumento> argumentos2 = new ArrayList<Argumento>();

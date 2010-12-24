@@ -1,7 +1,6 @@
 package com.teg.logica;
 
 import com.teg.dominio.CasoPrueba;
-import com.teg.dominio.EscenarioPrueba;
 import com.teg.dominio.ClaseTemplate;
 import freemarker.template.Configuration;
 import freemarker.template.Template;

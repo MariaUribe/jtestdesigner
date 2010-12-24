@@ -9,11 +9,11 @@ import java.util.ArrayList;
 public class Metodo {
 
     private String nombre;
-    private String clase;
-    private String claseSimpleName;
+    private ClaseTest clase;
     private Retorno retorno;
     private ArrayList<Argumento> argumentos;
     private AssertTest assertLinea;
+    private ArrayList<ClaseTest> excepciones;
 
     public Metodo() {
     }
@@ -23,10 +23,9 @@ public class Metodo {
      * @param nombre the nombre to set
      * @param clase the clase to set
      */
-    public Metodo(String nombre, String clase, String claseSimpleName) {
+    public Metodo(String nombre, ClaseTest clase) {
         this.nombre = nombre;
         this.clase = clase;
-        this.claseSimpleName = claseSimpleName;
     }
 
     /**
@@ -41,34 +40,6 @@ public class Metodo {
      */
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
-
-    /**
-     * @return the clase
-     */
-    public String getClase() {
-        return clase;
-    }
-
-    /**
-     * @return the claseSimpleName
-     */
-    public String getClaseSimpleName() {
-        return claseSimpleName;
-    }
-
-    /**
-     * @param claseSimpleName the claseSimpleName to set
-     */
-    public void setClaseSimpleName(String claseSimpleName) {
-        this.claseSimpleName = claseSimpleName;
-    }
-
-    /**
-     * @param clase the clase to set
-     */
-    public void setClase(String clase) {
-        this.clase = clase;
     }
 
     /**
@@ -111,5 +82,33 @@ public class Metodo {
      */
     public void setAssertLinea(AssertTest assertLinea) {
         this.assertLinea = assertLinea;
+    }
+
+    /**
+     * @return the clasePerteneciente
+     */
+    public ClaseTest getClase() {
+        return clase;
+    }
+
+    /**
+     * @param clasePerteneciente the clasePerteneciente to set
+     */
+    public void setClase(ClaseTest clasePerteneciente) {
+        this.clase = clasePerteneciente;
+    }
+
+    /**
+     * @return the excepciones
+     */
+    public ArrayList<ClaseTest> getExcepciones() {
+        return excepciones;
+    }
+
+    /**
+     * @param excepciones the excepciones to set
+     */
+    public void setExcepciones(ArrayList<ClaseTest> excepciones) {
+        this.excepciones = excepciones;
     }
 }
