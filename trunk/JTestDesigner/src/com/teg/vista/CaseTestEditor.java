@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 
 import java.util.ArrayList;
 import java.util.Vector;
@@ -69,6 +70,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
     private static int varId = 0;
     private Class tipoVarRetorno;
     private String valorFila;
+    private String nombreVarActual;
     private String actualNameMethod;
     private JTable tablaArgumentos;
     private Inicio inicio;
@@ -243,6 +245,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
         }
 
         Method metodo = getMethodSelected(nombreMetodo);
+
         if (!metodo.getReturnType().getName().equals("void")) {
             assertVariables.setEnabled(true);
             assertCondiciones.setEnabled(true);
@@ -250,16 +253,12 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
             assertMensaje.setEnabled(true);
             guardarBt.setEnabled(true);
         } else {
-            assertVariables.setSelectedItem(null);
-            assertVariables.setEnabled(false);
-            assertCondiciones.setSelectedItem("");
+
             assertCondiciones.setEnabled(false);
-            resultadoAssert.setText("");
             resultadoAssert.setEnabled(false);
-            assertMensaje.setText("");
             assertMensaje.setEnabled(false);
             guardarBt.setEnabled(true);
-            assertVariables.repaint();
+
         }
 
     }
@@ -412,7 +411,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                 varInstancia.setNombreVariable("var" + varId + object.getClass().getSimpleName());
                 variablesGuardadas.add(varInstancia);
                 Vector objects = new Vector();
-                objects.add("var" + varId + object.getClass().getSimpleName());
+                objects.add("object" + varId + object.getClass().getSimpleName());
 
                 objects.add(method.getName());
                 objects.add(object.getClass().getName());
@@ -447,6 +446,14 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                 combo.addPopupMenuListener(new PopupMenuListener() {
 
                     public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+                       if (argument.isArray() == true)
+                       {
+                           System.out.println("is array");
+                       }
+                       else
+                       {
+                           System.out.println(argument.getGenericSuperclass());
+                       }
                     }
 
                     public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
@@ -459,9 +466,9 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                         if (cadena[0].equals("Crear")) {
                             try {
 
-                                Object claseInstance = getInstance(argument);
 
-                                System.out.println(claseInstance.getClass().getName());
+                                Object claseInstance = getInstance(argument);
+                              
 
                                 Method metodo = getActualMethod();
 
@@ -471,8 +478,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
                                 editorInstance.getObject();
 
-                                System.out.println(listWidget.getObject().size());
-
+                              
                                 addInstanceVariable();
 
                                 listWidget.getObject().clear();
@@ -1189,20 +1195,36 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
     private void tablaVariablesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaVariablesMouseClicked
         // TODO add your handling code here:
-        if (evt.getClickCount() == 2 && evt.getButton() == MouseEvent.BUTTON1) {
+       /* if ( evt.getButton() == MouseEvent.BUTTON1) {
+            if (evt.getClickCount() == 2)
+            {
             if (tablaVariables.getSelectedColumn() == 0 && tablaVariables.getSelectedRow() == 0) {
                 final JTextField text = (JTextField) tablaVariables.getComponentAt(evt.getX(), evt.getY());
                 String actualVar = text.getText();
+                Metodo metodo = null;
+
+                for (Metodo metodo1 : metodosGuardados)
+                {
+                    if (metodo1.getRetorno().getNombreVariable().equals(actualVar))
+                    {
+                        metodo = (Metodo) metodo1.clone();
+                    }
+                }
+                
+
                 text.getDocument().addDocumentListener(new DocumentListener() {
 
                     public void insertUpdate(DocumentEvent e) {
+                        System.out.println("camio");
                     }
 
                     public void removeUpdate(DocumentEvent e) {
                     }
 
                     public void changedUpdate(DocumentEvent e) {
-                        String nuevaVar = text.getText();
+
+                        System.out.println("cambio!");
+                        
                     }
                 });
             } else {
@@ -1210,6 +1232,9 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
             }
 
         }
+        }
+
+        */
     }//GEN-LAST:event_tablaVariablesMouseClicked
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox assertCondiciones;
