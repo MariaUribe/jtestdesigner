@@ -68,6 +68,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
     private ArrayList<EscenarioPrueba> escenariosPrueba = new ArrayList<EscenarioPrueba>();
     private WidgetObjectLoading listWidget = new WidgetObjectLoading();
     private static int varId = 0;
+    private static int objId = 0;
     private Class tipoVarRetorno;
     private String valorFila;
     private String nombreVarActual;
@@ -399,6 +400,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
     public void addInstanceVariable() {
         if (listWidget.getObject().size() > 0) {
+            objId++;
             DefaultTableModel model = new DefaultTableModel();
             model = (DefaultTableModel) tablaVariables.getModel();
 
@@ -408,10 +410,10 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
                 VariableInstancia varInstancia = new VariableInstancia();
                 varInstancia.setInstancia(object);
-                varInstancia.setNombreVariable("var" + varId + object.getClass().getSimpleName());
+                varInstancia.setNombreVariable("object" + objId);
                 variablesGuardadas.add(varInstancia);
                 Vector objects = new Vector();
-                objects.add("object" + varId + object.getClass().getSimpleName());
+                objects.add("object" + objId);
 
                 objects.add(method.getName());
                 objects.add(object.getClass().getName());
@@ -419,7 +421,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
             }
 
         }
-        varId++;
+       
     }
 
     @SuppressWarnings("empty-statement")
@@ -453,6 +455,14 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                        else
                        {
                            System.out.println(argument.getGenericSuperclass());
+                           if (argument.isInterface())
+                           {
+
+                               Class[] c = argument.getInterfaces();
+                               for (Class class1 : c) {
+                                   System.out.println(class1.getName());
+                               }
+                           }
                        }
                     }
 
