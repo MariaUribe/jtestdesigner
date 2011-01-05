@@ -424,6 +424,33 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
     }
 
+    public boolean argumentoEsColeccion(Class clase)
+    {
+        boolean esColeccion = false;
+        Class[] interfaces = clase.getInterfaces();
+
+                            for (Class class1 : interfaces) {
+                                if (class1.getName().equals("java.util.map")
+                                        || class1.getName().equals("java.util.set")
+                                        || class1.getName().equals("java.util.list")
+                                        || class1.getName().equals("java.util.queue")) {
+                                    esColeccion = true;
+                                }
+                            }
+        return esColeccion;
+    }
+
+    public boolean argumentoEsArreglo(Class clase)
+    {
+        boolean esArreglo = false;
+
+        if (clase.isArray())
+        {
+            esArreglo = true;
+        }
+        return esArreglo;
+    }
+
     @SuppressWarnings("empty-statement")
     public void cargarTablaArgumentos(String text) {
 
@@ -448,18 +475,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                 combo.addPopupMenuListener(new PopupMenuListener() {
 
                     public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-                        if (argument.isArray() == true) {
-                            System.out.println("is array");
-                        } else {
-                            System.out.println(argument.getGenericSuperclass());
-                            if (argument.isInterface()) {
 
-                                Class[] c = argument.getInterfaces();
-                                for (Class class1 : c) {
-                                    System.out.println(class1.getName());
-                                }
-                            }
-                        }
                     }
 
                     public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
@@ -470,43 +486,115 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                         item = cb.getSelectedItem().toString();
                         String[] cadena = item.split(":");
                         if (cadena[0].equals("Crear")) {
-                            try {
+
+                            boolean esColeccion = false;
+                            boolean esArreglo = false;
 
 
-                                Object claseInstance = getInstance(argument);
+                            esColeccion = argumentoEsColeccion(argument);
+                            esArreglo = argumentoEsArreglo(argument);
+
+                              
 
 
-                                Method metodo = getActualMethod();
-
-                                InstanceForm editorInstance = new InstanceForm(claseInstance, inicio.getDirectorioCasoPrueba().getPath(), listWidget, metodo);
-
-                                editorInstance.Visible();
-
-                                editorInstance.getObject();
-
-
-                                addInstanceVariable();
-
-                                listWidget.getObject().clear();
-
-                                int row = tablaVariables.getSelectedRow();
-
-                            } catch (JDOMException ex) {
-                                Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
-                            } catch (IOException ex) {
-                                Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
-                            } catch (InstantiationException ex) {
-                                Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
-                            } catch (IllegalAccessException ex) {
-                                Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
-                            } catch (NoSuchMethodException ex) {
-                                Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
-                            } catch (IllegalArgumentException ex) {
-                                Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
-                            } catch (InvocationTargetException ex) {
-                                Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
+                            if (esColeccion == true)
+                            {
+                                
                             }
+                            else
+                            {
+                                if (esArreglo == true)
+                                {
+
+
+                               
+
+
+                                }
+                                else
+                                {
+                                    try {
+                                    Object claseInstance = getInstance(argument);
+
+
+                                    Method metodo = getActualMethod();
+
+
+                                    InstanceForm editorInstance = new InstanceForm(claseInstance, inicio.getDirectorioCasoPrueba().getPath(), listWidget, metodo);
+
+
+                               
+
+
+                                    editorInstance.Visible();
+
+                                    editorInstance.getObject();
+
+
+                                    addInstanceVariable();
+
+                                    listWidget.getObject().clear();
+
+                                    int row = tablaVariables.getSelectedRow();
+
+                                } catch (JDOMException ex) {
+                                    Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
+                                } catch (IOException ex) {
+                                    Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
+                                } catch (InstantiationException ex) {
+                                    Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
+                                } catch (IllegalAccessException ex) {
+                                    Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
+                                } catch (NoSuchMethodException ex) {
+                                    Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
+                                } catch (IllegalArgumentException ex) {
+                                    Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
+                                } catch (InvocationTargetException ex) {
+                                    Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                }
+
+                            }
+                          
+
+                          /*if (esColeccion == false) {
+                                try {
+                                    Object claseInstance = getInstance(argument);
+
+
+                                    Method metodo = getActualMethod();
+
+                                    InstanceForm editorInstance = new InstanceForm(claseInstance, inicio.getDirectorioCasoPrueba().getPath(), listWidget, metodo);
+
+                                    editorInstance.Visible();
+
+                                    editorInstance.getObject();
+
+
+                                    addInstanceVariable();
+
+                                    listWidget.getObject().clear();
+
+                                    int row = tablaVariables.getSelectedRow();
+
+                                } catch (JDOMException ex) {
+                                    Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
+                                } catch (IOException ex) {
+                                    Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
+                                } catch (InstantiationException ex) {
+                                    Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
+                                } catch (IllegalAccessException ex) {
+                                    Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
+                                } catch (NoSuchMethodException ex) {
+                                    Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
+                                } catch (IllegalArgumentException ex) {
+                                    Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
+                                } catch (InvocationTargetException ex) {
+                                    Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            }*/
                         }
+
 
                     }
 
@@ -639,7 +727,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(8, 8, 8)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
 
         panelMetodoInfo.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
@@ -899,7 +987,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(8, 8, 8)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
 
         jLabel5.setText("Nombre Escenario de Prueba :");
@@ -982,11 +1070,17 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelInicial, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(125, 125, 125)
+                .addComponent(panelInicial, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelInicial, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(panelInicial, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -1136,11 +1230,14 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
                 boolean isIn = false;
 
+
                 for (int i = 0; i < metodosGuardados.size(); i++) {
                     if (metodosGuardados.get(i).getNombre().equals(metodoNombre)) {
                         isIn = true;
                     }
                 }
+
+
 
                 if (isIn == true) {
                     cargarTablaArgumentos(metodoNombre);
