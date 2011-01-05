@@ -176,7 +176,7 @@ public class InstanceForm extends javax.swing.JFrame {
         // y aqui en vez de imprimir por consola podrian serializar el
         // objeto con Xstream para utilizarlo como datos de entrada
         // en la prueba
-        System.out.println(instance.toString());
+       
         this.dispose();
 
 
