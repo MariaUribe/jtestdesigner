@@ -214,6 +214,16 @@ public class MenuPrincipal extends javax.swing.JInternalFrame {
                 + System.getProperty("file.separator"));
         src.mkdir();
 
+        File com = new File(src.getPath() +
+                System.getProperty("file.separator") + "com" +
+                System.getProperty("file.separator"));
+        com.mkdir();
+
+        File paquete = new File(com.getPath() +
+                System.getProperty("file.separator") + "codeGeneratorTest" +
+                System.getProperty("file.separator"));
+        paquete.mkdir();
+
         File metadata = new File(miCasoPrueba.getPath()
                 + System.getProperty("file.separator") + "metadata"
                 + System.getProperty("file.separator"));

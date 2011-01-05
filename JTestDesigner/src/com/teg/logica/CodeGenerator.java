@@ -71,11 +71,17 @@ public class CodeGenerator {
         File casoPruebaFile = new File(System.getProperty("user.home") + 
                 System.getProperty("file.separator") + nombreCasoPrueba +
                 System.getProperty("file.separator"));
-        File src = new File(casoPruebaFile.getPath() + 
+        File src = new File(casoPruebaFile.getPath() +
                 System.getProperty("file.separator") + "src" +
                 System.getProperty("file.separator"));
+        File com = new File(src.getPath() +
+                System.getProperty("file.separator") + "com" +
+                System.getProperty("file.separator"));
+        File paquete = new File(com.getPath() +
+                System.getProperty("file.separator") + "codeGeneratorTest" +
+                System.getProperty("file.separator"));
 
-        OutputStream outputStream = new FileOutputStream(src.getPath() +
+        OutputStream outputStream = new FileOutputStream(paquete.getPath() +
                 System.getProperty("file.separator") + nombreCasoPrueba + ".java");
         OutputStreamWriter output = new OutputStreamWriter(outputStream);
 

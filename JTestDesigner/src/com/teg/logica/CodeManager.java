@@ -75,9 +75,6 @@ public class CodeManager {
                 }
             }
         }
-        for (ClaseTest claseTest : excepcionesNoRepetidas) {
-            System.out.println("ex: " + claseTest.getNombre());
-        }
 
         return excepcionesNoRepetidas;
     }

@@ -65,7 +65,6 @@ public class Inicio extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         seleccionarJar = new javax.swing.JMenuItem();
-        menuJavaDoc = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -91,6 +90,7 @@ public class Inicio extends javax.swing.JFrame {
 
         jMenu1.setText("Archivo");
 
+        seleccionarJar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/teg/recursos/imagenes/open.png"))); // NOI18N
         seleccionarJar.setText("Abrir");
         seleccionarJar.setEnabled(false);
         seleccionarJar.addActionListener(new java.awt.event.ActionListener() {
@@ -99,15 +99,6 @@ public class Inicio extends javax.swing.JFrame {
             }
         });
         jMenu1.add(seleccionarJar);
-
-        menuJavaDoc.setText("Cargar Javadoc");
-        menuJavaDoc.setEnabled(false);
-        menuJavaDoc.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuJavaDocActionPerformed(evt);
-            }
-        });
-        jMenu1.add(menuJavaDoc);
 
         jMenuBar1.add(jMenu1);
 
@@ -149,23 +140,6 @@ public class Inicio extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_seleccionarJarActionPerformed
-
-    private void menuJavaDocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuJavaDocActionPerformed
-//        JFileChooser fc = new JFileChooser();
-//        fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-//
-//        int returnVal = fc.showOpenDialog(Inicio.this);
-//
-//        if (returnVal == JFileChooser.APPROVE_OPTION) {
-//
-//            File directory = fc.getSelectedFile();
-//
-//            String pathDirectory = directory.getPath();
-//
-//            setArchivosJavaDoc(this.leerDirectorio(pathDirectory, getArchivosJavaDoc()));
-//
-//        }
-    }//GEN-LAST:event_menuJavaDocActionPerformed
 
     public ArrayList<File> leerDirectorio(final String nombreDirectorio, ArrayList<File> archivos) {
 
@@ -306,7 +280,6 @@ public class Inicio extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem menuJavaDoc;
     private javax.swing.JMenuItem seleccionarJar;
     private javax.swing.JPanel tapa;
     // End of variables declaration//GEN-END:variables
