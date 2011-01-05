@@ -6,6 +6,8 @@
 package com.teg.logica;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Map;
 
 
         /**
@@ -15,6 +17,9 @@ import java.util.ArrayList;
 public class WidgetObjectLoading {
 
     private ArrayList<Object> object;
+    private Collection coleccion;
+    private Map mapa;
+
 
     /**
      * @return the object
