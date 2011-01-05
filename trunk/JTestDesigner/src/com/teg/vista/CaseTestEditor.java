@@ -421,7 +421,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
             }
 
         }
-       
+
     }
 
     @SuppressWarnings("empty-statement")
@@ -448,22 +448,18 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                 combo.addPopupMenuListener(new PopupMenuListener() {
 
                     public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-                       if (argument.isArray() == true)
-                       {
-                           System.out.println("is array");
-                       }
-                       else
-                       {
-                           System.out.println(argument.getGenericSuperclass());
-                           if (argument.isInterface())
-                           {
+                        if (argument.isArray() == true) {
+                            System.out.println("is array");
+                        } else {
+                            System.out.println(argument.getGenericSuperclass());
+                            if (argument.isInterface()) {
 
-                               Class[] c = argument.getInterfaces();
-                               for (Class class1 : c) {
-                                   System.out.println(class1.getName());
-                               }
-                           }
-                       }
+                                Class[] c = argument.getInterfaces();
+                                for (Class class1 : c) {
+                                    System.out.println(class1.getName());
+                                }
+                            }
+                        }
                     }
 
                     public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
@@ -478,7 +474,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
 
                                 Object claseInstance = getInstance(argument);
-                              
+
 
                                 Method metodo = getActualMethod();
 
@@ -488,7 +484,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
                                 editorInstance.getObject();
 
-                              
+
                                 addInstanceVariable();
 
                                 listWidget.getObject().clear();
@@ -1161,7 +1157,8 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
     private void newTestEscenarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newTestEscenarioActionPerformed
 
-        EscenarioPrueba escenarioPrueba = new EscenarioPrueba(this.nombreEscenario.getText());
+        String escenario = this.cadenaSinBlancos(this.nombreEscenario.getText());
+        EscenarioPrueba escenarioPrueba = new EscenarioPrueba(escenario);
         escenarioPrueba.setMetodos(metodosGuardados);
         escenariosPrueba.add(escenarioPrueba);
 
@@ -1206,45 +1203,45 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
     private void tablaVariablesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaVariablesMouseClicked
         // TODO add your handling code here:
        /* if ( evt.getButton() == MouseEvent.BUTTON1) {
-            if (evt.getClickCount() == 2)
-            {
-            if (tablaVariables.getSelectedColumn() == 0 && tablaVariables.getSelectedRow() == 0) {
-                final JTextField text = (JTextField) tablaVariables.getComponentAt(evt.getX(), evt.getY());
-                String actualVar = text.getText();
-                Metodo metodo = null;
+        if (evt.getClickCount() == 2)
+        {
+        if (tablaVariables.getSelectedColumn() == 0 && tablaVariables.getSelectedRow() == 0) {
+        final JTextField text = (JTextField) tablaVariables.getComponentAt(evt.getX(), evt.getY());
+        String actualVar = text.getText();
+        Metodo metodo = null;
 
-                for (Metodo metodo1 : metodosGuardados)
-                {
-                    if (metodo1.getRetorno().getNombreVariable().equals(actualVar))
-                    {
-                        metodo = (Metodo) metodo1.clone();
-                    }
-                }
-                
+        for (Metodo metodo1 : metodosGuardados)
+        {
+        if (metodo1.getRetorno().getNombreVariable().equals(actualVar))
+        {
+        metodo = (Metodo) metodo1.clone();
+        }
+        }
 
-                text.getDocument().addDocumentListener(new DocumentListener() {
 
-                    public void insertUpdate(DocumentEvent e) {
-                        System.out.println("camio");
-                    }
+        text.getDocument().addDocumentListener(new DocumentListener() {
 
-                    public void removeUpdate(DocumentEvent e) {
-                    }
+        public void insertUpdate(DocumentEvent e) {
+        System.out.println("camio");
+        }
 
-                    public void changedUpdate(DocumentEvent e) {
+        public void removeUpdate(DocumentEvent e) {
+        }
 
-                        System.out.println("cambio!");
-                        
-                    }
-                });
-            } else {
-                evt.consume();
-            }
+        public void changedUpdate(DocumentEvent e) {
+
+        System.out.println("cambio!");
+
+        }
+        });
+        } else {
+        evt.consume();
+        }
 
         }
         }
 
-        */
+         */
     }//GEN-LAST:event_tablaVariablesMouseClicked
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox assertCondiciones;
@@ -1282,6 +1279,17 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
     private javax.swing.JTable tablaVariables;
     private javax.swing.JButton volver;
     // End of variables declaration//GEN-END:variables
+
+    public String cadenaSinBlancos(String sTexto) {
+        String sCadenaSinBlancos = "";
+
+        for (int x = 0; x < sTexto.length(); x++) {
+            if (sTexto.charAt(x) != ' ') {
+                sCadenaSinBlancos += sTexto.charAt(x);
+            }
+        }
+        return sCadenaSinBlancos;
+    }
 
     public ArrayList<File> getJarsRuta() {
         return this.inicio.getJarsRuta();
@@ -1385,7 +1393,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
             //quede aqui
             if (clazz.getSimpleName().equals("String")) {
                 argumento.setValor("\"" + tablaArgumentos.getValueAt(cont - 1, 1).toString() + "\"");
-            } else if(clazz.getSimpleName().equals("char")){
+            } else if (clazz.getSimpleName().equals("char")) {
                 argumento.setValor("\'" + tablaArgumentos.getValueAt(cont - 1, 1).toString() + "\'");
             } else {
                 argumento.setValor(tablaArgumentos.getValueAt(cont - 1, 1).toString());

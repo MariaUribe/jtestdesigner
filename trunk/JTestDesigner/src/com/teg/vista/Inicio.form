@@ -11,20 +11,14 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="seleccionarJar">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/com/teg/recursos/imagenes/open.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Abrir"/>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="seleccionarJarActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="menuJavaDoc">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Cargar Javadoc"/>
-                <Property name="enabled" type="boolean" value="false"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuJavaDocActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>
