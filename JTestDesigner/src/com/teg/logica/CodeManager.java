@@ -5,6 +5,7 @@ import com.teg.dominio.CasoPrueba;
 import com.teg.dominio.EscenarioPrueba;
 import com.teg.dominio.ClaseTest;
 import com.teg.dominio.Metodo;
+import java.io.File;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
@@ -21,6 +22,23 @@ public class CodeManager {
      * Constructor por defecto
      */
     public CodeManager() {
+    }
+
+    public String getRuta(CasoPrueba casoPrueba, String nombreClase){
+        String ruta = "";
+
+        File casoPruebaFile = new File(System.getProperty("user.home") +
+                System.getProperty("file.separator") + casoPrueba.getNombre() +
+                System.getProperty("file.separator"));
+
+        File metadata = new File(casoPruebaFile.getPath() +
+                System.getProperty("file.separator") + "metadata" +
+                System.getProperty("file.separator"));
+
+        ruta = metadata.getPath() +
+                System.getProperty("file.separator") + nombreClase + ".xml";
+
+        return ruta;
     }
 
     public boolean escenarioVacio(EscenarioPrueba escenario){

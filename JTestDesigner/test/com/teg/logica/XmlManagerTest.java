@@ -46,7 +46,7 @@ public class XmlManagerTest {
         miMetodo1.setRetorno(new Retorno("java.lang.String", "String", "var1"));
 
         ArrayList<Argumento> argumentos = new ArrayList<Argumento>();
-        argumentos.add(new Argumento("arg1", "java.lang.String", "var"));
+        argumentos.add(new Argumento("arg1", "java.lang.String", "var", false));
         miMetodo1.setArgumentos(argumentos);
         miMetodo1.setAssertLinea(new AssertTest("miMensaje", "var1.nombre", "assertEquals"));
 
@@ -56,8 +56,8 @@ public class XmlManagerTest {
         miMetodo2.setRetorno(new Retorno("Object", "Object", "var2"));
 
         ArrayList<Argumento> argumentos2 = new ArrayList<Argumento>();
-        argumentos2.add(new Argumento("arg1", "java.lang.String", "var"));
-        argumentos2.add(new Argumento("arg2", "java.lang.Integer", "var"));
+        argumentos2.add(new Argumento("arg1", "java.lang.String", "var", false));
+        argumentos2.add(new Argumento("arg2", "java.lang.Integer", "var", false));
         miMetodo2.setArgumentos(argumentos2);
         miMetodo2.setAssertLinea(new AssertTest("miMensaje2", "var1", "assertEquals"));
 

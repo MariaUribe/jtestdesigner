@@ -73,6 +73,7 @@ public class XmlManager {
         try {
             InputStream is = new FileInputStream(rutaCasoPrueba);
             casoPrueba = (CasoPrueba) xstream.fromXML(is);
+            System.out.println("valor del XML " + casoPrueba.getNombre());
         } catch (FileNotFoundException ex) {
             Logger.getLogger(XmlManager.class.getName()).log(Level.SEVERE, null, ex);
         }
