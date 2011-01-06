@@ -292,16 +292,22 @@ public class InstanceListForm extends javax.swing.JFrame {
                 if (argumento.getName().equals("java.util.LinkedHashMap"))
                 {
                     mapa = new LinkedHashMap();
+
                 }
             }
         }
     }
 
-    public ArrayList getObjectList()
-    {
-        coleccion = new ArrayList();
-        return null;
-    }
+  public void getColeccion(){
+
+      listWidget.setColeccion(coleccion);
+  }
+
+  public void getMap(){
+      listWidget.setMapa(mapa);
+  }
+
+
 
     
 
