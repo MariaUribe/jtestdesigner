@@ -40,4 +40,32 @@ public class WidgetObjectLoading {
 
     }
 
+    /**
+     * @return the coleccion
+     */
+    public Collection getColeccion() {
+        return coleccion;
+    }
+
+    /**
+     * @param coleccion the coleccion to set
+     */
+    public void setColeccion(Collection coleccion) {
+        this.coleccion = coleccion;
+    }
+
+    /**
+     * @return the mapa
+     */
+    public Map getMapa() {
+        return mapa;
+    }
+
+    /**
+     * @param mapa the mapa to set
+     */
+    public void setMapa(Map mapa) {
+        this.mapa = mapa;
+    }
+
 }
