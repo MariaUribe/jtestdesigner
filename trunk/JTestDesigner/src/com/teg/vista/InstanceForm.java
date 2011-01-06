@@ -11,6 +11,7 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -48,6 +49,8 @@ public class InstanceForm extends javax.swing.JFrame {
     private SwingMetawidget metawidget = new SwingMetawidget();
     private javax.swing.JButton buttonCancelar;
     private javax.swing.JButton buttonGuardar;
+    private javax.swing.JButton buttonCrearOtro;
+
     private javax.swing.JPanel buttonPanel;
     private javax.swing.JPanel objectContainer;
     private Method metodoActual;
@@ -114,6 +117,7 @@ public class InstanceForm extends javax.swing.JFrame {
         buttonPanel = new javax.swing.JPanel();
         buttonCancelar = new javax.swing.JButton();
         buttonGuardar = new javax.swing.JButton();
+        buttonCrearOtro = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
 
@@ -133,6 +137,14 @@ public class InstanceForm extends javax.swing.JFrame {
 
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonGuardarActionPerformed(evt);
+            }
+        });
+
+        buttonCrearOtro.setText("Crear otro Objeto");
+        buttonCrearOtro.addActionListener(new java.awt.event.ActionListener() {
+
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonCrearOtroActionPerformed(evt);
             }
         });
 
@@ -156,6 +168,14 @@ public class InstanceForm extends javax.swing.JFrame {
         ArrayList<Object> objects = new ArrayList<Object>();
         objects.add(metawidget.getToInspect());
         listWidget.setObject(objects);
+
+    }
+
+    private void buttonCrearOtroActionPerformed(java.awt.event.ActionEvent evt)
+    {
+        buttonPanel.removeAll();
+        InspectObject(instanceInspect);
+
 
     }
 
