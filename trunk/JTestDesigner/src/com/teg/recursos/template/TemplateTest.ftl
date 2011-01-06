@@ -2,16 +2,28 @@ package ${claseTemplate.nombrePaquete};
 
 import import org.testng.*;
 import static org.junit.Assert.*;
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 
 /**
  * Test Class ${claseTemplate.nombreClase?cap_first}.java
  *
  * version 1.0
  */
-public class ${claseTemplate.nombreClase?cap_first}Test {
+public class ${claseTemplate.nombreClase?cap_first} {
 
 <#list clasesNoRepetidas as clase>
 	private ${clase.nombre} ${clase.simpleNombre?uncap_first};
+</#list>
+<#list casoPrueba.escenariosPrueba as esc>
+    <#list esc.metodos as metodo>
+        <#list metodo.argumentos as arg>
+        <#assign esComplejo = arg.complejo />
+        <#if esComplejo>
+        private ${arg.tipo} ${arg.valor} = null;
+        </#if>
+        </#list>
+    </#list>
 </#list>
 
 	public ${claseTemplate.nombreClase}Test() {
@@ -22,6 +34,26 @@ public class ${claseTemplate.nombreClase?cap_first}Test {
 	<#list clasesNoRepetidas as clase>
 		${clase.simpleNombre?uncap_first} = new ${clase.nombre}();
 	</#list>
+        <#list casoPrueba.escenariosPrueba as esc>
+            <#list esc.metodos as metodo>
+                <#list metodo.argumentos as arg>
+                <#assign esComplejo = arg.complejo />
+                <#assign nombreClase = arg.tipo />
+                <#assign miCount = 1 />
+                <#if esComplejo>
+                try {
+                <#assign ruta = codeManager.getRuta(casoPrueba, nombreClase) />
+                    InputStream is = new FileInputStream("${ruta}");
+                    ${arg.valor} = (${arg.tipo}) xstream.fromXML(is);
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(${claseTemplate.nombreClase?cap_first}.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                </#if>
+                </#list>
+            </#list>
+        </#list>
+
+            System.out.println("valor del XML " + casoPrueba.getNombre());
 	}
 
 	@After

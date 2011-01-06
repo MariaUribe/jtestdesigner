@@ -1,26 +1,27 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
  * InstanceForm.java
  *
  * Created on Dec 6, 2010, 11:59:28 PM
  */
-
 package com.teg.vista;
 
+import com.teg.logica.ClassLoading;
 import com.teg.logica.WidgetObjectLoading;
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.jdesktop.beansbinding.AutoBinding.UpdateStrategy;
 import org.metawidget.inspector.composite.CompositeInspector;
 import org.metawidget.inspector.composite.CompositeInspectorConfig;
@@ -34,6 +35,7 @@ import org.metawidget.swing.layout.TabbedPaneLayoutDecorator;
 import org.metawidget.swing.layout.TabbedPaneLayoutDecoratorConfig;
 import org.metawidget.swing.widgetprocessor.binding.beansbinding.BeansBindingProcessor;
 import org.metawidget.swing.widgetprocessor.binding.beansbinding.BeansBindingProcessorConfig;
+
 /**
  *
  * @author danielbello
@@ -41,46 +43,36 @@ import org.metawidget.swing.widgetprocessor.binding.beansbinding.BeansBindingPro
 public class InstanceForm extends javax.swing.JFrame {
 
     private Object instanceInspect;
-
     private String path;
-
     private WidgetObjectLoading listWidget = new WidgetObjectLoading();
-
     private SwingMetawidget metawidget = new SwingMetawidget();
-    
     private javax.swing.JButton buttonCancelar;
-
     private javax.swing.JButton buttonGuardar;
-
     private javax.swing.JPanel buttonPanel;
-
     private javax.swing.JPanel objectContainer;
-
     private Method metodoActual;
-
+    private Inicio inicio;
+    private String casoPrueba;
+    private ClassLoading classLoader = new ClassLoading();
 
     /** Creates new form InstanceForm */
-    public InstanceForm(Object instance, String dataPath,WidgetObjectLoading listObject, Method metodo) {
+    public InstanceForm(Object instance, String dataPath, WidgetObjectLoading listObject, Method metodo, Inicio inicio) {
         listWidget = listObject;
         instanceInspect = instance;
         path = dataPath;
         metodoActual = metodo;
+        this.inicio = inicio;
+        this.casoPrueba = inicio.getNombreCasoPrueba();
         initComponents2();
-      
-        
-        
+
     }
 
-    public InstanceForm()
-    {
+    public InstanceForm() {
         initComponents();
     }
 
-  
-
-    public void InspectObject(Object instance)
-    {
-       // asociamor al metawidget la instancia que va a manejar el "binding" de propiedades
+    public void InspectObject(Object instance) {
+        // asociamor al metawidget la instancia que va a manejar el "binding" de propiedades
         metawidget.addWidgetProcessor(new BeansBindingProcessor(
                 new BeansBindingProcessorConfig().setUpdateStrategy(UpdateStrategy.READ_WRITE)));
 
@@ -93,7 +85,7 @@ public class InstanceForm extends javax.swing.JFrame {
             System.out.println(file.exists());
 
             xmlConfig.setInputStream(new FileInputStream(new File(path + "/" + "metawidgetData.xml")));
-           PropertyTypeInspector inspector = new PropertyTypeInspector();
+            PropertyTypeInspector inspector = new PropertyTypeInspector();
 
             inspectorConfig = new CompositeInspectorConfig().setInspectors(
                     new Inspector[]{new PropertyTypeInspector(),
@@ -160,8 +152,7 @@ public class InstanceForm extends javax.swing.JFrame {
         setSize(500, 500);
     }
 
-    public void  getObject()
-    {
+    public void getObject() {
         ArrayList<Object> objects = new ArrayList<Object>();
         objects.add(metawidget.getToInspect());
         listWidget.setObject(objects);
@@ -171,23 +162,57 @@ public class InstanceForm extends javax.swing.JFrame {
     private void buttonGuardarActionPerformed(java.awt.event.ActionEvent evt) {
 
         Object instance = metawidget.getToInspect();
-       
 
-        // y aqui en vez de imprimir por consola podrian serializar el
-        // objeto con Xstream para utilizarlo como datos de entrada
-        // en la prueba
-       
+        Class claseJar = this.loadClass(instance.getClass());
+
+        this.crearXML(claseJar, instance, casoPrueba);
+
         this.dispose();
+    }
 
+    public void crearXML(Class claseJar, Object instance, String casoPrueba) {
+        try {
+            File casoPruebaFile = new File(System.getProperty("user.home")
+                    + System.getProperty("file.separator") + casoPrueba
+                    + System.getProperty("file.separator"));
 
-       
+            File metadata = new File(casoPruebaFile.getPath()
+                    + System.getProperty("file.separator") + "metadata"
+                    + System.getProperty("file.separator"));
+
+            FileOutputStream fos = new FileOutputStream(metadata.getPath()
+                    + System.getProperty("file.separator") + claseJar.getName() + ".xml");
+
+            XStream xstream = new XStream(new DomDriver());
+
+            xstream.alias("" + claseJar.getName() + "", instance.getClass());
+            xstream.toXML(instance, fos);
+            
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(InstanceForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public Class loadClass(Class miClase) {
+        Class claseJar = null;
+
+        for (File jar : inicio.getJarsRuta()) {
+            try {
+                claseJar = classLoader.getClassDetail(jar.getPath(), miClase.getName());
+            } catch (MalformedURLException ex) {
+                Logger.getLogger(InstanceForm.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(InstanceForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        return claseJar;
     }
 
     private void buttonCancelarActionPerformed(java.awt.event.ActionEvent evt) {
     }
 
-    public void Visible()
-    {
+    public void Visible() {
 
         Type[] genericParameterTypes = metodoActual.getGenericParameterTypes();
 
@@ -232,13 +257,9 @@ public class InstanceForm extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
     /**
-    * @param args the command line arguments
-    */
-   
-
+     * @param args the command line arguments
+     */
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
-
 }

@@ -22,7 +22,7 @@ public class ClassLoading {
     public static List getClassesNamesInPackage(String jarName, String packageName) {
         ArrayList classes = new ArrayList();
         packageName = packageName.replaceAll("\\.", "/");
-        
+
         try {
             JarInputStream jarFile = new JarInputStream(new FileInputStream(jarName));
             JarEntry jarEntry;
@@ -66,6 +66,27 @@ public class ClassLoading {
         return clasesJar;
     }
 
+    @SuppressWarnings("static-access")
+    public Class getClassDetail(String jar, String miClase) throws MalformedURLException, ClassNotFoundException {
+        File jarFile = new File(jar);
+
+        URL[] urls = {jarFile.toURL()};
+        URLClassLoader loader = new URLClassLoader(urls);
+        Class clazz = null;
+
+        List clases = this.getClassesNamesInPackage(jar, "");
+
+        for (int i = 0; i < clases.size(); i++) {
+            int pointIndex = clases.get(i).toString().lastIndexOf(".");
+            String nombreClase = (String) clases.get(i).toString().subSequence(0, pointIndex);
+
+            if (nombreClase.equals(miClase)) {
+                clazz = loader.loadClass(nombreClase);
+            }
+        }
+        return clazz;
+    }
+
     public void printMembers(Member[] mbrs, String s) {
         System.out.format("%s:%n", s);
         for (Member mbr : mbrs) {
@@ -75,7 +96,7 @@ public class ClassLoading {
                 System.out.format("  %s%n", ((Constructor) mbr).toGenericString());
             } else if (mbr instanceof Method) {
                 System.out.format("  %s%n", ((Method) mbr).toGenericString());
-            } 
+            }
         }
         if (mbrs.length == 0) {
             System.out.format("  -- No %s --%n", s);
