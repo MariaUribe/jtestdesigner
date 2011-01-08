@@ -1,6 +1,7 @@
 package ${claseTemplate.nombrePaquete};
 
-import import org.testng.*;
+import org.testng.*;
+import org.testng.annotations.*;
 import static org.junit.Assert.*;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
@@ -34,26 +35,29 @@ public class ${claseTemplate.nombreClase?cap_first} {
 	<#list clasesNoRepetidas as clase>
 		${clase.simpleNombre?uncap_first} = new ${clase.nombre}();
 	</#list>
-        <#list casoPrueba.escenariosPrueba as esc>
-            <#list esc.metodos as metodo>
-                <#list metodo.argumentos as arg>
-                <#assign esComplejo = arg.complejo />
-                <#assign nombreClase = arg.tipo />
-                <#assign miCount = 1 />
-                <#if esComplejo>
-                try {
-                <#assign ruta = codeManager.getRuta(casoPrueba, nombreClase) />
-                    InputStream is = new FileInputStream("${ruta}");
-                    ${arg.valor} = (${arg.tipo}) xstream.fromXML(is);
-                } catch (FileNotFoundException ex) {
-                    Logger.getLogger(${claseTemplate.nombreClase?cap_first}.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                </#if>
-                </#list>
+    <#assign miCount = 0 />
+    <#list casoPrueba.escenariosPrueba as esc>
+        <#list esc.metodos as metodo>
+            <#list metodo.argumentos as arg>
+            <#assign esComplejo = arg.complejo />
+            <#assign nombreClase = arg.tipo />
+            <#if esComplejo>
+            <#assign miCount = miCount + 1 />
+            <#if miCount==1 >
+            try {
+            </#if>
+            <#assign ruta = codeManager.getRuta(casoPrueba, nombreClase) />
+                InputStream is = new FileInputStream("${ruta}");
+                ${arg.valor} = (${arg.tipo}) xstream.fromXML(is);
+            <#if miCount==1 >
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(${claseTemplate.nombreClase?cap_first}.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            </#if>
+            </#if>
             </#list>
         </#list>
-
-            System.out.println("valor del XML " + casoPrueba.getNombre());
+    </#list>
 	}
 
 	@After
