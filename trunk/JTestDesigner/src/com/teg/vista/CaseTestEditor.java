@@ -1024,7 +1024,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
         Method method = this.getActualMethod();
         varId++;
 
-        Metodo metodoActual = this.agregarMetodo(method, varId, this.getActualAssert(), this.getArgumentos(method));
+        Metodo metodoActual = this.agregarMetodo(method, varId, this.getActualAssert(method), this.getArgumentos(method));
 
         tablaVariables.removeAll();
         tablaMetodosRegistrados.removeAll();
@@ -1378,16 +1378,19 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
         return condicion;
     }
 
-    public AssertTest getActualAssert() {
+    public AssertTest getActualAssert(Method method) {
         AssertTest assertion = null;
-        if (this.assertVariables.getSelectedItem() != null) {
-            assertion = new AssertTest(assertMensaje.getText(),
-                    assertVariables.getSelectedItem().toString(),
-                    setAssertCondition(assertCondiciones.getSelectedItem().toString()));
 
-            if (assertCondiciones.getSelectedItem().toString().equals("Igual")
-                    || assertCondiciones.getSelectedItem().equals("No Igual")) {
-                assertion.setValorAssert(resultadoAssert.getText());
+        if (!method.getReturnType().getName().equals("void")) {
+            if (this.assertVariables.getSelectedItem() != null) {
+                assertion = new AssertTest(assertMensaje.getText(),
+                        assertVariables.getSelectedItem().toString(),
+                        setAssertCondition(assertCondiciones.getSelectedItem().toString()));
+
+                if (assertCondiciones.getSelectedItem().toString().equals("Igual")
+                        || assertCondiciones.getSelectedItem().equals("No Igual")) {
+                    assertion.setValorAssert(resultadoAssert.getText());
+                }
             }
         }
         return assertion;

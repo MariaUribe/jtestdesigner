@@ -5,6 +5,7 @@ import org.testng.annotations.*;
 import static org.junit.Assert.*;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
+import java.io.FileInputStream;
 
 /**
  * Test Class ${claseTemplate.nombreClase?cap_first}.java
@@ -17,14 +18,14 @@ public class ${claseTemplate.nombreClase?cap_first} {
 	private ${clase.nombre} ${clase.simpleNombre?uncap_first};
 </#list>
 <#list casoPrueba.escenariosPrueba as esc>
-    <#list esc.metodos as metodo>
-        <#list metodo.argumentos as arg>
-        <#assign esComplejo = arg.complejo />
-        <#if esComplejo>
-        private ${arg.tipo} ${arg.valor} = null;
-        </#if>
-        </#list>
+<#list esc.metodos as metodo>
+    <#list metodo.argumentos as arg>
+    <#assign esComplejo = arg.complejo />
+    <#if esComplejo>
+    private ${arg.tipo} ${arg.valor} = null;
+    </#if>
     </#list>
+</#list>
 </#list>
 
 	public ${claseTemplate.nombreClase}Test() {
@@ -35,30 +36,32 @@ public class ${claseTemplate.nombreClase?cap_first} {
 	<#list clasesNoRepetidas as clase>
 		${clase.simpleNombre?uncap_first} = new ${clase.nombre}();
 	</#list>
-    <#assign miCount = 0 />
-    <#list casoPrueba.escenariosPrueba as esc>
-        <#list esc.metodos as metodo>
-            <#list metodo.argumentos as arg>
-            <#assign esComplejo = arg.complejo />
-            <#assign nombreClase = arg.tipo />
-            <#if esComplejo>
-            <#assign miCount = miCount + 1 />
-            <#if miCount==1 >
-            try {
-            </#if>
-            <#assign ruta = codeManager.getRuta(casoPrueba, nombreClase) />
-                InputStream is = new FileInputStream("${ruta}");
-                ${arg.valor} = (${arg.tipo}) xstream.fromXML(is);
-            <#if miCount==1 >
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(${claseTemplate.nombreClase?cap_first}.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            </#if>
-            </#if>
-            </#list>
-        </#list>
+<#assign miCount = 0 />
+<#assign imprimir = false />
+<#list casoPrueba.escenariosPrueba as esc>
+<#list esc.metodos as metodo>
+    <#list metodo.argumentos as arg>
+    <#assign esComplejo = arg.complejo />
+    <#assign nombreClase = arg.tipo />
+        <#if esComplejo>
+        <#assign miCount = miCount + 1 />
+        <#if miCount==1 ><#assign imprimir = true />
+        try {
+        </#if>
+        <#assign ruta = codeManager.getRuta(casoPrueba, nombreClase) />
+        InputStream is${miCount} = new FileInputStream("${ruta}");
+        ${arg.valor} = (${arg.tipo}) xstream.fromXML(is${miCount});
+
+        </#if>
     </#list>
-	}
+</#list>
+</#list>
+    <#if imprimir>
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(${claseTemplate.nombreClase?cap_first}.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    </#if>
+    }
 
 	@After
 	public void tearDown() {
