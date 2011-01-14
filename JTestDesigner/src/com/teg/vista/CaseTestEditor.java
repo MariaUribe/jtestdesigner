@@ -29,7 +29,6 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Type;
 
 import java.util.ArrayList;
 import java.util.Vector;
@@ -46,8 +45,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import javax.swing.table.DefaultTableModel;
@@ -70,8 +67,6 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
     private static int varId = 0;
     private static int objId = 0;
     private Class tipoVarRetorno;
-    private String valorFila;
-    private String nombreVarActual;
     private String actualNameMethod;
     private JTable tablaArgumentos;
     private Inicio inicio;
@@ -1071,6 +1066,8 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
     private void generarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generarActionPerformed
 
         XmlManager xmlManager = new XmlManager();
+
+        xmlManager.setInicio(inicio);
 
         xmlManager.crearCasoPrueba(this.inicio.getNombreCasoPrueba(), escenariosPrueba);
 
