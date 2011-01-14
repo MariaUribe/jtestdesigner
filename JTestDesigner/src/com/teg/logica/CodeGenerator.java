@@ -114,14 +114,10 @@ public class CodeGenerator {
     public Class setClassPath(String rutaClass, ArrayList<File> jars, String nombreCaso) {
         Class clase = null;
         File classFile = new File(rutaClass);
-        //File classFile = new File("/Users/maya/otroCaso/classes/");
-        //File jar = new File("/Users/maya/Documents/TEG/Librerías/Prueba.jar");
-
+        
         try {
             URL url = classFile.toURI().toURL();
-            //URL jarUrl = jar.toURI().toURL();
-            //URL[] urls = new URL[]{url, jarUrl};
-
+            
             ArrayList<URL> arrayUrls = new ArrayList<URL>();
 
             arrayUrls.add(url);
@@ -137,8 +133,7 @@ public class CodeGenerator {
 
             URLClassLoader cl = new URLClassLoader(urls);
             clase = cl.loadClass("com.codeGeneratorTest." + nombreCaso);
-            //clase = cl.loadClass("com.codeGeneratorTest.otroCaso");
-
+            
             ClassPathHandler cph = new ClassPathHandler();
             cph.addURLs(urls);
 
@@ -167,7 +162,6 @@ public class CodeGenerator {
 
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
         int compilationResult = compiler.run(null, null, null, "-classpath", jarList, rutaJava, "-d", rutaClass);
-        //int compilationResult = compiler.run(null, null, null, "-classpath", "/Users/maya/Documents/TEG/Librerías/Prueba.jar", "/Users/maya/otroCaso/src/com/codeGeneratorTest/otroCaso.java", "-d", "/Users/maya/otroCaso/classes");
 
         if (compilationResult == 0) {
             System.out.println("Compilation is successful");
@@ -187,7 +181,6 @@ public class CodeGenerator {
         testNG.setTestClasses(classes);
         testNG.addListener(tla);
         testNG.setOutputDirectory(rutaResultados);
-        //testNG.setOutputDirectory("/Users/maya/otroCaso/resultados");
         testNG.run();
     }
 
