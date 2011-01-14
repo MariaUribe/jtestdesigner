@@ -1,0 +1,10 @@
+<testng-results>
+  <reporter-output>
+  </reporter-output>
+  <suite name="Command line suite" duration-ms="1" started-at="2011-01-11T23:16:10Z" finished-at="2011-01-11T23:16:10Z">
+    <groups>
+    </groups>
+    <test name="Command line test" duration-ms="1" started-at="2011-01-11T23:16:10Z" finished-at="2011-01-11T23:16:10Z">
+    </test>
+  </suite>
+</testng-results>

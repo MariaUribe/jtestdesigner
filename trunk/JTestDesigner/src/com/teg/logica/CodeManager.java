@@ -24,33 +24,53 @@ public class CodeManager {
     public CodeManager() {
     }
 
-    public String getRuta(CasoPrueba casoPrueba, String nombreClase){
+    public boolean esClaseEnvolvente(String tipoDato) {
+        boolean esEnvolvente = false;
+        String[] datoArray = tipoDato.split("\\.");
+        String java = datoArray[0];
+        String lang = datoArray[1];
+        String nombre = datoArray[2];
+
+        if (java.equals("java") && lang.equals("lang")) {
+            if (nombre.equals("Integer") || nombre.equals("Byte") || nombre.equals("Float")
+                    || nombre.equals("Character") || nombre.equals("Long") || nombre.equals("Short")
+                    || nombre.equals("Double") || nombre.equals("Boolean") || nombre.equals("Void")) {
+                esEnvolvente = true;
+            }
+        } else {
+            esEnvolvente = false;
+        }
+
+        return esEnvolvente;
+    }
+
+    public String getRuta(CasoPrueba casoPrueba, String nombreClase) {
         String ruta = "";
 
-        File casoPruebaFile = new File(System.getProperty("user.home") +
-                System.getProperty("file.separator") + casoPrueba.getNombre() +
-                System.getProperty("file.separator"));
+        File casoPruebaFile = new File(System.getProperty("user.home")
+                + System.getProperty("file.separator") + casoPrueba.getNombre()
+                + System.getProperty("file.separator"));
 
-        File metadata = new File(casoPruebaFile.getPath() +
-                System.getProperty("file.separator") + "metadata" +
-                System.getProperty("file.separator"));
+        File metadata = new File(casoPruebaFile.getPath()
+                + System.getProperty("file.separator") + "metadata"
+                + System.getProperty("file.separator"));
 
-        ruta = metadata.getPath() +
-                System.getProperty("file.separator") + nombreClase + ".xml";
+        ruta = metadata.getPath()
+                + System.getProperty("file.separator") + nombreClase + ".xml";
 
         return ruta;
     }
 
-    public boolean escenarioVacio(EscenarioPrueba escenario){
+    public boolean escenarioVacio(EscenarioPrueba escenario) {
         boolean isEmpty = true;
 
         ArrayList<ClaseTest> excepciones = this.generarExcepciones(escenario);
-        if(excepciones.isEmpty()){
+        if (excepciones.isEmpty()) {
             isEmpty = true;
         } else {
             isEmpty = false;
         }
-        
+
         return isEmpty;
     }
 

@@ -233,8 +233,23 @@ public class MenuPrincipal extends javax.swing.JInternalFrame {
                 + System.getProperty("file.separator") + "metawidgetData"
                 + System.getProperty("file.separator"));
         metawidget.mkdir();
-        inicio.setDirectorioCasoPrueba(metawidget);
 
+        File lib = new File(miCasoPrueba.getPath()
+                + System.getProperty("file.separator") + "lib"
+                + System.getProperty("file.separator"));
+        lib.mkdir();
+
+        File classes = new File(miCasoPrueba.getPath()
+                + System.getProperty("file.separator") + "classes"
+                + System.getProperty("file.separator"));
+        classes.mkdir();
+
+        File resultados = new File(miCasoPrueba.getPath()
+                + System.getProperty("file.separator") + "resultados"
+                + System.getProperty("file.separator"));
+        resultados.mkdir();
+
+        inicio.setDirectorioCasoPrueba(metawidget);
 
     }
 

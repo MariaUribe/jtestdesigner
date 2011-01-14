@@ -7,6 +7,7 @@ import com.teg.dominio.CasoPrueba;
 import com.teg.dominio.ClaseTest;
 import com.teg.dominio.Metodo;
 import com.teg.dominio.Retorno;
+import com.teg.vista.Inicio;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import java.io.File;
@@ -24,6 +25,11 @@ import java.util.logging.Logger;
  * @author maya
  */
 public class XmlManager {
+
+    private Inicio inicio;
+
+    public XmlManager() {
+    }
 
     /**
      * Metodo para crear el XML que contendra la informacion del caso de prueba
@@ -89,6 +95,7 @@ public class XmlManager {
 
         CasoPrueba casoPrueba = new CasoPrueba(nombreCasoPrueba);
         CodeGenerator cg = new CodeGenerator();
+        cg.setInicio(getInicio());
 
         File casoPruebaFile = new File(System.getProperty("user.home") +
                 System.getProperty("file.separator") + nombreCasoPrueba +
@@ -159,5 +166,19 @@ public class XmlManager {
 
         return casoPrueba;
 
+    }
+
+    /**
+     * @return the inicio
+     */
+    public Inicio getInicio() {
+        return inicio;
+    }
+
+    /**
+     * @param inicio the inicio to set
+     */
+    public void setInicio(Inicio inicio) {
+        this.inicio = inicio;
     }
 }
