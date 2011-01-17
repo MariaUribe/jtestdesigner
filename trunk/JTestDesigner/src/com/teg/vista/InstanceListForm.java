@@ -8,15 +8,21 @@
  *
  * Created on 20/12/2010, 11:25:35 AM
  */
-
 package com.teg.vista;
 
 import com.teg.logica.WidgetObjectLoading;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import org.jdom.*;
 import java.awt.FlowLayout;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -27,8 +33,11 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.TreeSet;
-import javax.swing.JTextField;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.jdesktop.beansbinding.AutoBinding.UpdateStrategy;
+
+import org.jdom.JDOMException;
 import org.metawidget.inspector.composite.CompositeInspector;
 import org.metawidget.inspector.composite.CompositeInspectorConfig;
 import org.metawidget.inspector.iface.Inspector;
@@ -42,7 +51,6 @@ import org.metawidget.swing.layout.TabbedPaneLayoutDecoratorConfig;
 import org.metawidget.swing.widgetprocessor.binding.beansbinding.BeansBindingProcessor;
 import org.metawidget.swing.widgetprocessor.binding.beansbinding.BeansBindingProcessorConfig;
 
-
 /**
  *
  * @author Daniel
@@ -50,93 +58,101 @@ import org.metawidget.swing.widgetprocessor.binding.beansbinding.BeansBindingPro
 public class InstanceListForm extends javax.swing.JFrame {
 
     private ArrayList<Object> instanceInspect;
-
-
     private String path;
-
     private WidgetObjectLoading listWidget = new WidgetObjectLoading();
-
-    private SwingMetawidget metawidget = new SwingMetawidget();
-
+    private SwingMetawidget metawidget;
     private Collection coleccion;
-
-    private Map mapa;
-
+    private org.jdom.Document docXml;
     private Class clase;
-
     private Object instanceClass;
-
     private javax.swing.JButton buttonCancelar;
-
     private javax.swing.JButton buttonGuardar;
-
     private javax.swing.JButton buttonCrearOtro;
-
     private javax.swing.JPanel buttonPanel;
+    private javax.swing.JPanel objectContainer = new javax.swing.JPanel();  
+    private javax.swing.JTextField textField = new javax.swing.JTextField();
+    private javax.swing.JSpinner spinnerField = new javax.swing.JSpinner();
 
-    private javax.swing.JPanel objectContainer;
+    public InstanceListForm(ArrayList<Object> instance, String dataPath, WidgetObjectLoading listObject, Class argumento) {
+        instanceInspect = instance;
 
-    private javax.swing.JPanel keyContainer;
+        path = dataPath;
 
-    private javax.swing.JTextField keyField;
+
+
+        listWidget = listObject;
+
+        clase = argumento;
+        
+
+        boolean initCollection = false;
+
+        String argumentoClase = argumentoColeccion(clase);
+
+        if (argumentoClase.equals("java.util.List")) {
+            obtenerListaColeccion(clase);
+            instanceClass = instance.get(0);
+           
+        } else {
+            if (argumentoClase.equals("ava.util.Set")) {
+                obtenerSetColeccion(clase);
+                instanceClass = instance.get(0);
+               
+            } else {
+                if (argumentoClase.equals("java.util.Queue")) {
+                    obtenerQueueColeccion(clase);
+                    instanceClass = instance.get(0);
+                
+                } /*else {
+                    if (argumentoClase.equals("java.util.Map")) {
+                        obtenerMapaColeccion(clase);
+                        if (!instance.get(1).getClass().getName().equals("java.lang.Integer") &&
+                                !instance.get(1).getClass().getName().equals("java.lang.String"))
+                        instanceClass = instance.get(1);
+
+
+                    }
+                }*/
+            }
+        }
+
+            initComponentsCollection();
+        
+    }
 
     /** Creates new form InstanceListForm */
     public InstanceListForm() {
         initComponents();
     }
 
-    public InstanceListForm(ArrayList<Object> instance, String dataPath,WidgetObjectLoading listObject, Class argumento)
-    {
-        instanceInspect = instance;
+    InstanceListForm(Class clasePrimitiva, WidgetObjectLoading listWidget, Class argumento) {
 
-        path = dataPath;
 
-        listWidget = listObject;
-
-        clase = argumento;
-
-        String argumentoClase = argumentoColeccion(clase);
-
-        if (argumentoClase.equals("java.util.List"))
+        clase = clasePrimitiva;
+        if (clase.getName().equals("java.lang.Integer"))
         {
-            obtenerListaColeccion(clase);
-            instanceClass = instance.get(0);
+            initComponentsInteger();
         }
         else
         {
-            if (argumentoClase.equals("ava.util.Set"))
+            if (clase.getName().equals("java.lang.String"))
             {
-                obtenerSetColeccion(clase);
-                instanceClass = instance.get(0);
-            }
-            else
-            {
-                if (argumentoClase.equals("java.util.Queue"))
-                {
-                    obtenerQueueColeccion(clase);
-                    instanceClass = instance.get(0);
-                }
-                else
-                {
-                    if (argumentoClase.equals("java.util.Map"))
-                    {
-                        obtenerMapaColeccion(clase);
-                        instanceClass = instance.get(1);
-                        initComponentsMap();
-
-                    }
-                }
+                initComponentesString();
             }
         }
 
-       
-       
 
     }
 
-    public void InspectObject(Object instance)
-    {
-       // asociamor al metawidget la instancia que va a manejar el "binding" de propiedades
+    
+
+    
+
+    public void InspectObject(Object instance) {
+
+        metawidget = new SwingMetawidget();
+      
+        // asociamor al metawidget la instancia que va a manejar el "binding" de propiedades
         metawidget.addWidgetProcessor(new BeansBindingProcessor(
                 new BeansBindingProcessorConfig().setUpdateStrategy(UpdateStrategy.READ_WRITE)));
 
@@ -146,10 +162,10 @@ public class InstanceListForm extends javax.swing.JFrame {
             XmlInspectorConfig xmlConfig = new XmlInspectorConfig();
 
             File file = new File(path + "/" + "metawidgetData.xml");
-            System.out.println(file.exists());
+            
 
             xmlConfig.setInputStream(new FileInputStream(new File(path + "/" + "metawidgetData.xml")));
-           PropertyTypeInspector inspector = new PropertyTypeInspector();
+            PropertyTypeInspector inspector = new PropertyTypeInspector();
 
             inspectorConfig = new CompositeInspectorConfig().setInspectors(
                     new Inspector[]{new PropertyTypeInspector(),
@@ -169,158 +185,25 @@ public class InstanceListForm extends javax.swing.JFrame {
 
         metawidget.setToInspect(instance);
 
+        
+
         objectContainer.add(metawidget);
+        objectContainer.validate();
+
+        //this.repaint();
+
+        
     }
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
-     */
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
-
-        pack();
-    }// </editor-fold>//GEN-END:initComponents
-
-    /**
-    * @param args the command line arguments
-    */
-    public void visibles()
+    private void initComponentsInteger()
     {
-
-        InspectObject(instanceInspect);
-        this.setVisible(true);
-
-    }
-
-
-
-    private String argumentoColeccion(Class clase)
-    {
-        String claseColeccion = "";
-        Class[] interfaces = clase.getInterfaces();
-
-                            for (Class class1 : interfaces) {
-                                if (class1.getName().equals("java.util.Map")
-                                        || class1.getName().equals("java.util.Set")
-                                        || class1.getName().equals("java.util.List")
-                                        || class1.getName().equals("java.util.Queue")) {
-                                    claseColeccion = class1.getName();
-                                }
-                            }
-        return claseColeccion;
-    }
-
-    private void obtenerListaColeccion(Class argumento)
-    {
-
-        if (argumento.getName().equals("java.util.ArrayList"))
-        {
-            coleccion = new ArrayList();
-        }
-        else
-        {
-            if (argumento.getName().equals("java.util.LinkedList"))
-            {
-                coleccion = new LinkedList();
-            }
-        }
-
-
-
-    }
-
-    private void obtenerSetColeccion(Class argumento)
-    {
-
-         if (argumento.getName().equals("java.util.HashSet"))
-                {
-                    coleccion = new HashSet();
-                }
-                else
-                {
-                    if (argumento.getName().equals("java.util.TreeSet"))
-                    {
-                        coleccion = new TreeSet();
-                    }
-                    else
-                    {
-                        if (argumento.getName().equals("java.util.LinkedHashSet"))
-                        {
-                            coleccion = new LinkedHashSet();
-                        }
-                    }
-                }
-
-    }
-
-    private void obtenerQueueColeccion(Class argumento)
-    {
-
-    }
-
-    private void obtenerMapaColeccion(Class argumento)
-    {
-        if (argumento.getName().equals("java.util.HashMap"))
-        {
-
-            mapa = new HashMap();
-
-        }
-        else
-        {
-            if (argumento.getName().equals("java.util.TreeMap"))
-            {
-                mapa = new TreeMap();
-            }
-            else {
-                if (argumento.getName().equals("java.util.LinkedHashMap"))
-                {
-                    mapa = new LinkedHashMap();
-
-                }
-            }
-        }
-    }
-
-  public void getColeccion(){
-
-      listWidget.setColeccion(coleccion);
-  }
-
-  public void getMap(){
-      listWidget.setMapa(mapa);
-  }
-
-
-
-    
-
-
-    private void initComponentsMap() {
-
-        objectContainer = new javax.swing.JPanel();
         buttonPanel = new javax.swing.JPanel();
-        keyContainer = new javax.swing.JPanel();
         buttonCancelar = new javax.swing.JButton();
         buttonGuardar = new javax.swing.JButton();
         buttonCrearOtro = new javax.swing.JButton();
-        keyField = new javax.swing.JTextField();
+        spinnerField.setSize(new Dimension(100,20));
+        spinnerField.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
 
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
 
@@ -339,7 +222,7 @@ public class InstanceListForm extends javax.swing.JFrame {
         buttonGuardar.addActionListener(new java.awt.event.ActionListener() {
 
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonGuardarMapaActionPerformed(evt);
+                buttonGuardarActionPerformed(evt);
             }
         });
 
@@ -347,33 +230,95 @@ public class InstanceListForm extends javax.swing.JFrame {
         buttonCrearOtro.addActionListener(new java.awt.event.ActionListener() {
 
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonCrearOtroMapaActionPerformed(evt);
+
+                    buttonCrearOtroActionPerformed(evt);
+
             }
         });
 
         setLayout(new BorderLayout());
 
         objectContainer.setLayout(new BorderLayout());
+        objectContainer.add(textField);
 
         buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-        keyContainer.setLayout(new FlowLayout(FlowLayout.RIGHT));
         buttonPanel.add(buttonGuardar);
         buttonPanel.add(buttonCancelar);
         buttonPanel.add(buttonCrearOtro);
-        keyContainer.add(keyField);
 
-        getContentPane().add(keyContainer, BorderLayout.NORTH);
+
         getContentPane().add(objectContainer, BorderLayout.CENTER);
         getContentPane().add(buttonPanel, BorderLayout.SOUTH);
 
         setTitle("Editor de Objetos Genericos");
-        setSize(500, 500);
-        
+        setSize(300, 300);
+
     }
 
-    private void initComponentsCollection()
-    {
-        objectContainer = new javax.swing.JPanel();
+    private void initComponentesString() {
+
+         buttonPanel = new javax.swing.JPanel();
+        buttonCancelar = new javax.swing.JButton();
+        buttonGuardar = new javax.swing.JButton();
+        buttonCrearOtro = new javax.swing.JButton();
+        textField.setSize(new Dimension(100, 20));
+        textField.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        textField.setLocation(50, 50);
+
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
+
+        buttonPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        objectContainer.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        buttonCancelar.setText("Cancelar");
+        buttonCancelar.addActionListener(new java.awt.event.ActionListener() {
+
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonCancelarActionPerformed(evt);
+            }
+        });
+
+        buttonGuardar.setText("Guardar");
+        buttonGuardar.addActionListener(new java.awt.event.ActionListener() {
+
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonGuardarActionPerformed(evt);
+            }
+        });
+
+        buttonCrearOtro.setText("Crear otro Objeto");
+        buttonCrearOtro.addActionListener(new java.awt.event.ActionListener() {
+
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+              
+                    buttonCrearOtroActionPerformed(evt);
+               
+            }
+        });
+
+        setLayout(new BorderLayout());
+
+        objectContainer.setLayout(new BorderLayout());
+        objectContainer.add(textField);
+
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        buttonPanel.add(buttonGuardar);
+        buttonPanel.add(buttonCancelar);
+        buttonPanel.add(buttonCrearOtro);
+
+
+        getContentPane().add(objectContainer, BorderLayout.CENTER);
+        getContentPane().add(buttonPanel, BorderLayout.SOUTH);
+
+        setTitle("Editor de Objetos Genericos");
+        setSize(300, 300);
+
+
+    }
+   
+    private void initComponentsCollection() {
+        //objectContainer = new javax.swing.JPanel();
         buttonPanel = new javax.swing.JPanel();
         buttonCancelar = new javax.swing.JButton();
         buttonGuardar = new javax.swing.JButton();
@@ -404,7 +349,9 @@ public class InstanceListForm extends javax.swing.JFrame {
         buttonCrearOtro.addActionListener(new java.awt.event.ActionListener() {
 
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonCrearOtroActionPerformed(evt);
+              
+                    buttonCrearOtroActionPerformed(evt);
+               
             }
         });
 
@@ -423,27 +370,223 @@ public class InstanceListForm extends javax.swing.JFrame {
 
         setTitle("Editor de Objetos Genericos");
         setSize(500, 500);
+
+       
     }
 
-    private void buttonCrearOtroActionPerformed(java.awt.event.ActionEvent evt)
-    {
+     private void buttonCrearOtroActionPerformed(java.awt.event.ActionEvent evt)  {
+
+         coleccion.add(metawidget.getToInspect());
+        
         objectContainer.removeAll();
-        InspectObject(instanceInspect);
+
+        //metawidget.removeAll();
+
+       Object newObject = getNuevoObjeto();
+
+        this.repaint();
+
+        //initComponentsCollection();
+        //metawidget.setToInspect(newObject);
+
+        //objectContainer.add(metawidget);
+
+        /*Label label = new Label();
+       label.setText("olaa");
+       label.setSize(new Dimension(50,50));
+       label.setLocation(50, 50);*/
+       InspectObject(newObject);
+
+        
+
+    }
+
+     public void Visible() {
+
+
+        InspectObject(instanceClass);
+        this.setVisible(true);
+
+    }
+
+    private String argumentoColeccion(Class clase) {
+        String claseColeccion = "";
+        Class[] interfaces = clase.getInterfaces();
+
+        for (Class class1 : interfaces) {
+            if (class1.getName().equals("java.util.Map")
+                    || class1.getName().equals("java.util.Set")
+                    || class1.getName().equals("java.util.List")
+                    || class1.getName().equals("java.util.Queue")) {
+                claseColeccion = class1.getName();
+            }
+        }
+        return claseColeccion;
+    }
+
+    private void obtenerListaColeccion(Class argumento) {
+
+        if (argumento.getName().equals("java.util.ArrayList")) {
+            coleccion = new ArrayList();
+        } else {
+            if (argumento.getName().equals("java.util.LinkedList")) {
+                coleccion = new LinkedList();
+            }
+        }
+
 
 
     }
 
-     private void buttonCrearOtroMapaActionPerformed(java.awt.event.ActionEvent evt)
+    
+
+  
+
+     
+     private void buttonCancelarActionPerformed(java.awt.event.ActionEvent evt){
+
+     }
+
+    private void obtenerSetColeccion(Class argumento) {
+
+        if (argumento.getName().equals("java.util.HashSet")) {
+            coleccion = new HashSet();
+        } else {
+            if (argumento.getName().equals("java.util.TreeSet")) {
+                coleccion = new TreeSet();
+            } else {
+                if (argumento.getName().equals("java.util.LinkedHashSet")) {
+                    coleccion = new LinkedHashSet();
+                }
+            }
+        }
+
+    }
+
+    private void obtenerQueueColeccion(Class argumento) {
+    }
+
+    /*private void obtenerMapaColeccion(Class argumento) {
+        if (argumento.getName().equals("java.util.HashMap")) {
+
+            mapa = new HashMap();
+
+        } else {
+            if (argumento.getName().equals("java.util.TreeMap")) {
+                mapa = new TreeMap();
+            } else {
+                if (argumento.getName().equals("java.util.LinkedHashMap")) {
+                    mapa = new LinkedHashMap();
+
+                }
+            }
+        }
+    }*/
+
+    public void getColeccion() {
+
+        listWidget.setColeccion(coleccion);
+    }
+
+   
+
+    public void instanciaCampos(Object claseInstancia) throws InstantiationException, IllegalAccessException, NoSuchMethodException, IllegalArgumentException, InvocationTargetException {
+
+
+        Field[] campos = claseInstancia.getClass().getDeclaredFields();
+        for (Field field : campos) {
+            boolean flag = false;
+            if (!field.getType().isPrimitive() &&
+                    !field.getType().getName().equals("java.lang.String")
+                    && !field.getType().getName().equals("java.lang.Integer")) {
+                Method[] metodosClase = claseInstancia.getClass().getDeclaredMethods();
+                for (Method method : metodosClase) {
+                    if (method.getParameterTypes().length > 0) {
+                        if (method.getParameterTypes()[0].getName().equals(field.getType().getName())
+                                && (method.getReturnType().getName() == null ? "void" == null : method.getReturnType().getName().equals("void"))
+                                && flag == false) {
+                            Object campoInstance = field.getType().newInstance();
+                            claseInstancia.getClass().getMethod(method.getName(), field.getType()).invoke(claseInstancia, campoInstance);
+                            flag = true;
+                            instanciaCampos(campoInstance);
+
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public Object instanciarNuevoObjeto(Class clase) throws InstantiationException, IllegalAccessException, NoSuchMethodException, IllegalArgumentException, InvocationTargetException, JDOMException, IOException {
+
+
+
+        Object claseInstancia = clase.newInstance();
+
+        Field[] campos = clase.getDeclaredFields();
+        for (Field field : campos) {
+            boolean flag = false;
+            if (!field.getType().isPrimitive() &&
+                    !field.getType().getName().equals("java.lang.String")
+                    && !field.getType().getName().equals("java.lang.Integer")) {
+                Method[] metodosClase = clase.getDeclaredMethods();
+                for (Method method : metodosClase) {
+
+                    if (method.getParameterTypes().length == 1
+                            && method.getParameterTypes()[0].getName().equals(field.getType().getName())
+                            && (method.getReturnType().getName() == null ? "void" == null : method.getReturnType().getName().equals("void"))
+                            && flag == false) {
+                        Object campoInstance = field.getType().newInstance();
+                        clase.getMethod(method.getName(), field.getType()).invoke(claseInstancia, campoInstance);
+                        flag = true;
+                        instanciaCampos(campoInstance);
+                    }
+                }
+            }
+        }
+
+
+        return claseInstancia;
+    }
+
+    private Object getNuevoObjeto()
     {
-        objectContainer.removeAll();
-        InspectObject(instanceInspect);
+        Class nuevaClase = instanceClass.getClass();
 
+        Object nuevoObjeto = null;
+        try {
+            nuevoObjeto = instanciarNuevoObjeto(nuevaClase);
+        } catch (InstantiationException ex) {
+            Logger.getLogger(InstanceListForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(InstanceListForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchMethodException ex) {
+            Logger.getLogger(InstanceListForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalArgumentException ex) {
+            Logger.getLogger(InstanceListForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InvocationTargetException ex) {
+            Logger.getLogger(InstanceListForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JDOMException ex) {
+            Logger.getLogger(InstanceListForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(InstanceListForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
+        return nuevoObjeto;
     }
+    
+
+   
+
+
+
+   
 
     private void buttonGuardarActionPerformed(java.awt.event.ActionEvent evt) {
 
-        Object instanceInspected = metawidget.getToInspect();
+         coleccion.add(metawidget.getToInspect());
+        //Object instanceInspected = metawidget.getToInspect();
+        listWidget.setColeccion(coleccion);
 
 
         // y aqui en vez de imprimir por consola podrian serializar el
@@ -456,26 +599,38 @@ public class InstanceListForm extends javax.swing.JFrame {
 
     }
 
-     private void buttonGuardarMapaActionPerformed(java.awt.event.ActionEvent evt) {
+  
 
-        Object instanceInspected = metawidget.getToInspect();
+    
+    /** This method is called from within the constructor to
+     * initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is
+     * always regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
 
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        // y aqui en vez de imprimir por consola podrian serializar el
-        // objeto con Xstream para utilizarlo como datos de entrada
-        // en la prueba
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+        );
 
-        this.dispose();
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
 
-
-
-    }
-
-
-    private void buttonCancelarActionPerformed(java.awt.event.ActionEvent evt) {
-    }
-
+    /**
+     * @param args the command line arguments
+     */
+   
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
-
 }

@@ -19,6 +19,8 @@ public class WidgetObjectLoading {
     private ArrayList<Object> object;
     private Collection coleccion;
     private Map mapa;
+    private boolean guardado;
+    private Object[] arreglo;
 
 
     /**
@@ -67,5 +69,36 @@ public class WidgetObjectLoading {
     public void setMapa(Map mapa) {
         this.mapa = mapa;
     }
+
+    /**
+     * @return the guardado
+     */
+    public boolean getGuardado() {
+        return guardado;
+    }
+
+    /**
+     * @param guardado the guardado to set
+     */
+    public void setGuardado(boolean guardado) {
+        this.guardado = guardado;
+    }
+
+    /**
+     * @return the arreglo
+     */
+    public Object[] getArreglo() {
+        return arreglo;
+    }
+
+    /**
+     * @param arreglo the arreglo to set
+     */
+    public void setArreglo(Object[] arreglo) {
+        this.arreglo = arreglo;
+    }
+
+    
+    
 
 }

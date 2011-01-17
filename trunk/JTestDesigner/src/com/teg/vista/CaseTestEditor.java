@@ -29,6 +29,8 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 
 import java.util.ArrayList;
 import java.util.Vector;
@@ -57,7 +59,7 @@ import javax.swing.table.TableCellEditor;
 public class CaseTestEditor extends javax.swing.JInternalFrame {
 
     private ArrayList<Method> metodos = new ArrayList<Method>();
-    private ArrayList<Object> objetosGuardados = new ArrayList<Object>();
+   
     private ArrayList<DefaultCellEditor> editores = new ArrayList<DefaultCellEditor>();
     private ArrayList<Metodo> metodosGuardados = new ArrayList<Metodo>();
     private ArrayList<VariableInstancia> variablesGuardadas = new ArrayList<VariableInstancia>();
@@ -98,9 +100,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
         this.inicio.setLocation(x, y);
     }
 
-    public void addObject(Object instance) {
-        objetosGuardados.add(instance);
-    }
+    
 
     public void cargarMetodos() {
         ArrayList<Object> metodosLista = new ArrayList<Object>();
@@ -207,6 +207,23 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                 }
             }
         }
+
+        for (VariableInstancia variable : variablesGuardadas) {
+            Class variableClase = variable.getInstancia().getClass();
+
+            if (variableClase.getName().equals(argument.getName())) {
+                combo.addItem(variable.getNombreVariable());
+            } else {
+                if (variableClase.getDeclaredFields().length != 0) {
+                    for (Field field : variableClase.getDeclaredFields()) {
+                        if (field.getType().getName().equals(argument.getName())) {
+                            combo.addItem(variable.getNombreVariable()
+                                    + "." + field.getName());
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public void deshabilitarMetodos() {
@@ -283,6 +300,22 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                 }
             }
         }
+
+        for (VariableInstancia variable : variablesGuardadas)
+        {
+            Class variableClase = variable.getInstancia().getClass();
+
+            if (variableClase.getDeclaredFields().length != 0)
+            {
+                for (Field field : variableClase.getDeclaredFields())
+                {
+                    if (field.getType().getName().equals(parameter.getName())) {
+                        combo.addItem(variable.getNombreVariable() +
+                                "." + field.getName());
+                    }
+                }
+            }
+        }
     }
 
     public void deepInstantiate(Object claseInstancia, Element raiz) throws InstantiationException, IllegalAccessException, NoSuchMethodException, IllegalArgumentException, InvocationTargetException {
@@ -294,8 +327,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
         Field[] campos = claseInstancia.getClass().getDeclaredFields();
         for (Field field : campos) {
             boolean flag = false;
-            if (!field.getType().isPrimitive() && !field.getType().getName().equals("java.lang.String")
-                    && !field.getType().getName().equals("java.lang.Integer")) {
+            if (!field.getType().isPrimitive() && verificarDato(field.getType()) == false) {
                 Method[] metodosClase = claseInstancia.getClass().getDeclaredMethods();
                 for (Method method : metodosClase) {
                     if (method.getParameterTypes().length > 0) {
@@ -359,8 +391,11 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
         return entidad;
     }
 
+
+
     public Object getInstance(Class clase) throws InstantiationException, IllegalAccessException, NoSuchMethodException, IllegalArgumentException, InvocationTargetException, JDOMException, IOException {
 
+        
         Element raiz = new Element("inspection-result");
         raiz.addContent("\n");
         Element entidad = getEntity(clase);
@@ -371,8 +406,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
         Field[] campos = clase.getDeclaredFields();
         for (Field field : campos) {
             boolean flag = false;
-            if (!field.getType().isPrimitive() && !field.getType().getName().equals("java.lang.String")
-                    && !field.getType().getName().equals("java.lang.Integer")) {
+            if (!field.getType().isPrimitive() && verificarDato(field.getType()) == false) {
                 Method[] metodosClase = clase.getDeclaredMethods();
                 for (Method method : metodosClase) {
 
@@ -392,6 +426,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
         crearMetawidgetMetadata(docXml);
 
         return claseInstancia;
+        
     }
 
     public void addInstanceVariable() {
@@ -425,10 +460,10 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
         Class[] interfaces = clase.getInterfaces();
 
         for (Class class1 : interfaces) {
-            if (class1.getName().equals("java.util.map")
-                    || class1.getName().equals("java.util.set")
-                    || class1.getName().equals("java.util.list")
-                    || class1.getName().equals("java.util.queue")) {
+            if (class1.getName().equals("java.util.Map")
+                    || class1.getName().equals("java.util.Set")
+                    || class1.getName().equals("java.util.List")
+                    || class1.getName().equals("java.util.Queue")) {
                 esColeccion = true;
             }
         }
@@ -443,6 +478,43 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
         }
         return esArreglo;
     }
+
+    private String argumentoColeccion(Class clase) {
+        String claseColeccion = "";
+        Class[] interfaces = clase.getInterfaces();
+
+        for (Class class1 : interfaces) {
+            if (class1.getName().equals("java.util.Map")
+                    || class1.getName().equals("java.util.Set")
+                    || class1.getName().equals("java.util.List")
+                    || class1.getName().equals("java.util.Queue")) {
+                claseColeccion = class1.getName();
+            }
+        }
+        return claseColeccion;
+    }
+
+   private boolean verificarDato(Class clase)
+    {
+
+        boolean verificado = false;
+        if (clase.getName().equals("java.lang.Integer") ||
+                clase.getName().equals("java.lang.Float") ||
+                clase.getName().equals("java.lang.Double") ||
+                clase.getName().equals("java.lang.Long") ||
+                clase.getName().equals("java.lang.Short") ||
+                clase.getName().equals("java.lang.Byte") ||
+                clase.getName().equals("java.lang.Character") ||
+                
+            
+            clase.getName().equals("java.lang.String") ||
+            clase.getName().equals("java.lang.Boolean"))
+            verificado = true;
+
+        return verificado;
+    }
+
+
 
     @SuppressWarnings("empty-statement")
     public void cargarTablaArgumentos(String text) {
@@ -460,9 +532,9 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
         final Class[] parameterTypes = metodo.getParameterTypes();
 
         for (int i = 0; i < parameterTypes.length; i++) {
-
+            final int pos = i;
             final Class argument = parameterTypes[i];
-            if (!argument.isPrimitive()) {
+            if (!argument.isPrimitive() && verificarDato(argument) == false) {
                 final JComboBox combo = new JComboBox();
                 cargarComboItemsComplex(combo, argument);
                 combo.addPopupMenuListener(new PopupMenuListener() {
@@ -471,52 +543,249 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                     }
 
                     public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+
                         String item = "";
+
                         JComboBox cb = new JComboBox();
+
                         cb = (JComboBox) e.getSource();
 
                         item = cb.getSelectedItem().toString();
+
                         String[] cadena = item.split(":");
+
                         if (cadena[0].equals("Crear")) {
 
                             boolean esColeccion = false;
+
                             boolean esArreglo = false;
 
+                            listWidget.setGuardado(false);
+
+                            Method metodo = getActualMethod();
+
+                            ArrayList<Class> classInstances;
+
+                            ArrayList<Object> objectInstances;
+
                             esColeccion = argumentoEsColeccion(argument);
+
                             esArreglo = argumentoEsArreglo(argument);
 
+                            Class clase;
+
+
                             if (esColeccion == true) {
-                            } else {
-                                if (esArreglo == true) {
-                                } else {
+
+                                classInstances = new ArrayList<Class>();
+                                
+                                objectInstances = new ArrayList<Object>();
+
+                                Type[] genericParameterTypes = metodo.getGenericParameterTypes();
+
+                                Type genericParameterType = genericParameterTypes[pos];
+
+                                if (genericParameterType instanceof ParameterizedType) {
+
+                                    ParameterizedType aType = (ParameterizedType) genericParameterType;
+
+                                    Type[] parameterArgTypes = aType.getActualTypeArguments();
+
+                                    for (Type parameterArgType : parameterArgTypes) {
+
+                                        Class parameterArgClass = (Class) parameterArgType;
+
+                                        classInstances.add(parameterArgClass);
+
+                                    }
+                                }
+
+                                if (classInstances.size() == 2) {
+                                    
                                     try {
+                                        InstanceMapForm editorMap = new InstanceMapForm(classInstances, inicio.getDirectorioCasoPrueba().getPath(), listWidget, argument);
+                                    } catch (InstantiationException ex) {
+                                        Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
+                                    }
+
+                                    
+
+                                }
+                                else {
+
+                                    if (classInstances.size() == 1){
+
+                                        if (!classInstances.get(0).isPrimitive()
+                                        && verificarDato(classInstances.get(0)) == false)
+                                        {
+                                            try {
+                                                Object claseInstance = getInstance(classInstances.get(0));
+                                                objectInstances.add(claseInstance);
+
+                                                if (listWidget.getColeccion() != null
+                                                        || listWidget.getMapa() != null) {
+                                                    listWidget.getColeccion().clear();
+                                                    listWidget.getMapa().clear();
+                                                }
+
+                                                InstanceListForm editorList = new InstanceListForm(objectInstances, inicio.getDirectorioCasoPrueba().getPath(), listWidget, argument);
+
+                                                editorList.Visible();
+
+                                                editorList.getColeccion();
+                                            } catch (InstantiationException ex) {
+                                                Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
+                                            } catch (IllegalAccessException ex) {
+                                                Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
+                                            } catch (NoSuchMethodException ex) {
+                                                Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
+                                            } catch (IllegalArgumentException ex) {
+                                                Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
+                                            } catch (InvocationTargetException ex) {
+                                                Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
+                                            } catch (JDOMException ex) {
+                                                Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
+                                            } catch (IOException ex) {
+                                                Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
+                                            }
+
+                                        }else{
+
+                                            if (classInstances.get(0).isPrimitive()
+                                                    || verificarDato(classInstances.get(0)) == true) {
+
+                                                InstanceListForm editorList = new InstanceListForm(classInstances.get(0), listWidget, argument);
+
+                                            }
+                                        }
+                                    }
+                                }
+
+
+                                    
+
+                                    
+                                    
+                                
+
+                             
+                                    
+                               
+
+                                /*String interfazArgumento = argumentoColeccion(argument);
+
+                                if (interfazArgumento.equals("java.util.List") ||
+                                        interfazArgumento.equals("java.util.Set") ||
+                                        interfazArgumento.equals("java.util.Queue")) {
+
+                                    if (listWidget.getGuardado() == true)
+
+                                    editorList.getColeccion();
+                                }
+                                else {
+
+                                    if (interfazArgumento.equals("java.util.Map")) {
+
+                                        if (listWidget.getGuardado() == true)
+
+                                        editorList.getMap();
+
+                                    }
+
+                                }*/
+
+                            } else {
+
+                                if (esArreglo == true) {
+
+                                    Class arrayComponente = argument.getComponentType();
+
+                                    if (!arrayComponente.isPrimitive() &&
+                                            verificarDato(arrayComponente) == false)
+                                    {
+                                        InstanceArrayForm editorArray = new InstanceArrayForm(arrayComponente,inicio.getDirectorioCasoPrueba().getPath(), listWidget, inicio);
+
+                                    }
+                                    else
+                                    {
+                                        try {
+                                            Object object = getInstance(arrayComponente);
+                                            InstanceArrayForm editorArray = new InstanceArrayForm(object, inicio.getDirectorioCasoPrueba().getPath(), listWidget, inicio);
+                                        } catch (InstantiationException ex) {
+                                            Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
+                                        } catch (IllegalAccessException ex) {
+                                            Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
+                                        } catch (NoSuchMethodException ex) {
+                                            Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
+                                        } catch (IllegalArgumentException ex) {
+                                            Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
+                                        } catch (InvocationTargetException ex) {
+                                            Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
+                                        } catch (JDOMException ex) {
+                                            Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
+                                        } catch (IOException ex) {
+                                            Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
+                                        }
+                                    }
+
+
+                                }
+                                else {
+
+                                    try {
+
+                                        if (listWidget.getObject() != null)
+                                        {
+                                            listWidget.getObject().clear();
+                                        }
+
                                         Object claseInstance = getInstance(argument);
 
-                                        Method metodo = getActualMethod();
+                                        
 
                                         InstanceForm editorInstance = new InstanceForm(claseInstance, inicio.getDirectorioCasoPrueba().getPath(), listWidget, metodo, inicio);
 
                                         editorInstance.Visible();
+
+                                       
+
                                         editorInstance.getObject();
+                                            System.out.println(listWidget.getObject());
+
                                         addInstanceVariable();
 
-                                        listWidget.getObject().clear();
+                                        
+                                    
 
                                         int row = tablaVariables.getSelectedRow();
 
-                                    } catch (JDOMException ex) {
+                                    }
+                                    catch (JDOMException ex) {
+
                                         Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
+
                                     } catch (IOException ex) {
+
                                         Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
+
                                     } catch (InstantiationException ex) {
+
                                         Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
+
                                     } catch (IllegalAccessException ex) {
+
                                         Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
+
                                     } catch (NoSuchMethodException ex) {
+
                                         Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
+
                                     } catch (IllegalArgumentException ex) {
+
                                         Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
+
                                     } catch (InvocationTargetException ex) {
+
                                         Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
                                     }
                                 }
