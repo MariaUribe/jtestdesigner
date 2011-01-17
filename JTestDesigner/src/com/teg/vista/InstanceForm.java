@@ -10,8 +10,9 @@ import com.teg.logica.WidgetObjectLoading;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
+import java.awt.Label;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -140,7 +141,7 @@ public class InstanceForm extends javax.swing.JFrame {
             }
         });
 
-        buttonCrearOtro.setText("Crear otro Objeto");
+        buttonCrearOtro.setText("Crear");
         buttonCrearOtro.addActionListener(new java.awt.event.ActionListener() {
 
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -152,9 +153,10 @@ public class InstanceForm extends javax.swing.JFrame {
 
         objectContainer.setLayout(new BorderLayout());
 
-        buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         buttonPanel.add(buttonGuardar);
         buttonPanel.add(buttonCancelar);
+        buttonPanel.add(buttonCrearOtro);
 
 
         getContentPane().add(objectContainer, BorderLayout.CENTER);
@@ -173,13 +175,25 @@ public class InstanceForm extends javax.swing.JFrame {
 
     private void buttonCrearOtroActionPerformed(java.awt.event.ActionEvent evt)
     {
-        buttonPanel.removeAll();
-        InspectObject(instanceInspect);
+       objectContainer.removeAll();
+       metawidget.removeAll();
+       this.repaint();
+       Label label = new Label();
+       label.setText("olaa");
+       label.setSize(new Dimension(50,50));
+       label.setLocation(50, 50);
+       objectContainer.add(label);
+       //InspectObject(instanceInspect);
+
+
+        
 
 
     }
 
     private void buttonGuardarActionPerformed(java.awt.event.ActionEvent evt) {
+
+        listWidget.setGuardado(true);
 
         Object instance = metawidget.getToInspect();
 
@@ -230,6 +244,7 @@ public class InstanceForm extends javax.swing.JFrame {
     }
 
     private void buttonCancelarActionPerformed(java.awt.event.ActionEvent evt) {
+        this.dispose();
     }
 
     public void Visible() {
@@ -262,7 +277,6 @@ public class InstanceForm extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Instance Editor");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        setSize(new java.awt.Dimension(500, 500));
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
