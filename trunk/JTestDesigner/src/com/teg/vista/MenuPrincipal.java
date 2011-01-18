@@ -7,8 +7,13 @@ package com.teg.vista;
 
 import java.awt.Dimension;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import org.testng.internal.Utils;
+import org.testng.reporters.TestHTMLReporter;
 
 /**
  *
@@ -214,14 +219,14 @@ public class MenuPrincipal extends javax.swing.JInternalFrame {
                 + System.getProperty("file.separator"));
         src.mkdir();
 
-        File com = new File(src.getPath() +
-                System.getProperty("file.separator") + "com" +
-                System.getProperty("file.separator"));
+        File com = new File(src.getPath()
+                + System.getProperty("file.separator") + "com"
+                + System.getProperty("file.separator"));
         com.mkdir();
 
-        File paquete = new File(com.getPath() +
-                System.getProperty("file.separator") + "codeGeneratorTest" +
-                System.getProperty("file.separator"));
+        File paquete = new File(com.getPath()
+                + System.getProperty("file.separator") + "codeGeneratorTest"
+                + System.getProperty("file.separator"));
         paquete.mkdir();
 
         File metadata = new File(miCasoPrueba.getPath()
@@ -249,6 +254,23 @@ public class MenuPrincipal extends javax.swing.JInternalFrame {
                 + System.getProperty("file.separator"));
         resultados.mkdir();
 
+        File pdf = new File(resultados.getPath()
+                + System.getProperty("file.separator") + "pdf"
+                + System.getProperty("file.separator"));
+        pdf.mkdir();
+
+        String cssContent = ".invocation-failed,  .test-failed  { background-color: #DD0000; } "
+                + ".invocation-percent, .test-percent { background-color: #006600; } "
+                + ".invocation-passed,  .test-passed  { background-color: #00AA00; } "
+                + ".invocation-skipped, .test-skipped { background-color: #CCCC00; } "
+                + ".main-page { "
+                + " font-size: x-large; "
+                + " }"
+                + " ;";
+
+        Utils.writeFile(resultados.getPath()
+                + System.getProperty("file.separator"), "my-testng.css", cssContent);
+        
         inicio.setDirectorioCasoPrueba(metawidget);
 
     }

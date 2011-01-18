@@ -2,6 +2,7 @@ package com.teg.logica;
 
 import com.teg.dominio.CasoPrueba;
 import com.teg.dominio.ClaseTemplate;
+import com.teg.reportes.ReporterManager;
 import com.teg.vista.Inicio;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -68,7 +69,7 @@ public class CodeGenerator {
 
             this.compileTest(jars, rutaJava, rutaClass);
             Class clase = this.setClassPath(rutaClass, jars, casoPrueba.getNombre());
-            this.runTest(clase, rutaResultados);
+            this.runTest(clase, rutaResultados, casoPrueba.getNombre());
 
         } catch (IOException ex) {
             Logger.getLogger(CodeGenerator.class.getName()).log(Level.SEVERE, null, ex);
@@ -114,10 +115,10 @@ public class CodeGenerator {
     public Class setClassPath(String rutaClass, ArrayList<File> jars, String nombreCaso) {
         Class clase = null;
         File classFile = new File(rutaClass);
-        
+
         try {
             URL url = classFile.toURI().toURL();
-            
+
             ArrayList<URL> arrayUrls = new ArrayList<URL>();
 
             arrayUrls.add(url);
@@ -133,7 +134,7 @@ public class CodeGenerator {
 
             URLClassLoader cl = new URLClassLoader(urls);
             clase = cl.loadClass("com.codeGeneratorTest." + nombreCaso);
-            
+
             ClassPathHandler cph = new ClassPathHandler();
             cph.addURLs(urls);
 
@@ -170,11 +171,9 @@ public class CodeGenerator {
         }
     }
 
-    public void runTest(Class clase, String rutaResultados) {
-
+    public void runTest(Class clase, String rutaResultados, String casoPrueba) {
 
         this.printActualClassPath();
-
         Class[] classes = {clase};
         TestListenerAdapter tla = new TestListenerAdapter();
         TestNG testNG = new TestNG();
@@ -182,6 +181,8 @@ public class CodeGenerator {
         testNG.addListener(tla);
         testNG.setOutputDirectory(rutaResultados);
         testNG.run();
+        this.generarReportePDF(casoPrueba);
+
     }
 
     public void printActualClassPath() {
@@ -247,6 +248,58 @@ public class CodeGenerator {
         rutaClass = resultados.getPath();
 
         return rutaClass;
+    }
+
+    public String getRutaPDF(String casoPrueba) {
+        String rutaPDF = "";
+
+        File casoPruebaFile = new File(System.getProperty("user.home")
+                + System.getProperty("file.separator") + casoPrueba
+                + System.getProperty("file.separator"));
+        File resultados = new File(casoPruebaFile.getPath()
+                + System.getProperty("file.separator") + "resultados"
+                + System.getProperty("file.separator"));
+        File pdf = new File(resultados.getPath()
+                + System.getProperty("file.separator") + "pdf"
+                + System.getProperty("file.separator"));
+
+        rutaPDF = pdf.getPath();
+
+        return rutaPDF;
+    }
+
+    public String getRutaReportes(String casoPrueba) {
+        String rutaReportes = "";
+
+        File casoPruebaFile = new File(System.getProperty("user.home")
+                + System.getProperty("file.separator") + casoPrueba
+                + System.getProperty("file.separator"));
+        File resultados = new File(casoPruebaFile.getPath()
+                + System.getProperty("file.separator") + "resultados"
+                + System.getProperty("file.separator"));
+        File command = new File(resultados.getPath()
+                + System.getProperty("file.separator") + "Command line suite"
+                + System.getProperty("file.separator"));
+
+        rutaReportes = command.getPath();
+
+        return rutaReportes;
+    }
+
+    public void generarReportePDF(String casoPrueba) {
+        ReporterManager rm = new ReporterManager();
+        String rutaCaso = this.getRutaReportes(casoPrueba);
+        String pdfOutfile = this.getRutaPDF(casoPrueba) + System.getProperty("file.separator") + casoPrueba + ".pdf";
+
+        ArrayList<String> rutasHTML = new ArrayList<String>();
+        //rutasHTML.add("/Users/maya/micaso/resultados/index.html");
+        //rutasHTML.add("/Users/maya/micaso/resultados/Command line suite/Command line test.html");
+        rutasHTML.add(rutaCaso + System.getProperty("file.separator") + "Command line test.html");
+        rutasHTML.add(rutaCaso + System.getProperty("file.separator") + "classes.html");
+        rutasHTML.add(rutaCaso + System.getProperty("file.separator") + "methods.html");
+        rutasHTML.add(rutaCaso + System.getProperty("file.separator") + "testng.xml.html");
+
+        rm.htmlToPdfConverter(rutasHTML, pdfOutfile, rutaCaso);
     }
 
     /**
