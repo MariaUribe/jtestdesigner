@@ -103,16 +103,9 @@ public class InstanceListForm extends javax.swing.JFrame {
                     obtenerQueueColeccion(clase);
                     instanceClass = instance.get(0);
                 
-                } /*else {
-                    if (argumentoClase.equals("java.util.Map")) {
-                        obtenerMapaColeccion(clase);
-                        if (!instance.get(1).getClass().getName().equals("java.lang.Integer") &&
-                                !instance.get(1).getClass().getName().equals("java.lang.String"))
-                        instanceClass = instance.get(1);
-
-
-                    }
-                }*/
+                
+                    
+                }
             }
         }
 
@@ -129,20 +122,33 @@ public class InstanceListForm extends javax.swing.JFrame {
 
 
         clase = clasePrimitiva;
-        if (clase.getName().equals("java.lang.Integer"))
-        {
-            initComponentsInteger();
-        }
-        else
-        {
-            if (clase.getName().equals("java.lang.String"))
-            {
-                initComponentesString();
-            }
-        }
 
-
+        initComponentesString();
+            
     }
+
+
+
+
+    private boolean verificarDato(Class clase) {
+
+        boolean verificado = false;
+        if (clase.getName().equals("java.lang.Integer")
+                || clase.getName().equals("java.lang.Float")
+                || clase.getName().equals("java.lang.Double")
+                || clase.getName().equals("java.lang.Long")
+                || clase.getName().equals("java.lang.Short")
+                || clase.getName().equals("java.lang.Byte")
+                || clase.getName().equals("java.lang.Character")
+                || clase.getName().equals("java.lang.String")
+                || clase.getName().equals("java.lang.Boolean")
+                || clase.isPrimitive() == true){
+            verificado = true;
+        }
+
+        return verificado;
+    }
+
 
     
 
@@ -195,65 +201,7 @@ public class InstanceListForm extends javax.swing.JFrame {
         
     }
 
-    private void initComponentsInteger()
-    {
-        buttonPanel = new javax.swing.JPanel();
-        buttonCancelar = new javax.swing.JButton();
-        buttonGuardar = new javax.swing.JButton();
-        buttonCrearOtro = new javax.swing.JButton();
-        spinnerField.setSize(new Dimension(100,20));
-        spinnerField.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
-
-        buttonPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        objectContainer.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        buttonCancelar.setText("Cancelar");
-        buttonCancelar.addActionListener(new java.awt.event.ActionListener() {
-
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonCancelarActionPerformed(evt);
-            }
-        });
-
-        buttonGuardar.setText("Guardar");
-        buttonGuardar.addActionListener(new java.awt.event.ActionListener() {
-
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonGuardarActionPerformed(evt);
-            }
-        });
-
-        buttonCrearOtro.setText("Crear otro Objeto");
-        buttonCrearOtro.addActionListener(new java.awt.event.ActionListener() {
-
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-
-                    buttonCrearOtroActionPerformed(evt);
-
-            }
-        });
-
-        setLayout(new BorderLayout());
-
-        objectContainer.setLayout(new BorderLayout());
-        objectContainer.add(textField);
-
-        buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-        buttonPanel.add(buttonGuardar);
-        buttonPanel.add(buttonCancelar);
-        buttonPanel.add(buttonCrearOtro);
-
-
-        getContentPane().add(objectContainer, BorderLayout.CENTER);
-        getContentPane().add(buttonPanel, BorderLayout.SOUTH);
-
-        setTitle("Editor de Objetos Genericos");
-        setSize(300, 300);
-
-    }
+    
 
     private void initComponentesString() {
 
@@ -283,7 +231,7 @@ public class InstanceListForm extends javax.swing.JFrame {
         buttonGuardar.addActionListener(new java.awt.event.ActionListener() {
 
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonGuardarActionPerformed(evt);
+                buttonGuardarStringActionPerformed(evt);
             }
         });
 
@@ -292,7 +240,7 @@ public class InstanceListForm extends javax.swing.JFrame {
 
             public void actionPerformed(java.awt.event.ActionEvent evt) {
               
-                    buttonCrearOtroActionPerformed(evt);
+                    buttonCrearOtroStringActionPerformed(evt);
                
             }
         });
@@ -374,30 +322,25 @@ public class InstanceListForm extends javax.swing.JFrame {
        
     }
 
+    private void buttonCrearOtroStringActionPerformed(java.awt.event.ActionEvent evt)  {
+
+        coleccion.add(textField.getText());
+
+        textField.setText("");
+    }
+
      private void buttonCrearOtroActionPerformed(java.awt.event.ActionEvent evt)  {
 
          coleccion.add(metawidget.getToInspect());
         
         objectContainer.removeAll();
 
-        //metawidget.removeAll();
-
        Object newObject = getNuevoObjeto();
 
         this.repaint();
 
-        //initComponentsCollection();
-        //metawidget.setToInspect(newObject);
-
-        //objectContainer.add(metawidget);
-
-        /*Label label = new Label();
-       label.setText("olaa");
-       label.setSize(new Dimension(50,50));
-       label.setLocation(50, 50);*/
        InspectObject(newObject);
-
-        
+      
 
     }
 
@@ -445,6 +388,7 @@ public class InstanceListForm extends javax.swing.JFrame {
      
      private void buttonCancelarActionPerformed(java.awt.event.ActionEvent evt){
 
+         this.dispose();
      }
 
     private void obtenerSetColeccion(Class argumento) {
@@ -574,28 +518,24 @@ public class InstanceListForm extends javax.swing.JFrame {
 
         return nuevoObjeto;
     }
-    
 
-   
+    private void buttonGuardarStringActionPerformed(java.awt.event.ActionEvent evt) {
 
+        coleccion.add(textField.getText());
 
+        listWidget.setColeccion(coleccion);
 
-   
+        this.dispose();
+    }
 
+       
     private void buttonGuardarActionPerformed(java.awt.event.ActionEvent evt) {
 
          coleccion.add(metawidget.getToInspect());
-        //Object instanceInspected = metawidget.getToInspect();
+        
         listWidget.setColeccion(coleccion);
 
-
-        // y aqui en vez de imprimir por consola podrian serializar el
-        // objeto con Xstream para utilizarlo como datos de entrada
-        // en la prueba
-
         this.dispose();
-
-
 
     }
 
