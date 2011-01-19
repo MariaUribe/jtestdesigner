@@ -98,8 +98,8 @@ public class InstanceMapForm extends javax.swing.JFrame {
                 || clase.getName().equals("java.lang.Byte")
                 || clase.getName().equals("java.lang.Character")
                 || clase.getName().equals("java.lang.String")
-                || clase.getName().equals("java.lang.Boolean")
-                || clase.isPrimitive() == true){
+                || clase.getName().equals("java.lang.Boolean"))
+                {
             verificado = true;
         }
 
@@ -235,6 +235,11 @@ public class InstanceMapForm extends javax.swing.JFrame {
 
     }
 
+    public void getMapa(){
+
+        listWidget.setMapa(mapa);
+    }
+
     private void addValueField(){
 
         valueField = new javax.swing.JTextField();
@@ -311,9 +316,7 @@ public class InstanceMapForm extends javax.swing.JFrame {
 
             mapa.put(keyField.getText(), valueField.getText());
 
-            keyField.setText("");
-
-            valueField.setText("");
+            
 
         } else {
 
@@ -321,15 +324,7 @@ public class InstanceMapForm extends javax.swing.JFrame {
 
                 mapa.put(metawidget.getToInspect(), valueField.getText());
 
-                panelKey.removeAll();
-
-                Object object = getNuevoObjeto(instanceInspect.get(0));
-
-                valueField.setText("");
-
-                this.repaint();
-
-                InspectObject(object, panelKey);
+               
 
             } else {
 
@@ -337,17 +332,7 @@ public class InstanceMapForm extends javax.swing.JFrame {
 
                     mapa.put(metawidget.getToInspect(), secondMetawidget.getToInspect());
 
-                    panelValue.removeAll();
-
-                    panelKey.removeAll();
-
-                    Object firstObj = getNuevoObjeto(instanceInspect.get(0));
-
-                    Object secondObj = getNuevoObjeto(instanceInspect.get(1));
-
-                    InspectObject(firstObj, panelKey);
-
-                    InspectObject(secondObj, panelValue);
+                    
 
                 } else {
 
@@ -355,33 +340,13 @@ public class InstanceMapForm extends javax.swing.JFrame {
 
                         mapa.put(metawidget.getToInspect(), secondMetawidget.getToInspect());
 
-                        panelValue.removeAll();
-
-                        panelKey.removeAll();
-
-                        Object firstObj = getNuevoObjeto(instanceInspect.get(0));
-
-                        Object secondObj = getNuevoObjeto(instanceInspect.get(1));
-
-                        InspectObject(firstObj, panelKey);
-
-                        InspectObject(secondObj, panelValue);
+                        
 
                     } else {
 
                         if (caso == 5) {
 
-                            mapa.put(keyField.getText(), metawidget.getToInspect());
-
-                            panelValue.removeAll();
-
-                            Object object = getNuevoObjeto(instanceInspect.get(1));
-
-                            keyField.setText("");
-
-                            this.repaint();
-
-                            InspectObject(object, panelValue);
+                            mapa.put(keyField.getText(), metawidget.getToInspect());                          
 
                         }
                     }
@@ -884,12 +849,7 @@ public class InstanceMapForm extends javax.swing.JFrame {
     /**
     * @param args the command line arguments
     */
-    public void Visible(){
-
-        if (dobleInstance == true){
-
-        }
-    }
+    
 
     private void obtenerMapa(Class argument) {
         if (argument.getName().equals("java.util.HashMap")){
