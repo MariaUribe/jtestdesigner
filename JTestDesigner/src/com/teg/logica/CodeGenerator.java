@@ -16,6 +16,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -194,6 +195,24 @@ public class CodeGenerator {
         for (int i = 0; i < urls.length; i++) {
             System.out.println(urls[i].getFile());
         }
+    }
+
+    public ArrayList<File> getLibJars(String casoPrueba) {
+
+        ArrayList<File> jarList = new ArrayList<File>();
+
+        File casoPruebaFile = new File(System.getProperty("user.home")
+                + System.getProperty("file.separator") + casoPrueba
+                + System.getProperty("file.separator"));
+        
+        File lib = new File(casoPruebaFile.getPath()
+                + System.getProperty("file.separator") + "lib"
+                + System.getProperty("file.separator"));
+
+        File[] jars = lib.listFiles();
+        jarList.addAll(Arrays.asList(jars));
+        
+        return jarList;
     }
 
     public String getRutaJava(String casoPrueba) {

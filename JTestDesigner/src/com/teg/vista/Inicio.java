@@ -4,12 +4,14 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.beans.PropertyVetoException;
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
+import org.apache.commons.io.FileUtils;
 
 /**
  *
@@ -21,6 +23,7 @@ public class Inicio extends javax.swing.JFrame {
     private ArrayList<File> jarsRuta = new ArrayList<File>();
     private MenuPrincipal menuPrincipal;
     private ClassManager classManager;
+    private UpdateCasoPrueba updateCasoPrueba;
     private ArrayList<File> archivosJavaDoc = new ArrayList<File>();
     private String nombreCasoPrueba;
     private File directorioCasoPrueba;
@@ -132,7 +135,7 @@ public class Inicio extends javax.swing.JFrame {
             File jarFile = fc.getSelectedFile();
             String jarString = jarFile.getPath();
             File jar = new File(jarString);
-
+            this.copyToLib(jar);
             this.jarsRuta.add(jar);
             this.setJarsRuta(jarsRuta);
             this.nombresJar.add(jar.getName());
@@ -140,6 +143,55 @@ public class Inicio extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_seleccionarJarActionPerformed
+
+    public File getJava(String nombreCasoPrueba){
+        File javaTest = null;
+
+        File miCasoPrueba = new File(System.getProperty("user.home")
+                + System.getProperty("file.separator") + nombreCasoPrueba
+                + System.getProperty("file.separator"));
+
+        File src = new File(miCasoPrueba.getPath()
+                + System.getProperty("file.separator") + "src"
+                + System.getProperty("file.separator"));
+
+        File com = new File(src.getPath()
+                + System.getProperty("file.separator") + "com"
+                + System.getProperty("file.separator"));
+
+        File paquete = new File(com.getPath()
+                + System.getProperty("file.separator") + "codeGeneratorTest"
+                + System.getProperty("file.separator"));
+
+        File java = new File(paquete.getPath()
+                + System.getProperty("file.separator") + nombreCasoPrueba
+                + ".java");
+        
+        javaTest = new File(java.getPath());
+
+        return javaTest;
+    }
+
+    public void copyToLib(File jar) {
+
+        File miCasoPrueba = new File(System.getProperty("user.home")
+                + System.getProperty("file.separator") + nombreCasoPrueba
+                + System.getProperty("file.separator"));
+
+        File lib = new File(miCasoPrueba.getPath()
+                + System.getProperty("file.separator") + "lib"
+                + System.getProperty("file.separator"));
+
+        String srcFile = jar.getPath();
+        String dstFile = lib.getPath() + System.getProperty("file.separator") + jar.getName();
+        
+        try {
+            FileUtils.copyFile(new File(srcFile), new File(dstFile));
+        } catch (IOException ex) {
+            Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
 
     public ArrayList<File> leerDirectorio(final String nombreDirectorio, ArrayList<File> archivos) {
 
@@ -169,10 +221,25 @@ public class Inicio extends javax.swing.JFrame {
             menuPrincipal.setVisible(false);
             this.setArchivosJavaDoc(archivosJavaDoc);
             this.setNombreCasoPrueba(nombreCasoPrueba);
-            classManager = new ClassManager(this, jarsRuta, nombresJar);
-            classManager.setVisible(Boolean.TRUE);
-            this.getjDesktopPane().add(classManager);
-            classManager.setMaximum(Boolean.TRUE);
+            ClassManager clazzManager = new ClassManager(this, jarsRuta, nombresJar);
+            clazzManager.setVisible(Boolean.TRUE);
+            this.getjDesktopPane().add(clazzManager);
+            clazzManager.setMaximum(Boolean.TRUE);
+            this.classManager = clazzManager;
+
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void principalToUpdate(JInternalFrame menuPrincipal, String nombreCasoPrueba) {
+        try {
+            menuPrincipal.setVisible(false);
+            this.setNombreCasoPrueba(nombreCasoPrueba);
+            updateCasoPrueba = new UpdateCasoPrueba(this, nombreCasoPrueba);
+            updateCasoPrueba.setVisible(Boolean.TRUE);
+            this.getjDesktopPane().add(updateCasoPrueba);
+            updateCasoPrueba.setMaximum(Boolean.TRUE);
 
         } catch (PropertyVetoException ex) {
             Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
@@ -238,10 +305,33 @@ public class Inicio extends javax.swing.JFrame {
     public void classToPrincipal(JInternalFrame classManager) {
         try {
             classManager.setVisible(false);
-            menuPrincipal = new MenuPrincipal(this);
-            this.menuPrincipal.setVisible(Boolean.TRUE);
-            this.jDesktopPane.add(this.menuPrincipal);
-            this.menuPrincipal.setMaximum(true);
+            this.jarsRuta.clear();
+            this.nombresJar.clear();
+            MenuPrincipal menu = new MenuPrincipal(this);
+            menu.setVisible(Boolean.TRUE);
+            jDesktopPane.add(menu);
+            menu.setMaximum(true);
+
+            Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+
+            int w = this.getSize().width;
+            int h = this.getSize().height;
+            int x = (dim.width - w) / 2;
+            int y = (dim.height - h) / 2;
+
+            this.setLocation(x, y);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void updateToPrincipal(JInternalFrame updateCasoPrueba) {
+        try {
+            updateCasoPrueba.setVisible(false);
+            MenuPrincipal menu = new MenuPrincipal(this);
+            menu.setVisible(Boolean.TRUE);
+            jDesktopPane.add(menu);
+            menu.setMaximum(true);
 
             Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 

@@ -55,6 +55,7 @@ public class MenuPrincipal extends javax.swing.JInternalFrame {
         rutaJavaDoc = new javax.swing.JTextField();
         buscar = new javax.swing.JButton();
         continuar = new javax.swing.JButton();
+        editarCaso = new javax.swing.JButton();
 
         setBorder(null);
 
@@ -130,10 +131,17 @@ public class MenuPrincipal extends javax.swing.JInternalFrame {
 
         panelLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {buscar, casoPrueba, jLabel1, jLabel2, rutaJavaDoc});
 
-        continuar.setText("Continuar");
+        continuar.setText("Crear Caso");
         continuar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 continuarActionPerformed(evt);
+            }
+        });
+
+        editarCaso.setText("Editar Caso");
+        editarCaso.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editarCasoActionPerformed(evt);
             }
         });
 
@@ -144,7 +152,10 @@ public class MenuPrincipal extends javax.swing.JInternalFrame {
             .addGroup(jPanelLayout.createSequentialGroup()
                 .addGap(29, 29, 29)
                 .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(continuar)
+                    .addGroup(jPanelLayout.createSequentialGroup()
+                        .addComponent(editarCaso)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(continuar))
                     .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(34, Short.MAX_VALUE))
         );
@@ -154,7 +165,9 @@ public class MenuPrincipal extends javax.swing.JInternalFrame {
                 .addGap(29, 29, 29)
                 .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(34, 34, 34)
-                .addComponent(continuar)
+                .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(continuar)
+                    .addComponent(editarCaso))
                 .addContainerGap(65, Short.MAX_VALUE))
         );
 
@@ -202,6 +215,14 @@ public class MenuPrincipal extends javax.swing.JInternalFrame {
         }
 
     }//GEN-LAST:event_buscarActionPerformed
+
+    private void editarCasoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarCasoActionPerformed
+
+        //File javaTest = this.inicio.getJava(nombreCasoPrueba);
+        String nombreCasoPrueba = this.casoPrueba.getText();
+        this.inicio.principalToUpdate(this, nombreCasoPrueba);
+
+    }//GEN-LAST:event_editarCasoActionPerformed
 
     /**
      * Metodo para la creacion de los directorios de la prueba
@@ -301,6 +322,7 @@ public class MenuPrincipal extends javax.swing.JInternalFrame {
     private javax.swing.JButton buscar;
     private javax.swing.JTextField casoPrueba;
     private javax.swing.JButton continuar;
+    private javax.swing.JButton editarCaso;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
