@@ -223,6 +223,8 @@ public class InstanceArrayForm extends javax.swing.JFrame {
 
     }
 
+    
+
     private boolean verificarDato(Class clase) {
 
         boolean verificado = false;
@@ -377,6 +379,7 @@ public class InstanceArrayForm extends javax.swing.JFrame {
     private void buttonGuardarActionPerformed(java.awt.event.ActionEvent evt) {
         listaObjetos.add(metawidget.getToInspect());
         widget.setArreglo(listaObjetos.toArray());
+        this.dispose();
 
      }
 
@@ -421,6 +424,7 @@ public class InstanceArrayForm extends javax.swing.JFrame {
 
      private void buttonCrearOtroStringActionPerformed(java.awt.event.ActionEvent evt){
 
+         listaObjetos.add(labelString.getText());
          labelString.setText("");
      }
 
