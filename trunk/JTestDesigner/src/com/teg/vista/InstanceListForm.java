@@ -554,6 +554,8 @@ public class InstanceListForm extends javax.swing.JFrame {
 
         listWidget.setColeccion(coleccion);
 
+
+
         this.dispose();
     }
 
