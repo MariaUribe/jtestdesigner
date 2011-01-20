@@ -59,6 +59,7 @@ public class InstanceArrayForm extends javax.swing.JFrame {
     private javax.swing.JLabel labelString;
     private Class claseComponente;
     private Inicio inicio;
+    private Object objectInspect;
     private String pathFile;
     
 
@@ -93,7 +94,13 @@ public class InstanceArrayForm extends javax.swing.JFrame {
     InstanceArrayForm(Object object, String path, WidgetObjectLoading listWidget, Inicio inicio) {
 
         widget = listWidget;
+        objectInspect = object;
         initComponentsObject();
+
+    }
+
+    public void VisibleObject(){
+        InspectObject(objectInspect);
     }
 
     
