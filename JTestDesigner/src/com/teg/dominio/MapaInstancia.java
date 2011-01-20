@@ -17,6 +17,10 @@ public class MapaInstancia {
 
     private String nombreMapa;
 
+    private Class claseKey;
+
+    private Class claseValue;
+
     /**
      * @return the mapa
      */
@@ -47,6 +51,34 @@ public class MapaInstancia {
 
     public MapaInstancia(){
         
+    }
+
+    /**
+     * @return the claseKey
+     */
+    public Class getClaseKey() {
+        return claseKey;
+    }
+
+    /**
+     * @param claseKey the claseKey to set
+     */
+    public void setClaseKey(Class claseKey) {
+        this.claseKey = claseKey;
+    }
+
+    /**
+     * @return the claseValue
+     */
+    public Class getClaseValue() {
+        return claseValue;
+    }
+
+    /**
+     * @param claseValue the claseValue to set
+     */
+    public void setClaseValue(Class claseValue) {
+        this.claseValue = claseValue;
     }
 
 }

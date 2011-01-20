@@ -561,8 +561,7 @@ public class InstanceListForm extends javax.swing.JFrame {
     private void buttonGuardarActionPerformed(java.awt.event.ActionEvent evt) {
 
          coleccion.add(metawidget.getToInspect());
-        
-        //listWidget.setColeccion(coleccion);
+      
 
         this.dispose();
 

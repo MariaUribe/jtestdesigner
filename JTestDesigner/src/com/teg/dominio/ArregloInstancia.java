@@ -15,6 +15,8 @@ public class ArregloInstancia {
 
     private String nombreArreglo;
 
+    private Class claseComponente;
+
     /**
      * @return the arreglo
      */
@@ -46,6 +48,20 @@ public class ArregloInstancia {
     public ArregloInstancia()
     {
         
+    }
+
+    /**
+     * @return the claseComponente
+     */
+    public Class getClaseComponente() {
+        return claseComponente;
+    }
+
+    /**
+     * @param claseComponente the claseComponente to set
+     */
+    public void setClaseComponente(Class claseComponente) {
+        this.claseComponente = claseComponente;
     }
 
 }
