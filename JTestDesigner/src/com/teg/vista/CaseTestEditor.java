@@ -15,26 +15,22 @@ import com.teg.dominio.Metodo;
 import com.teg.dominio.VariableInstancia;
 import com.teg.logica.WidgetObjectLoading;
 import com.teg.logica.XmlManager;
-
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
@@ -108,24 +104,37 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
     /** Creates new form CaseTestEditor */
     @SuppressWarnings("LeakingThisInConstructor")
     public CaseTestEditor(ArrayList<Method> metodos, Inicio inicio) {
+
         initComponents();
+
         this.metodos = metodos;
+
         this.inicio = inicio;
+
         this.inicio.getSeleccionarJar().setEnabled(false);
+
         archivosJavaDoc = inicio.getArchivosJavaDoc();
+
         javax.swing.plaf.InternalFrameUI ifu = this.getUI();
+
         ((javax.swing.plaf.basic.BasicInternalFrameUI) ifu).setNorthPane(null);
 
         int w2 = this.getSize().width;
+
         int h2 = this.getSize().height;
+
         this.inicio.setSize(new Dimension(w2, h2));
 
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 
         int w = this.inicio.getSize().width;
+
         int h = this.inicio.getSize().height;
+
         int x = (dim.width - w) / 2;
+
         int y = (dim.height - h) / 2;
+
 
         this.inicio.setLocation(x, y);
     }
@@ -133,33 +142,49 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
     
 
     public void cargarMetodos() {
+
         ArrayList<Object> metodosLista = new ArrayList<Object>();
 
         for (Method method : metodos) {
+
             metodosLista.add(method.getName());
+
         }
+
         addMethodList(metodosLista);
     }
 
     public Method getActualMethod() {
+
         Method metodo = null;
+
         for (Method method : metodos) {
+
             if (method.getName().equals(actualNameMethod)) {
+
                 metodo = method;
             }
         }
+
         return metodo;
     }
 
     public void crearMetawidgetMetadata(Document docXml) throws JDOMException, IOException {
 
         try {
+
             XMLOutputter out = new XMLOutputter();
+
             FileOutputStream file = new FileOutputStream(inicio.getDirectorioCasoPrueba().getPath() + "/" + "metawidgetData.xml");
+
             out.output(docXml, file);
+
             file.flush();
+
             file.close();
+
             out.output(docXml, System.out);
+
         } catch (Exception e) {
         }
     }
@@ -170,28 +195,40 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
     }
 
     public Method getMethodSelected(String text) {
+
         Method method = null;
 
         for (Method method1 : metodos) {
+
             if (text.equals(method1.getName())) {
+
                 method = method1;
             }
         }
+
         return method;
     }
 
     public void cargarAssert(Class metodoRetorno) {
+
         assertVariables.removeAllItems();
+
         int countVar = varId;
+
         countVar++;
+
         if (metodoRetorno.isPrimitive()) {
 
             assertVariables.setSelectedItem("var" + countVar);
 
         } else {
+
             assertVariables.addItem("var" + countVar);
+
             Field[] fields = metodoRetorno.getDeclaredFields();
+
             for (Field field : fields) {
+
                 assertVariables.addItem("var" + countVar
                         + "." + field.getName());
             }
@@ -205,8 +242,11 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
     public Method getMetodoGuardado(String nombre) {
 
         Method metodo = null;
+
         for (Method method : metodos) {
+
             if (method.getName().equals(nombre)) {
+
                 metodo = method;
             }
         }
@@ -226,10 +266,15 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
             if (retorno.getName().equals(argument.getName())) {
                 combo.addItem(metodo.getRetorno().getNombreVariable());
+
             } else {
+
                 if (retorno.getDeclaredFields().length != 0) {
+
                     for (Field field : retorno.getDeclaredFields()) {
+
                         if (field.getType().getName().equals(argument.getName())) {
+
                             combo.addItem(metodo.getRetorno().getNombreVariable()
                                     + "." + field.getName());
                         }
@@ -239,14 +284,21 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
         }
 
         for (VariableInstancia variable : variablesGuardadas) {
+
             Class variableClase = variable.getInstancia().getClass();
 
             if (variableClase.getName().equals(argument.getName())) {
+
                 combo.addItem(variable.getNombreVariable());
+
             } else {
+
                 if (variableClase.getDeclaredFields().length != 0) {
+
                     for (Field field : variableClase.getDeclaredFields()) {
+
                         if (field.getType().getName().equals(argument.getName())) {
+
                             combo.addItem(variable.getNombreVariable()
                                     + "." + field.getName());
                         }
@@ -257,25 +309,42 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
     }
 
     public void deshabilitarMetodos() {
+
         for (Component component : panelTablaArgumentos.getComponents()) {
+
             component.setEnabled(false);
+
+
         }
+
         assertVariables.setEnabled(false);
+
         assertCondiciones.setEnabled(false);
+
         resultadoAssert.setEnabled(false);
+
         assertMensaje.setEnabled(false);
+
         guardarBt.setEnabled(false);
     }
 
     public void deshabilitarMetodosData() {
+
         for (Component component : panelTablaArgumentos.getComponents()) {
+
             component.setEnabled(false);
         }
+
         assertVariables.setEnabled(false);
+
         assertVariables.removeAllItems();
+
         assertCondiciones.setEnabled(false);
+
         resultadoAssert.setEnabled(false);
+
         assertMensaje.setEnabled(false);
+
         guardarBt.setEnabled(false);
     }
 
@@ -284,35 +353,55 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
      * @param nombreMetodo
      */
     public void habilitarMetodosData(String nombreMetodo) {
+
         for (Component component : panelTablaArgumentos.getComponents()) {
+
             component.setEnabled(true);
+
         }
 
         Method metodo = getMethodSelected(nombreMetodo);
 
         if (!metodo.getReturnType().getName().equals("void")) {
+
             assertVariables.setEnabled(true);
+
             assertCondiciones.setEnabled(true);
+
             resultadoAssert.setEnabled(true);
+
             assertMensaje.setEnabled(true);
+
             guardarBt.setEnabled(true);
+
         } else {
 
             assertCondiciones.setEnabled(false);
+
             resultadoAssert.setEnabled(false);
+
             assertMensaje.setEnabled(false);
+
             guardarBt.setEnabled(true);
+
 
         }
 
     }
 
     public void cargarComboItemsPrimitive(JComboBox combo, Class parameter) {
+        
         Method method;
+
+
+        String a = "p";
+    int b = Integer.parseInt(a);
+
 
         for (Metodo metodo : metodosGuardados) {
 
             method = getMetodoGuardado(metodo.getNombre());
+
             Class retorno = method.getReturnType();
 
             if (retorno.getDeclaredFields().length != 0) {
@@ -320,26 +409,35 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                 for (Field field : retorno.getDeclaredFields()) {
 
                     if (field.getType().getName().equals(parameter.getName())) {
+
                         combo.addItem(metodo.getRetorno().getNombreVariable() + "." + field.getName());
                     }
                 }
 
             } else {
+
                 if (retorno.getName().equals(parameter.getName())) {
+
                     combo.addItem(metodo.getRetorno().getNombreVariable());
+
                 }
             }
         }
 
         for (VariableInstancia variable : variablesGuardadas)
         {
+
             Class variableClase = variable.getInstancia().getClass();
 
             if (variableClase.getDeclaredFields().length != 0)
+
             {
+
                 for (Field field : variableClase.getDeclaredFields())
                 {
+
                     if (field.getType().getName().equals(parameter.getName())) {
+
                         combo.addItem(variable.getNombreVariable() +
                                 "." + field.getName());
                     }
@@ -351,22 +449,37 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
     public void deepInstantiate(Object claseInstancia, Element raiz) throws InstantiationException, IllegalAccessException, NoSuchMethodException, IllegalArgumentException, InvocationTargetException {
 
         raiz.addContent("\n");
+
         Element entidad = getEntity(claseInstancia.getClass());
+
         raiz.addContent(entidad);
 
         Field[] campos = claseInstancia.getClass().getDeclaredFields();
+
         for (Field field : campos) {
+
             boolean flag = false;
+
             if (!field.getType().isPrimitive() && verificarDato(field.getType()) == false) {
+
                 Method[] metodosClase = claseInstancia.getClass().getDeclaredMethods();
+
                 for (Method method : metodosClase) {
+
                     if (method.getParameterTypes().length > 0) {
+
                         if (method.getParameterTypes()[0].getName().equals(field.getType().getName())
+
                                 && (method.getReturnType().getName() == null ? "void" == null : method.getReturnType().getName().equals("void"))
+
                                 && flag == false) {
+
                             Object campoInstance = field.getType().newInstance();
+
                             claseInstancia.getClass().getMethod(method.getName(), field.getType()).invoke(claseInstancia, campoInstance);
+
                             flag = true;
+
                             deepInstantiate(campoInstance, raiz);
 
                         }
@@ -456,6 +569,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
             boolean flag = false;
 
             if (!field.getType().isPrimitive() && verificarDato(field.getType()) == false) {
+
                 Method[] metodosClase = clase.getDeclaredMethods();
 
                 for (Method method : metodosClase) {
@@ -628,14 +742,20 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
     }
 
     public boolean argumentoEsColeccion(Class clase) {
+
         boolean esColeccion = false;
+
         Class[] interfaces = clase.getInterfaces();
 
         for (Class class1 : interfaces) {
             if (class1.getName().equals("java.util.Map")
+
                     || class1.getName().equals("java.util.Set")
+
                     || class1.getName().equals("java.util.List")
+
                     || class1.getName().equals("java.util.Queue")) {
+
                 esColeccion = true;
             }
         }
@@ -652,17 +772,25 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
     }
 
     private String argumentoColeccion(Class clase) {
+
         String claseColeccion = "";
+
         Class[] interfaces = clase.getInterfaces();
 
         for (Class class1 : interfaces) {
+
             if (class1.getName().equals("java.util.Map")
+
                     || class1.getName().equals("java.util.Set")
+
                     || class1.getName().equals("java.util.List")
+
                     || class1.getName().equals("java.util.Queue")) {
+
                 claseColeccion = class1.getName();
             }
         }
+
         return claseColeccion;
     }
 
@@ -670,17 +798,26 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
     {
 
         boolean verificado = false;
+
         if (clase.getName().equals("java.lang.Integer") ||
+
                 clase.getName().equals("java.lang.Float") ||
+
                 clase.getName().equals("java.lang.Double") ||
+
                 clase.getName().equals("java.lang.Long") ||
+
                 clase.getName().equals("java.lang.Short") ||
+
                 clase.getName().equals("java.lang.Byte") ||
+
                 clase.getName().equals("java.lang.Character") ||
                 
             
             clase.getName().equals("java.lang.String") ||
+
             clase.getName().equals("java.lang.Boolean"))
+
             verificado = true;
 
         return verificado;
@@ -692,23 +829,34 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
     public void cargarTablaArgumentos(String text) {
 
         for (Component component : panelTablaArgumentos.getComponents()) {
+
             if (!component.getClass().getName().equals("javax.swing.JLabel")) {
+
                 panelTablaArgumentos.remove(component);
+
             }
         }
 
         editores.clear();
+
         Method metodo;
 
         metodo = getMethodSelected(text);
+
         final Class[] parameterTypes = metodo.getParameterTypes();
 
         for (int i = 0; i < parameterTypes.length; i++) {
+
             final int pos = i;
+
             final Class argument = parameterTypes[i];
+
             if (!argument.isPrimitive() && verificarDato(argument) == false) {
+
                 final JComboBox combo = new JComboBox();
+
                 cargarComboItemsComplex(combo, argument);
+
                 combo.addPopupMenuListener(new PopupMenuListener() {
 
                     public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
@@ -782,6 +930,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                                         addInstanceMap();
 
                                     } catch (InstantiationException ex) {
+
                                         Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
                                     }
 
@@ -792,18 +941,27 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
                                     if (classInstances.size() == 1){
 
+
                                         if (!classInstances.get(0).isPrimitive()
-                                        && verificarDato(classInstances.get(0)) == false)
+
+                                                && verificarDato(classInstances.get(0)) == false)
                                         {
                                             try {
+
                                                 Object claseInstance = getInstance(classInstances.get(0));
+
                                                 objectInstances.add(claseInstance);
+
 
                                                 if (listWidget.getColeccion() != null)
                                                 {
+
+
                                                     listWidget.getColeccion().clear();
                                                 }else{
+
                                                     if (listWidget.getMapa() != null){
+
                                                         listWidget.getMapa().clear();
                                                     }
                                                 }
@@ -823,24 +981,38 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                                                 addInstanceCollection(colInstancia);
 
                                             } catch (InstantiationException ex) {
+
                                                 Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
+
                                             } catch (IllegalAccessException ex) {
+
                                                 Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
+
                                             } catch (NoSuchMethodException ex) {
+
                                                 Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
+
                                             } catch (IllegalArgumentException ex) {
+
                                                 Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
+
                                             } catch (InvocationTargetException ex) {
+
                                                 Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
+
                                             } catch (JDOMException ex) {
+
                                                 Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
+
                                             } catch (IOException ex) {
+
                                                 Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
                                             }
 
                                         }else{
 
                                             if (classInstances.get(0).isPrimitive()
+
                                                     || verificarDato(classInstances.get(0)) == true) {
 
                                                 InstanceListForm editorList = new InstanceListForm(classInstances.get(0), listWidget, argument);
@@ -870,8 +1042,8 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
                                     Class arrayComponente = argument.getComponentType();
 
-                                    if (!arrayComponente.isPrimitive() &&
-                                            verificarDato(arrayComponente) == false)
+                                    if (arrayComponente.isPrimitive() ||
+                                            verificarDato(arrayComponente) == true)
                                     {
                                         InstanceArrayForm editorArray = new InstanceArrayForm(arrayComponente,inicio.getDirectorioCasoPrueba().getPath(), listWidget, inicio);
 
@@ -887,6 +1059,9 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                                     }
                                     else
                                     {
+                                        if(!arrayComponente.isPrimitive() &&
+                                            verificarDato(arrayComponente) == false)
+                                        {
                                         try {
                                             Object object = getInstance(arrayComponente);
 
@@ -904,20 +1079,34 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
 
                                         } catch (InstantiationException ex) {
+
                                             Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
+
                                         } catch (IllegalAccessException ex) {
+
                                             Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
+
                                         } catch (NoSuchMethodException ex) {
+
                                             Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
+
                                         } catch (IllegalArgumentException ex) {
+
                                             Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
+
                                         } catch (InvocationTargetException ex) {
+
                                             Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
+
                                         } catch (JDOMException ex) {
+
                                             Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
+
                                         } catch (IOException ex) {
+
                                             Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
                                         }
+                                    }
                                     }
 
 
@@ -988,49 +1177,76 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                 });
 
                 combo.setEditable(true);
+
                 combo.addItem("Crear: " + parameterTypes[i].getName());
+
                 DefaultCellEditor editor = new DefaultCellEditor(combo);
+
                 editores.add(editor);
+
             } else {
+
                 JComboBox combo = new JComboBox();
+
                 cargarComboItemsPrimitive(combo, argument);
+
                 combo.setEditable(true);
 
                 DefaultCellEditor editor = new DefaultCellEditor(combo);
+
                 editores.add(editor);
             }
         }
 
         tipoVarRetorno = metodo.getReturnType();
+
         cargarAssert(tipoVarRetorno);
+
         DefaultTableModel model = new DefaultTableModel(new Object[]{"Argumento", "Valor"}, parameterTypes.length);
+
         tablaArgumentos = new JTable(model) {
 
             @Override
+
             public TableCellEditor getCellEditor(int row, int column) {
+
                 int modelColumn = super.convertColumnIndexToModel(column);
+
                 if (modelColumn == 1 && row < parameterTypes.length) {
+
                     return editores.get(row);
+
                 } else {
+
                     return super.getCellEditor(row, column);
                 }
+
             }
         };
 
         panelTablaArgumentos.add(tablaArgumentos);
+
         Border line = BorderFactory.createLineBorder(Color.black);
+
         tablaArgumentos.setBorder(line);
+
         tablaArgumentos.setSelectionMode(0);
+
         tablaArgumentos.setGridColor(Color.black);
+
         tablaArgumentos.setSize(new Dimension(410, 120));
+
         tablaArgumentos.setRowHeight(25);
+
         tablaArgumentos.setLocation(20, 40);
 
         for (int i = 0; i < parameterTypes.length; i++) {
+
             tablaArgumentos.setValueAt(parameterTypes[i].getName(), i, 0);
         }
 
         panelTablaArgumentos.repaint();
+
     }
 
     /** This method is called from within the constructor to
@@ -1176,6 +1392,11 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
         lbResultadoAssert.setEnabled(false);
 
         resultadoAssert.setEnabled(false);
+        resultadoAssert.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                resultadoAssertMouseClicked(evt);
+            }
+        });
 
         assertMensaje.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1477,29 +1698,41 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
         this.deshabilitarMetodos();
 
         Method method = this.getActualMethod();
+
         varId++;
 
         Metodo metodoActual = this.agregarMetodo(method, varId, this.getActualAssert(method), this.getArgumentos(method));
 
         tablaVariables.removeAll();
+
         tablaMetodosRegistrados.removeAll();
 
         DefaultTableModel modelMetodos = new DefaultTableModel();
+
         modelMetodos = (DefaultTableModel) tablaMetodosRegistrados.getModel();
 
         DefaultTableModel model = new DefaultTableModel();
+
         model = (DefaultTableModel) tablaVariables.getModel();
 
         Vector objects = new Vector();
+
         objects.add(metodoActual.getRetorno().getNombreVariable());
+
         objects.add(metodoActual.getNombre());
+
         objects.add(metodoActual.getRetorno().getRetorno());
+
         model.addRow(objects);
 
         Vector metodosObj = new Vector();
+
         metodosObj.add(varId);
+
         metodosObj.add(metodoActual.getNombre());
+
         modelMetodos.addRow(metodosObj);
+
 
     }//GEN-LAST:event_guardarBtActionPerformed
 
@@ -1507,17 +1740,27 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_assertVariablesActionPerformed
 
     private void assertCondicionesPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_assertCondicionesPopupMenuWillBecomeInvisible
+
         if (assertCondiciones.getSelectedItem().equals("Igual")
+
                 || assertCondiciones.getSelectedItem().equals("No Igual")) {
+
             lbResultadoAssert.setEnabled(true);
+
             resultadoAssert.setEnabled(true);
 
         } else {
+
             if (assertCondiciones.getSelectedItem().equals("Elige una opcion")) {
+
                 lbResultadoAssert.setEnabled(false);
+
                 resultadoAssert.setEnabled(false);
+
             } else {
+
                 lbResultadoAssert.setEnabled(false);
+
                 resultadoAssert.setEnabled(false);
             }
         }
@@ -1536,15 +1779,25 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
     private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
 
         for (int i = 0; i < listaMetodos.getComponents().length; i++) {
+
             JTextField text = (JTextField) listaMetodos.getComponent(i);
+
             if (text.getText().equals(actualNameMethod)) {
+
                 if (i != 0) {
+
                     int pos = i;
+
                     pos--;
+
                     JTextField textAntes = new JTextField();
+
                     textAntes = (JTextField) listaMetodos.getComponent(pos);
+
                     String textAntesValue = textAntes.getText();
+
                     textAntes.setText(actualNameMethod);
+
                     text.setText(textAntesValue);
                 }
             }
@@ -1559,9 +1812,13 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
             JTextField text = (JTextField) listaMetodos.getComponent(i);
 
             if (text.getText().equals(actualNameMethod)) {
+
                 if (i < listaMetodos.getComponents().length) {
+
                     JTextField textDespues = (JTextField) listaMetodos.getComponent(i + 1);
+
                     text.setText(textDespues.getText());
+
                     textDespues.setText(actualNameMethod);
 
                     break;
@@ -1577,6 +1834,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
     private void listaMetodosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listaMetodosMouseClicked
 
         popMenuMetodos.setVisible(false);
+
         popMenuMetodos.removeAll();
 
         String metodoNombre = (String) listaMetodos.getSelectedValue();
@@ -1584,14 +1842,19 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
         if (evt.getButton() == MouseEvent.BUTTON3) {
 
             JMenuItem item = new JMenuItem();
+
             item.setText("Ver Javadoc");
+
             item.addMouseListener(new MouseListener() {
 
                 public void mouseClicked(MouseEvent me) {
+
                     popMenuMetodos.setVisible(false);
+
                     Method metodoActual = getMethodSelected(actualNameMethod);
 
                     JavadocFrame javadoc = new JavadocFrame(archivosJavaDoc, metodoActual);
+
                     javadoc.setVisible(true);
                 }
 
@@ -1607,31 +1870,43 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                 public void mouseExited(MouseEvent me) {
                 }
             });
+
             popMenuMetodos.add(item);
+
             popMenuMetodos.setLocation(evt.getLocationOnScreen());
+
             popMenuMetodos.setVisible(true);
 
         } else {
+
             if (evt.getButton() == MouseEvent.BUTTON1) {
 
                 boolean isIn = false;
 
 
                 for (int i = 0; i < metodosGuardados.size(); i++) {
+
                     if (metodosGuardados.get(i).getNombre().equals(metodoNombre)) {
+
                         isIn = true;
+
                     }
                 }
 
 
 
                 if (isIn == true) {
+
                     cargarTablaArgumentos(metodoNombre);
+
                     deshabilitarMetodosData();
 
                 } else {
+
                     cargarTablaArgumentos(metodoNombre);
+
                     habilitarMetodosData(metodoNombre);//ver orden
+
                     actualNameMethod = metodoNombre;
                 }
             }
@@ -1641,41 +1916,61 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
     private void newTestEscenarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newTestEscenarioActionPerformed
 
         String escenario = this.cadenaSinBlancos(this.nombreEscenario.getText());
+
         EscenarioPrueba escenarioPrueba = new EscenarioPrueba(escenario);
+
         escenarioPrueba.setMetodos(metodosGuardados);
+
         escenariosPrueba.add(escenarioPrueba);
 
+
         varId = 0;
+
         metodosGuardados = new ArrayList<Metodo>();
+
         variablesGuardadas.clear();
+
         nombreEscenario.setText("");
 
         DefaultTableModel model = (DefaultTableModel) tablaVariables.getModel();
+
         model.setNumRows(0);
 
         DefaultTableModel model2 = (DefaultTableModel) tablaMetodosRegistrados.getModel();
+
         model2.setNumRows(0);
 
         assertVariables.removeAllItems();
+
         assertMensaje.setText("");
+
         resultadoAssert.setText("");
 
         for (Component component : panelTablaArgumentos.getComponents()) {
+
             if (!component.getClass().getName().equals("javax.swing.JLabel")) {
+
                 panelTablaArgumentos.remove(component);
             }
+
             this.repaint();
         }
 
     }//GEN-LAST:event_newTestEscenarioActionPerformed
 
     private void volverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_volverActionPerformed
+
         varId = 0;
+
         metodosGuardados = new ArrayList<Metodo>();
+
         variablesGuardadas.clear();
+
         nombreEscenario.setText("");
 
+
         ArrayList<Class> clases = this.inicio.getClasesManager();
+
 
         this.inicio.caseTestToMethods(this, clases);
     }//GEN-LAST:event_volverActionPerformed
@@ -1694,6 +1989,47 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
     private void siguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_siguienteActionPerformed
         
     }//GEN-LAST:event_siguienteActionPerformed
+
+    private void resultadoAssertMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_resultadoAssertMouseClicked
+        // TODO add your handling code here:
+
+        if (resultadoAssert.isEnabled() == true){
+
+
+            Method method = getActualMethod();
+
+            if (!method.getReturnType().isPrimitive()
+
+                    && verificarDato(method.getReturnType()) == false){
+
+                if (argumentoEsColeccion(method.getReturnType()) == true){
+
+                  
+                    Type type = method.getGenericReturnType();
+
+                    if (type instanceof ParameterizedType) {
+
+                                    ParameterizedType aType = (ParameterizedType) type;
+
+                                    Type[] parameterArgTypes = aType.getActualTypeArguments();
+
+                                    for (Type parameterArgType : parameterArgTypes) {
+
+                                        Class parameterArgClass = (Class) parameterArgType;
+
+                                        
+
+                                    }
+                                }
+
+                }else
+                    if(method.getReturnType().isArray() == true){
+
+                    }
+            }
+
+        }
+    }//GEN-LAST:event_resultadoAssertMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox assertCondiciones;
