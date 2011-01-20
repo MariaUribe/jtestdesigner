@@ -16,7 +16,6 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.awt.Point;
 import java.io.File;
 import java.io.FileInputStream;
