@@ -15,7 +15,7 @@ public class ArregloInstancia {
 
     private String nombreArreglo;
 
-    private Class claseComponente;
+    private String claseComponente;
 
     /**
      * @return the arreglo
@@ -53,14 +53,14 @@ public class ArregloInstancia {
     /**
      * @return the claseComponente
      */
-    public Class getClaseComponente() {
+    public String getClaseComponente() {
         return claseComponente;
     }
 
     /**
      * @param claseComponente the claseComponente to set
      */
-    public void setClaseComponente(Class claseComponente) {
+    public void setClaseComponente(String claseComponente) {
         this.claseComponente = claseComponente;
     }
 
