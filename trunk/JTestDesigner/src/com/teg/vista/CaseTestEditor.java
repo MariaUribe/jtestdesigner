@@ -551,6 +551,8 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
             arreglos.add(arreglo.getClass().getName());
 
+            model.addRow(arreglos);
+
         }
 
 
@@ -586,6 +588,8 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
             mapas.add(mapa.getClass().getName());
 
+            model.addRow(mapas);
+
 
         }
     }
@@ -618,7 +622,9 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
             colecciones.add(method.getName());
 
-            colecciones.add(collection.getClass().getName());
+            colecciones.add("Collection");
+
+            model.addRow(colecciones);
             
         }
     }
@@ -795,12 +801,15 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                                                 Object claseInstance = getInstance(classInstances.get(0));
                                                 objectInstances.add(claseInstance);
 
-                                                if (listWidget.getColeccion() != null
-                                                        || listWidget.getMapa() != null) {
+                                                if (listWidget.getColeccion() != null)
+                                                {
                                                     listWidget.getColeccion().clear();
-                                                    listWidget.getMapa().clear();
+                                                }else{
+                                                    if (listWidget.getMapa() != null){
+                                                        listWidget.getMapa().clear();
+                                                    }
                                                 }
-
+                                                      
                                                 InstanceListForm editorList = new InstanceListForm(objectInstances, inicio.getDirectorioCasoPrueba().getPath(), listWidget, argument);
 
                                                 editorList.Visible();
@@ -834,7 +843,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
                                                 editorList.setVisible(true);
 
-                                                //editorList.getColeccion();
+                                                editorList.getColeccion();
 
                                                 addInstanceCollection();
 
@@ -904,7 +913,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                                        
 
                                         editorInstance.getObject();
-                                            System.out.println(listWidget.getObject());
+                                            //System.out.println(listWidget.getObject());
 
                                         addInstanceVariable();
 
