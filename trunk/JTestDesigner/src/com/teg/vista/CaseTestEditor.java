@@ -594,7 +594,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
         }
     }
 
-    private void addInstanceCollection()
+    private void addInstanceCollection(ColeccionInstancia colInstancia)
     {
         if (listWidget.getColeccion() != null){
 
@@ -606,9 +606,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
             Method method = this.getActualMethod();
 
-            Collection collection = listWidget.getColeccion();
-
-            ColeccionInstancia colInstancia = new ColeccionInstancia();
+            Collection collection = listWidget.getColeccion();           
 
             colInstancia.setColeccionInstancia(collection);
 
@@ -809,6 +807,8 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                                                         listWidget.getMapa().clear();
                                                     }
                                                 }
+
+
                                                       
                                                 InstanceListForm editorList = new InstanceListForm(objectInstances, inicio.getDirectorioCasoPrueba().getPath(), listWidget, argument);
 
@@ -816,7 +816,13 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
                                                 editorList.getColeccion();
 
-                                                addInstanceCollection();
+                                                ColeccionInstancia colInstancia = new ColeccionInstancia();
+
+                                                colInstancia.setClaseColeccion(argument);
+
+                                                colInstancia.setTipo(objectInstances.get(0).getClass());
+
+                                                addInstanceCollection(colInstancia);
 
                                             } catch (InstantiationException ex) {
                                                 Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
@@ -845,7 +851,13 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
                                                 editorList.getColeccion();
 
-                                                addInstanceCollection();
+                                                ColeccionInstancia colInstancia = new ColeccionInstancia();
+
+                                                colInstancia.setClaseColeccion(argument);
+
+                                                colInstancia.setTipo(classInstances.get(0));
+
+                                                addInstanceCollection(colInstancia);
 
 
                                             }

@@ -17,6 +17,10 @@ public class ColeccionInstancia {
 
     private String nombreColeccion;
 
+    private Class claseColeccion;
+
+    private Class tipo;
+
     /**
      * @return the coleccionInstancia
      */
@@ -48,6 +52,36 @@ public class ColeccionInstancia {
     public ColeccionInstancia()
     {
         
+    }
+
+    
+
+    /**
+     * @return the tipo
+     */
+    public Class getTipo() {
+        return tipo;
+    }
+
+    /**
+     * @param tipo the tipo to set
+     */
+    public void setTipo(Class tipo) {
+        this.tipo = tipo;
+    }
+
+    /**
+     * @return the claseColeccion
+     */
+    public Class getClaseColeccion() {
+        return claseColeccion;
+    }
+
+    /**
+     * @param claseColeccion the claseColeccion to set
+     */
+    public void setClaseColeccion(Class claseColeccion) {
+        this.claseColeccion = claseColeccion;
     }
 
 }

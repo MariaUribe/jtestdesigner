@@ -1,5 +1,7 @@
 package com.teg.dominio;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author maya
@@ -11,6 +13,12 @@ public class Argumento {
     private String valor;
     private boolean complejo;
 
+    private ArrayList<MapaInstancia> mapasGuardados;
+
+    private ArrayList<ColeccionInstancia> coleccionesGuardadas;
+
+    private ArrayList<ArregloInstancia> arreglosGuardados;
+
     /**
      *
      * @param nombre the nombre to set
@@ -21,6 +29,8 @@ public class Argumento {
         this.tipo = tipo;
         this.valor = valor;
         this.complejo = complejo;
+
+
     }
 
     public Argumento() {
