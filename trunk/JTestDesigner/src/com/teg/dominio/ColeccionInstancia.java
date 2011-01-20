@@ -17,9 +17,14 @@ public class ColeccionInstancia {
 
     private String nombreColeccion;
 
-    private Class claseColeccion;
 
-    private Class tipo;
+    private String tipoDatoColeccion;
+
+   
+    public ColeccionInstancia()
+    {
+        
+    }
 
     /**
      * @return the coleccionInstancia
@@ -49,39 +54,19 @@ public class ColeccionInstancia {
         this.nombreColeccion = nombreColeccion;
     }
 
-    public ColeccionInstancia()
-    {
-        
+    /**
+     * @return the tipoDatoColeccion
+     */
+    public String getTipoDatoColeccion() {
+        return tipoDatoColeccion;
+    }
+
+    /**
+     * @param tipoDatoColeccion the tipoDatoColeccion to set
+     */
+    public void setTipoDatoColeccion(String tipoDatoColeccion) {
+        this.tipoDatoColeccion = tipoDatoColeccion;
     }
 
     
-
-    /**
-     * @return the tipo
-     */
-    public Class getTipo() {
-        return tipo;
-    }
-
-    /**
-     * @param tipo the tipo to set
-     */
-    public void setTipo(Class tipo) {
-        this.tipo = tipo;
-    }
-
-    /**
-     * @return the claseColeccion
-     */
-    public Class getClaseColeccion() {
-        return claseColeccion;
-    }
-
-    /**
-     * @param claseColeccion the claseColeccion to set
-     */
-    public void setClaseColeccion(Class claseColeccion) {
-        this.claseColeccion = claseColeccion;
-    }
-
 }
