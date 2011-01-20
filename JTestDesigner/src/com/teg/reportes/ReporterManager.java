@@ -66,7 +66,7 @@ public class ReporterManager {
             converter.convertToPdf(contenido,
                     IHtmlToPdfTransformer.A4P, headerFooterList,
                     "file://" + folderLocation + "/", out, properties);
-            System.out.println("mihtml \n" + contenido);
+            //System.out.println("mihtml \n" + contenido);
 
             out.flush();
             out.close();

@@ -808,9 +808,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                                                     }
                                                 }
 
-
-                                                      
-                                                InstanceListForm editorList = new InstanceListForm(objectInstances, inicio.getDirectorioCasoPrueba().getPath(), listWidget, argument);
+                                                InstanceListForm editorList = new InstanceListForm(objectInstances, inicio.getDirectorioCasoPrueba().getPath(), listWidget, argument, inicio, coleccionId);
 
                                                 editorList.Visible();
 
@@ -937,7 +935,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
                                         
 
-                                        InstanceForm editorInstance = new InstanceForm(claseInstance, inicio.getDirectorioCasoPrueba().getPath(), listWidget, metodo, inicio);
+                                        InstanceForm editorInstance = new InstanceForm(claseInstance, inicio.getDirectorioCasoPrueba().getPath(), listWidget, metodo, inicio, objId);
 
                                         editorInstance.Visible();
 
@@ -1836,44 +1834,59 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
     }
 
     public ArrayList<Argumento> getArgumentos(Method method) {
+
         Integer contSimple = 1;
-
         String valorComplejo = "";
-
         ArrayList<Argumento> argumentos = new ArrayList<Argumento>();
-
         Class[] parametros = method.getParameterTypes();
 
         for (Class clazz : parametros) {
-            Argumento argumento = new Argumento();
 
+            Argumento argumento = new Argumento();
             argumento.setNombre("arg" + contSimple);
             argumento.setTipo(clazz.getName());
 
             if (clazz.getSimpleName().equals("String")) {
                 argumento.setValor("\"" + tablaArgumentos.getValueAt(contSimple - 1, 1).toString() + "\"");
                 argumento.setComplejo(false);
+
             } else if (clazz.getSimpleName().equals("char")) {
                 argumento.setValor("\'" + tablaArgumentos.getValueAt(contSimple - 1, 1).toString() + "\'");
                 argumento.setComplejo(false);
+                
             } else if (!clazz.isPrimitive()) {
                 String[] arregloCampos = clazz.getName().split("\\.");
                 String primerCampo = arregloCampos[0];
 
                 if (primerCampo.equals("java")) {
-                    argumento.setValor(tablaArgumentos.getValueAt(contSimple - 1, 1).toString());
-                    argumento.setComplejo(false);
+                    boolean isCollection;
+                    try {
+                        Class myClass = Class.forName(argumento.getTipo()); // "java.util.ArrayList"
+                        isCollection = Collection.class.isAssignableFrom(myClass);
+
+                        if (isCollection) {
+                            argumento.setValor("coleccion" + coleccionId);
+                            argumento.setComplejo(true);
+
+                        } else {
+                            argumento.setValor(tablaArgumentos.getValueAt(contSimple - 1, 1).toString());
+                            argumento.setComplejo(false);
+                        }
+                    } catch (ClassNotFoundException ex) {
+                        Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 } else {
-                    valorComplejo = "object" + contComplejo;
+                    valorComplejo = "object" + objId;
                     argumento.setValor(valorComplejo);
                     argumento.setComplejo(true);
-                    contComplejo++;
                 }
             } else {
                 argumento.setValor(tablaArgumentos.getValueAt(contSimple - 1, 1).toString());
                 argumento.setComplejo(false);
             }
-
+            System.out.println("ARGUMENTO ACTUAL, tipo: " + argumento.getTipo()
+                    + " valor: " + argumento.getValor()
+                    + " complejo?: " + argumento.isComplejo());
             argumentos.add(argumento);
             contSimple++;
         }

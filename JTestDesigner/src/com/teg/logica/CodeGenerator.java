@@ -174,7 +174,7 @@ public class CodeGenerator {
 
     public void runTest(Class clase, String rutaResultados, String casoPrueba) {
 
-        this.printActualClassPath();
+      //  this.printActualClassPath();
         Class[] classes = {clase};
         TestListenerAdapter tla = new TestListenerAdapter();
         TestNG testNG = new TestNG();

@@ -11,6 +11,8 @@
 package com.teg.vista;
 
 import com.teg.logica.WidgetObjectLoading;
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -19,6 +21,7 @@ import java.awt.Point;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -65,21 +68,21 @@ public class InstanceListForm extends javax.swing.JFrame {
     private javax.swing.JButton buttonGuardar;
     private javax.swing.JButton buttonCrearOtro;
     private javax.swing.JPanel buttonPanel;
-    private javax.swing.JPanel objectContainer = new javax.swing.JPanel();  
+    private javax.swing.JPanel objectContainer = new javax.swing.JPanel();
     private javax.swing.JTextField textField;
     private javax.swing.JSpinner spinnerField = new javax.swing.JSpinner();
+    private Inicio inicio;
+    private String casoPrueba;
+    private int coleccionId;
 
-    public InstanceListForm(ArrayList<Object> instance, String dataPath, WidgetObjectLoading listObject, Class argumento) {
+    public InstanceListForm(ArrayList<Object> instance, String dataPath, WidgetObjectLoading listObject, Class argumento, Inicio inicio, int coleccionId) {
         instanceInspect = instance;
 
         path = dataPath;
 
-
-
         listWidget = listObject;
 
         clase = argumento;
-        
 
         boolean initCollection = false;
 
@@ -88,25 +91,25 @@ public class InstanceListForm extends javax.swing.JFrame {
         if (argumentoClase.equals("java.util.List")) {
             obtenerListaColeccion(clase);
             instanceClass = instance.get(0);
-           
+
         } else {
             if (argumentoClase.equals("ava.util.Set")) {
                 obtenerSetColeccion(clase);
                 instanceClass = instance.get(0);
-               
+
             } else {
                 if (argumentoClase.equals("java.util.Queue")) {
                     obtenerQueueColeccion(clase);
                     instanceClass = instance.get(0);
-                
-                
-                    
                 }
             }
         }
 
-            initComponentsCollection();
-        
+        this.inicio = inicio;
+        this.casoPrueba = inicio.getNombreCasoPrueba();
+        this.coleccionId = coleccionId;
+        initComponentsCollection();
+
     }
 
     /** Creates new form InstanceListForm */
@@ -124,30 +127,19 @@ public class InstanceListForm extends javax.swing.JFrame {
 
         if (argumentoClase.equals("java.util.List")) {
             obtenerListaColeccion(clase);
-
-
         } else {
             if (argumentoClase.equals("ava.util.Set")) {
                 obtenerSetColeccion(clase);
-
-
             } else {
                 if (argumentoClase.equals("java.util.Queue")) {
                     obtenerQueueColeccion(clase);
-
-
-
-
                 }
             }
         }
 
         initComponentesString();
-            
+
     }
-
-
-
 
     private boolean verificarDato(Class clase) {
 
@@ -161,22 +153,17 @@ public class InstanceListForm extends javax.swing.JFrame {
                 || clase.getName().equals("java.lang.Character")
                 || clase.getName().equals("java.lang.String")
                 || clase.getName().equals("java.lang.Boolean")
-                || clase.isPrimitive() == true){
+                || clase.isPrimitive() == true) {
             verificado = true;
         }
 
         return verificado;
     }
 
-
-    
-
-    
-
     public void InspectObject(Object instance) {
 
         metawidget = new SwingMetawidget();
-      
+
         // asociamor al metawidget la instancia que va a manejar el "binding" de propiedades
         metawidget.addWidgetProcessor(new BeansBindingProcessor(
                 new BeansBindingProcessorConfig().setUpdateStrategy(UpdateStrategy.READ_WRITE)));
@@ -187,7 +174,7 @@ public class InstanceListForm extends javax.swing.JFrame {
             XmlInspectorConfig xmlConfig = new XmlInspectorConfig();
 
             File file = new File(path + "/" + "metawidgetData.xml");
-            
+
 
             xmlConfig.setInputStream(new FileInputStream(new File(path + "/" + "metawidgetData.xml")));
             PropertyTypeInspector inspector = new PropertyTypeInspector();
@@ -210,31 +197,29 @@ public class InstanceListForm extends javax.swing.JFrame {
 
         metawidget.setToInspect(instance);
 
-        
+
 
         objectContainer.add(metawidget);
         objectContainer.validate();
 
         //this.repaint();
 
-        
-    }
 
-    
+    }
 
     private void initComponentesString() {
 
-         buttonPanel = new javax.swing.JPanel();
-         textField = new javax.swing.JTextField();
+        buttonPanel = new javax.swing.JPanel();
+        textField = new javax.swing.JTextField();
         buttonCancelar = new javax.swing.JButton();
         buttonGuardar = new javax.swing.JButton();
         buttonCrearOtro = new javax.swing.JButton();
-        textField.setSize(new Dimension(100,100));
-        
-        textField.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        textField.setMaximumSize(new Dimension(100,100));
+        textField.setSize(new Dimension(100, 100));
 
-       // textField.setSize(new Dimension(50, 50));
+        textField.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        textField.setMaximumSize(new Dimension(100, 100));
+
+        // textField.setSize(new Dimension(50, 50));
         //textField.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         //textField.setLocation(150, 150);
 
@@ -264,21 +249,21 @@ public class InstanceListForm extends javax.swing.JFrame {
         buttonCrearOtro.addActionListener(new java.awt.event.ActionListener() {
 
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-              
-                    buttonCrearOtroStringActionPerformed(evt);
-               
+
+                buttonCrearOtroStringActionPerformed(evt);
+
             }
         });
 
         setLayout(new BorderLayout());
 
         objectContainer.setLayout(new FlowLayout(FlowLayout.CENTER));
-        
+
         objectContainer.add(textField);
-        textField.setLocation(new Point(20,20));
+        textField.setLocation(new Point(20, 20));
         textField.setVisible(true);
-        
-       
+
+
 
         buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
         buttonPanel.add(buttonGuardar);
@@ -288,14 +273,14 @@ public class InstanceListForm extends javax.swing.JFrame {
 
         getContentPane().add(objectContainer, BorderLayout.CENTER);
         getContentPane().add(buttonPanel, BorderLayout.SOUTH);
-         
+
 
         setTitle("Editor de Objetos Genericos");
         setSize(500, 500);
 
 
     }
-   
+
     private void initComponentsCollection() {
         //objectContainer = new javax.swing.JPanel();
         buttonPanel = new javax.swing.JPanel();
@@ -328,9 +313,9 @@ public class InstanceListForm extends javax.swing.JFrame {
         buttonCrearOtro.addActionListener(new java.awt.event.ActionListener() {
 
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-              
-                    buttonCrearOtroActionPerformed(evt);
-               
+
+                buttonCrearOtroActionPerformed(evt);
+
             }
         });
 
@@ -350,32 +335,32 @@ public class InstanceListForm extends javax.swing.JFrame {
         setTitle("Editor de Objetos Genericos");
         setSize(500, 500);
 
-       
+
     }
 
-    private void buttonCrearOtroStringActionPerformed(java.awt.event.ActionEvent evt)  {
+    private void buttonCrearOtroStringActionPerformed(java.awt.event.ActionEvent evt) {
 
         coleccion.add(textField.getText());
 
         textField.setText("");
     }
 
-     private void buttonCrearOtroActionPerformed(java.awt.event.ActionEvent evt)  {
+    private void buttonCrearOtroActionPerformed(java.awt.event.ActionEvent evt) {
 
-         coleccion.add(metawidget.getToInspect());
-        
+        coleccion.add(metawidget.getToInspect());
+
         objectContainer.removeAll();
 
-       Object newObject = getNuevoObjeto();
+        Object newObject = getNuevoObjeto();
 
         this.repaint();
 
-       InspectObject(newObject);
-      
+        InspectObject(newObject);
+
 
     }
 
-     public void Visible() {
+    public void Visible() {
 
 
         InspectObject(instanceClass);
@@ -412,15 +397,10 @@ public class InstanceListForm extends javax.swing.JFrame {
 
     }
 
-    
+    private void buttonCancelarActionPerformed(java.awt.event.ActionEvent evt) {
 
-  
-
-     
-     private void buttonCancelarActionPerformed(java.awt.event.ActionEvent evt){
-
-         this.dispose();
-     }
+        this.dispose();
+    }
 
     private void obtenerSetColeccion(Class argumento) {
 
@@ -442,28 +422,25 @@ public class InstanceListForm extends javax.swing.JFrame {
     }
 
     /*private void obtenerMapaColeccion(Class argumento) {
-        if (argumento.getName().equals("java.util.HashMap")) {
+    if (argumento.getName().equals("java.util.HashMap")) {
 
-            mapa = new HashMap();
+    mapa = new HashMap();
 
-        } else {
-            if (argumento.getName().equals("java.util.TreeMap")) {
-                mapa = new TreeMap();
-            } else {
-                if (argumento.getName().equals("java.util.LinkedHashMap")) {
-                    mapa = new LinkedHashMap();
+    } else {
+    if (argumento.getName().equals("java.util.TreeMap")) {
+    mapa = new TreeMap();
+    } else {
+    if (argumento.getName().equals("java.util.LinkedHashMap")) {
+    mapa = new LinkedHashMap();
 
-                }
-            }
-        }
+    }
+    }
+    }
     }*/
-
     public void getColeccion() {
 
         listWidget.setColeccion(coleccion);
     }
-
-   
 
     public void instanciaCampos(Object claseInstancia) throws InstantiationException, IllegalAccessException, NoSuchMethodException, IllegalArgumentException, InvocationTargetException {
 
@@ -471,8 +448,8 @@ public class InstanceListForm extends javax.swing.JFrame {
         Field[] campos = claseInstancia.getClass().getDeclaredFields();
         for (Field field : campos) {
             boolean flag = false;
-            if (!field.getType().isPrimitive() &&
-                    verificarDato(field.getType()) == false) {
+            if (!field.getType().isPrimitive()
+                    && verificarDato(field.getType()) == false) {
                 Method[] metodosClase = claseInstancia.getClass().getDeclaredMethods();
                 for (Method method : metodosClase) {
                     if (method.getParameterTypes().length > 0) {
@@ -500,8 +477,8 @@ public class InstanceListForm extends javax.swing.JFrame {
         Field[] campos = clase.getDeclaredFields();
         for (Field field : campos) {
             boolean flag = false;
-            if (!field.getType().isPrimitive() &&
-                    verificarDato(field.getType()) == false) {
+            if (!field.getType().isPrimitive()
+                    && verificarDato(field.getType()) == false) {
                 Method[] metodosClase = clase.getDeclaredMethods();
                 for (Method method : metodosClase) {
 
@@ -522,8 +499,7 @@ public class InstanceListForm extends javax.swing.JFrame {
         return claseInstancia;
     }
 
-    private Object getNuevoObjeto()
-    {
+    private Object getNuevoObjeto() {
         Class nuevaClase = instanceClass.getClass();
 
         Object nuevoObjeto = null;
@@ -559,19 +535,44 @@ public class InstanceListForm extends javax.swing.JFrame {
         this.dispose();
     }
 
-       
     private void buttonGuardarActionPerformed(java.awt.event.ActionEvent evt) {
 
-         coleccion.add(metawidget.getToInspect());
-      
+        coleccion.add(metawidget.getToInspect());
+
+        this.crearXML(clase, coleccion, instanceClass, casoPrueba);
 
         this.dispose();
 
     }
 
-  
+    public void crearXML(Class claseActual, Collection coleccion,
+            Object instanceClass, String casoPrueba) {
+        try {
+            coleccionId++;
+            File casoPruebaFile = new File(System.getProperty("user.home")
+                    + System.getProperty("file.separator") + casoPrueba
+                    + System.getProperty("file.separator"));
 
-    
+            File metadata = new File(casoPruebaFile.getPath()
+                    + System.getProperty("file.separator") + "metadata"
+                    + System.getProperty("file.separator"));
+
+            FileOutputStream fos;
+
+            fos = new FileOutputStream(metadata.getPath()
+                    + System.getProperty("file.separator")
+                    + "coleccion" + coleccionId + ".xml");
+
+            XStream xstream = new XStream(new DomDriver());
+            
+          //  xstream.alias("" + instanceClass.getClass().getSimpleName().toLowerCase() + "", instanceClass.getClass());
+            xstream.toXML(coleccion, fos);
+
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(InstanceForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -596,11 +597,9 @@ public class InstanceListForm extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
     /**
      * @param args the command line arguments
      */
-   
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 }

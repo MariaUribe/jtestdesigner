@@ -44,7 +44,7 @@ public class CodeManager {
         return esEnvolvente;
     }
 
-    public String getRuta(CasoPrueba casoPrueba, String nombreClase) {
+    public String getRuta(CasoPrueba casoPrueba, String file) {
         String ruta = "";
 
         File casoPruebaFile = new File(System.getProperty("user.home")
@@ -56,7 +56,7 @@ public class CodeManager {
                 + System.getProperty("file.separator"));
 
         ruta = metadata.getPath()
-                + System.getProperty("file.separator") + nombreClase + ".xml";
+                + System.getProperty("file.separator") + file + ".xml";
 
         return ruta;
     }
