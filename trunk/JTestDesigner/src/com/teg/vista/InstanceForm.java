@@ -51,22 +51,23 @@ public class InstanceForm extends javax.swing.JFrame {
     private javax.swing.JButton buttonCancelar;
     private javax.swing.JButton buttonGuardar;
     private javax.swing.JButton buttonCrearOtro;
-
     private javax.swing.JPanel buttonPanel;
     private javax.swing.JPanel objectContainer;
     private Method metodoActual;
     private Inicio inicio;
     private String casoPrueba;
     private ClassLoading classLoader = new ClassLoading();
+    private int objId;
 
     /** Creates new form InstanceForm */
-    public InstanceForm(Object instance, String dataPath, WidgetObjectLoading listObject, Method metodo, Inicio inicio) {
+    public InstanceForm(Object instance, String dataPath, WidgetObjectLoading listObject, Method metodo, Inicio inicio, int objId) {
         listWidget = listObject;
         instanceInspect = instance;
         path = dataPath;
         metodoActual = metodo;
         this.inicio = inicio;
         this.casoPrueba = inicio.getNombreCasoPrueba();
+        this.objId = objId;
         initComponents2();
 
     }
@@ -86,7 +87,7 @@ public class InstanceForm extends javax.swing.JFrame {
             XmlInspectorConfig xmlConfig = new XmlInspectorConfig();
 
             File file = new File(path + "/" + "metawidgetData.xml");
-            System.out.println(file.exists());
+           // System.out.println(file.exists());
 
             xmlConfig.setInputStream(new FileInputStream(new File(path + "/" + "metawidgetData.xml")));
             PropertyTypeInspector inspector = new PropertyTypeInspector();
@@ -173,22 +174,16 @@ public class InstanceForm extends javax.swing.JFrame {
 
     }
 
-    private void buttonCrearOtroActionPerformed(java.awt.event.ActionEvent evt)
-    {
-       objectContainer.removeAll();
-       metawidget.removeAll();
-       this.repaint();
-       Label label = new Label();
-       label.setText("olaa");
-       label.setSize(new Dimension(50,50));
-       label.setLocation(50, 50);
-       objectContainer.add(label);
-       //InspectObject(instanceInspect);
-
-
-        
-
-
+    private void buttonCrearOtroActionPerformed(java.awt.event.ActionEvent evt) {
+        objectContainer.removeAll();
+        metawidget.removeAll();
+        this.repaint();
+        Label label = new Label();
+        label.setText("olaa");
+        label.setSize(new Dimension(50, 50));
+        label.setLocation(50, 50);
+        objectContainer.add(label);
+        //InspectObject(instanceInspect);
     }
 
     private void buttonGuardarActionPerformed(java.awt.event.ActionEvent evt) {
@@ -205,6 +200,8 @@ public class InstanceForm extends javax.swing.JFrame {
     }
 
     public void crearXML(Class claseJar, Object instance, String casoPrueba) {
+        objId++;
+        
         try {
             File casoPruebaFile = new File(System.getProperty("user.home")
                     + System.getProperty("file.separator") + casoPrueba
@@ -215,13 +212,13 @@ public class InstanceForm extends javax.swing.JFrame {
                     + System.getProperty("file.separator"));
 
             FileOutputStream fos = new FileOutputStream(metadata.getPath()
-                    + System.getProperty("file.separator") + claseJar.getName() + ".xml");
+                    + System.getProperty("file.separator") + "object" + objId + ".xml");
 
             XStream xstream = new XStream(new DomDriver());
 
-            xstream.alias("" + claseJar.getName() + "", instance.getClass());
+           // xstream.alias("" + claseJar.getName() + "", instance.getClass());
             xstream.toXML(instance, fos);
-            
+
         } catch (FileNotFoundException ex) {
             Logger.getLogger(InstanceForm.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -257,7 +254,7 @@ public class InstanceForm extends javax.swing.JFrame {
                 Type[] parameterArgTypes = aType.getActualTypeArguments();
                 for (Type parameterArgType : parameterArgTypes) {
                     Class parameterArgClass = (Class) parameterArgType;
-                    System.out.println("parameterArgClass = " + parameterArgClass);
+                    //System.out.println("parameterArgClass = " + parameterArgClass);
                 }
             }
         }

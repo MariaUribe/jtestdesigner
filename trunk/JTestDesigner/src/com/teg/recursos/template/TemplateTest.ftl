@@ -36,7 +36,7 @@ public class ${claseTemplate.nombreClase} {
     <#list metodo.argumentos as arg>
     <#assign esComplejo = arg.complejo />
     <#if esComplejo>
-    private ${arg.tipo} ${arg.valor} = null;
+    private ${arg.tipo} ${arg.valor};
     </#if>
     </#list>
 </#list>
@@ -57,13 +57,13 @@ public class ${claseTemplate.nombreClase} {
     <#list metodo.argumentos as arg>
     <#assign esComplejo = arg.complejo />
     <#assign nombreClase = arg.tipo />
-        <#if esComplejo>
+        <#if esComplejo> 
         <#assign miCount = miCount + 1 />
         <#if miCount==1 ><#assign imprimir = true />
         try {
             XStream xstream = new XStream(new DomDriver());
         </#if>
-        <#assign ruta = codeManager.getRuta(casoPrueba, nombreClase) />
+        <#assign ruta = codeManager.getRuta(casoPrueba, arg.valor) />
         InputStream is${miCount} = new FileInputStream("${ruta}");
         ${arg.valor} = (${arg.tipo}) xstream.fromXML(is${miCount});
 
@@ -73,7 +73,7 @@ public class ${claseTemplate.nombreClase} {
 </#list>
     <#if imprimir>
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(${claseTemplate.nombreClase?cap_first}.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(${claseTemplate.nombreClase}.class.getName()).log(Level.SEVERE, null, ex);
         }
     </#if>
     }
