@@ -13,25 +13,21 @@ package com.teg.vista;
 import com.teg.logica.WidgetObjectLoading;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import org.jdom.*;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.Point;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
-import java.util.Map;
-import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -70,7 +66,7 @@ public class InstanceListForm extends javax.swing.JFrame {
     private javax.swing.JButton buttonCrearOtro;
     private javax.swing.JPanel buttonPanel;
     private javax.swing.JPanel objectContainer = new javax.swing.JPanel();  
-    private javax.swing.JTextField textField = new javax.swing.JTextField();
+    private javax.swing.JTextField textField;
     private javax.swing.JSpinner spinnerField = new javax.swing.JSpinner();
 
     public InstanceListForm(ArrayList<Object> instance, String dataPath, WidgetObjectLoading listObject, Class argumento) {
@@ -118,10 +114,33 @@ public class InstanceListForm extends javax.swing.JFrame {
         initComponents();
     }
 
-    InstanceListForm(Class clasePrimitiva, WidgetObjectLoading listWidget, Class argumento) {
+    InstanceListForm(Class clasePrimitiva, WidgetObjectLoading listObject, Class argumento) {
+
+        listWidget = listObject;
+
+        clase = argumento;
+
+        String argumentoClase = argumentoColeccion(clase);
+
+        if (argumentoClase.equals("java.util.List")) {
+            obtenerListaColeccion(clase);
 
 
-        clase = clasePrimitiva;
+        } else {
+            if (argumentoClase.equals("ava.util.Set")) {
+                obtenerSetColeccion(clase);
+
+
+            } else {
+                if (argumentoClase.equals("java.util.Queue")) {
+                    obtenerQueueColeccion(clase);
+
+
+
+
+                }
+            }
+        }
 
         initComponentesString();
             
@@ -206,12 +225,18 @@ public class InstanceListForm extends javax.swing.JFrame {
     private void initComponentesString() {
 
          buttonPanel = new javax.swing.JPanel();
+         textField = new javax.swing.JTextField();
         buttonCancelar = new javax.swing.JButton();
         buttonGuardar = new javax.swing.JButton();
         buttonCrearOtro = new javax.swing.JButton();
-        textField.setSize(new Dimension(100, 20));
+        textField.setSize(new Dimension(100,100));
+        
         textField.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        textField.setLocation(50, 50);
+        textField.setMaximumSize(new Dimension(100,100));
+
+       // textField.setSize(new Dimension(50, 50));
+        //textField.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        //textField.setLocation(150, 150);
 
 
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
@@ -247,8 +272,13 @@ public class InstanceListForm extends javax.swing.JFrame {
 
         setLayout(new BorderLayout());
 
-        objectContainer.setLayout(new BorderLayout());
+        objectContainer.setLayout(new FlowLayout(FlowLayout.CENTER));
+        
         objectContainer.add(textField);
+        textField.setLocation(new Point(20,20));
+        textField.setVisible(true);
+        
+       
 
         buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
         buttonPanel.add(buttonGuardar);
@@ -258,9 +288,10 @@ public class InstanceListForm extends javax.swing.JFrame {
 
         getContentPane().add(objectContainer, BorderLayout.CENTER);
         getContentPane().add(buttonPanel, BorderLayout.SOUTH);
+         
 
         setTitle("Editor de Objetos Genericos");
-        setSize(300, 300);
+        setSize(500, 500);
 
 
     }
@@ -441,8 +472,7 @@ public class InstanceListForm extends javax.swing.JFrame {
         for (Field field : campos) {
             boolean flag = false;
             if (!field.getType().isPrimitive() &&
-                    !field.getType().getName().equals("java.lang.String")
-                    && !field.getType().getName().equals("java.lang.Integer")) {
+                    verificarDato(field.getType()) == false) {
                 Method[] metodosClase = claseInstancia.getClass().getDeclaredMethods();
                 for (Method method : metodosClase) {
                     if (method.getParameterTypes().length > 0) {
@@ -471,8 +501,7 @@ public class InstanceListForm extends javax.swing.JFrame {
         for (Field field : campos) {
             boolean flag = false;
             if (!field.getType().isPrimitive() &&
-                    !field.getType().getName().equals("java.lang.String")
-                    && !field.getType().getName().equals("java.lang.Integer")) {
+                    verificarDato(field.getType()) == false) {
                 Method[] metodosClase = clase.getDeclaredMethods();
                 for (Method method : metodosClase) {
 
@@ -533,7 +562,7 @@ public class InstanceListForm extends javax.swing.JFrame {
 
          coleccion.add(metawidget.getToInspect());
         
-        listWidget.setColeccion(coleccion);
+        //listWidget.setColeccion(coleccion);
 
         this.dispose();
 
