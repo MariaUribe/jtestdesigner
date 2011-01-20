@@ -818,9 +818,9 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
                                                 ColeccionInstancia colInstancia = new ColeccionInstancia();
 
-                                                colInstancia.setClaseColeccion(argument);
+                                               
 
-                                                colInstancia.setTipo(objectInstances.get(0).getClass());
+                                                colInstancia.setTipoDatoColeccion(objectInstances.get(0).getClass().getName());
 
                                                 addInstanceCollection(colInstancia);
 
@@ -853,9 +853,9 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
                                                 ColeccionInstancia colInstancia = new ColeccionInstancia();
 
-                                                colInstancia.setClaseColeccion(argument);
+                                               
 
-                                                colInstancia.setTipo(classInstances.get(0));
+                                                colInstancia.setTipoDatoColeccion(classInstances.get(0).getName());
 
                                                 addInstanceCollection(colInstancia);
 
