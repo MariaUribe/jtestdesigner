@@ -101,6 +101,7 @@ public class InstanceArrayForm extends javax.swing.JFrame {
 
     public void VisibleObject(){
         InspectObject(objectInspect);
+        this.setVisible(true);
     }
 
     
@@ -299,6 +300,10 @@ public class InstanceArrayForm extends javax.swing.JFrame {
 
     }
 
+    public void getArreglo(){
+        widget.setArreglo(listaObjetos.toArray());
+    }
+
     private void instanciaCampos(Object claseInstancia) throws InstantiationException, IllegalAccessException, NoSuchMethodException, IllegalArgumentException, InvocationTargetException {
 
 
@@ -390,32 +395,54 @@ public class InstanceArrayForm extends javax.swing.JFrame {
 
      }
 
-    private void buttonGuardarStringActionPerformed(java.awt.event.ActionEvent evt){
-        if (claseComponente.getName().equals("java.lang.Integer")){
+    private void buttonGuardarStringActionPerformed(java.awt.event.ActionEvent evt) {
+        if (claseComponente.getName().equals("java.lang.Integer")) {
             Integer integer = new Integer(Integer.parseInt(valorString.getText()));
-        }else{
-            if (claseComponente.getName().equals("java.lang.Float")){
+            listaObjetos.add(integer);
+        } else {
+            if (claseComponente.getName().equals("java.lang.Float")) {
                 Float floatable = new Float(Float.parseFloat(valorString.getText()));
-            }else{
-                if (claseComponente.getName().equals("java.lang.Character")){
+                listaObjetos.add(floatable);
+            } else {
+                if (claseComponente.getName().equals("java.lang.Character")) {
                     Character character = new Character(valorString.getText().toCharArray()[0]);
-                }else{
-                    if (claseComponente.getName().equals("java.lang.Byte")){
+                    listaObjetos.add(character);
+                } else {
+                    if (claseComponente.getName().equals("java.lang.Byte")) {
                         Byte byter = new Byte(Byte.parseByte(valorString.getText()));
-                    }else{
-                        if (claseComponente.getName().equals("java.lang.Double")){
+                        listaObjetos.add(byter);
+                    } else {
+                        if (claseComponente.getName().equals("java.lang.Double")) {
                             Double doubler = new Double(Double.parseDouble(valorString.getText()));
-                        }else{
-                            if (claseComponente.getName().equals("java.lang.Boolean")){
+                            listaObjetos.add(doubler);
+                        } else {
+                            if (claseComponente.getName().equals("java.lang.Boolean")) {
                                 Boolean booleano = Boolean.parseBoolean(valorString.getText());
+                                listaObjetos.add(booleano);
+                            } else {
+                                if (claseComponente.getName().equals("java.lang.Short")) {
+                                    Short shorter = new Short(Short.parseShort(valorString.getText()));
+                                    listaObjetos.add(shorter);
+                                } else {
+                                    if (claseComponente.getName().equals("java.lang.Long")) {
+                                        Long longer = new Long(Long.parseLong(valorString.getText()));
+                                        listaObjetos.add(longer);
+                                        if (claseComponente.getName().equals("java.lang.String")) {
+                                            String string = valorString.getText();
+                                            listaObjetos.add(string);
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
-                }
-            }
 
+                }
+
+            }
         }
 
+        widget.setArreglo(listaObjetos.toArray());
     }
 
 

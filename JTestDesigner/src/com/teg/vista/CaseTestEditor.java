@@ -522,7 +522,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
     }
 
-    private void addInstanceArreglo(){
+    private void addInstanceArreglo(ArregloInstancia arregloInstancia){
         if (listWidget.getArreglo() != null){
 
             arregloId++;
@@ -535,7 +535,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
             Object[] arreglo = listWidget.getArreglo();
 
-            ArregloInstancia arregloInstancia = new ArregloInstancia();
+            
 
             arregloInstancia.setArreglo(arreglo);
             
@@ -879,13 +879,32 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
                                         editorArray.setVisible(true);
 
-                                        addInstanceArreglo();
+                                        editorArray.getArreglo();
+
+                                        ArregloInstancia arregloInstancia = new ArregloInstancia();
+
+                                        arregloInstancia.setClaseComponente(arrayComponente.getName());
+
+                                        addInstanceArreglo(arregloInstancia);
                                     }
                                     else
                                     {
                                         try {
                                             Object object = getInstance(arrayComponente);
+
                                             InstanceArrayForm editorArray = new InstanceArrayForm(object, inicio.getDirectorioCasoPrueba().getPath(), listWidget, inicio);
+
+                                            editorArray.VisibleObject();
+
+                                            editorArray.getArreglo();
+
+                                            ArregloInstancia arregloInstancia = new ArregloInstancia();
+
+                                            arregloInstancia.setClaseComponente(object.getClass().getName());
+
+                                            addInstanceArreglo(arregloInstancia);
+
+
                                         } catch (InstantiationException ex) {
                                             Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
                                         } catch (IllegalAccessException ex) {
@@ -923,15 +942,12 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                                         editorInstance.Visible();
 
                                        
-
                                         editorInstance.getObject();
-                                            //System.out.println(listWidget.getObject());
+                                          
 
                                         addInstanceVariable();
 
                                         
-                                    
-
                                         int row = tablaVariables.getSelectedRow();
 
                                     }
