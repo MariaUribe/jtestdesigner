@@ -14,7 +14,8 @@ import java.util.logging.Logger;
 <#list esc.metodos as metodo>
     <#list metodo.argumentos as arg>
     <#assign esComplejo = arg.complejo />
-    <#if esComplejo>
+    <#assign esArreglo = arg.arreglo />
+    <#if esComplejo && !esArreglo>
 import ${arg.tipo};
     </#if>
     </#list>

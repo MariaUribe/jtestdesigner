@@ -12,6 +12,7 @@ public class Argumento {
     private String tipo;
     private String valor;
     private boolean complejo;
+    private boolean arreglo;
 
     private ArrayList<MapaInstancia> mapasGuardados;
 
@@ -24,13 +25,12 @@ public class Argumento {
      * @param nombre the nombre to set
      * @param tipo the tipo to set
      */
-    public Argumento(String nombre, String tipo, String valor, boolean complejo) {
+    public Argumento(String nombre, String tipo, String valor, boolean complejo, boolean arreglo) {
         this.nombre = nombre;
         this.tipo = tipo;
         this.valor = valor;
         this.complejo = complejo;
-
-
+        this.arreglo = arreglo;
     }
 
     public Argumento() {
@@ -91,4 +91,19 @@ public class Argumento {
     public void setComplejo(boolean complejo) {
         this.complejo = complejo;
     }
+
+    /**
+     * @return the arreglo
+     */
+    public boolean isArreglo() {
+        return arreglo;
+    }
+
+    /**
+     * @param arreglo the arreglo to set
+     */
+    public void setArreglo(boolean arreglo) {
+        this.arreglo = arreglo;
+    }
+    
 }
