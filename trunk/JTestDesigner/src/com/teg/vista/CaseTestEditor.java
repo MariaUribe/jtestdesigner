@@ -69,6 +69,8 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
     
     private ArrayList<ColeccionInstancia> coleccionesGuardadas = new ArrayList<ColeccionInstancia>();
 
+    private Object[] arregloGuardado;
+
     private ArrayList<MapaInstancia> mapasGuardados = new ArrayList<MapaInstancia>();
 
     private ArrayList<ArregloInstancia> arreglosGuardados = new ArrayList<ArregloInstancia>();
@@ -78,6 +80,8 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
     private ArrayList<EscenarioPrueba> escenariosPrueba = new ArrayList<EscenarioPrueba>();
 
     private WidgetObjectLoading listWidget = new WidgetObjectLoading();
+
+    public  Object[] a = new Object[]{};
 
     private static int varId = 0;
 
@@ -120,6 +124,8 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
         ((javax.swing.plaf.basic.BasicInternalFrameUI) ifu).setNorthPane(null);
 
         int w2 = this.getSize().width;
+
+
 
         int h2 = this.getSize().height;
 
@@ -167,6 +173,10 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
         }
 
         return metodo;
+    }
+
+    public void setArreglo(Object[] ar){
+        a = ar;
     }
 
     public void crearMetawidgetMetadata(Document docXml) throws JDOMException, IOException {
@@ -394,8 +404,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
         Method method;
 
 
-        String a = "p";
-    int b = Integer.parseInt(a);
+     
 
 
         for (Metodo metodo : metodosGuardados) {
@@ -647,11 +656,13 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
             Method method = this.getActualMethod();
 
-            Object[] arreglo = listWidget.getArreglo();
+           
+
+           arregloGuardado = listWidget.getArreglo().toArray();
 
             
 
-            arregloInstancia.setArreglo(arreglo);
+            arregloInstancia.setArreglo(arregloGuardado);
             
             arregloInstancia.setNombreArreglo("arreglo" + arregloId);
 
@@ -663,7 +674,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
             arreglos.add(method.getName());
 
-            arreglos.add(arreglo.getClass().getName());
+            arreglos.add(arregloGuardado.getClass().getName());
 
             model.addRow(arreglos);
 
@@ -672,7 +683,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
     }
 
-    private void addInstanceMap(){
+    private void addInstanceMap(MapaInstancia mapaInstancia){
 
         if (listWidget.getMapa() != null){
 
@@ -686,7 +697,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
             Map mapa = listWidget.getMapa();
 
-            MapaInstancia mapaInstancia = new MapaInstancia();
+           
 
             mapaInstancia.setMapa(mapa);
 
@@ -925,9 +936,14 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                                     try {
                                         InstanceMapForm editorMap = new InstanceMapForm(classInstances, inicio.getDirectorioCasoPrueba().getPath(), listWidget, argument);
 
-                                        editorMap.setVisible(true);                                        
+                                        editorMap.setVisible(true);
+                                        editorMap.getMapa();
+                                        MapaInstancia mapInstancia = new MapaInstancia();
+                                        mapInstancia.setClaseKey(classInstances.get(0));
+                                        mapInstancia.setClaseValue(classInstances.get(1));
 
-                                        addInstanceMap();
+
+                                        addInstanceMap(mapInstancia);
 
                                     } catch (InstantiationException ex) {
 
