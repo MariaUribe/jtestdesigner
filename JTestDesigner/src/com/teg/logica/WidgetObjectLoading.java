@@ -20,7 +20,7 @@ public class WidgetObjectLoading {
     private Collection coleccion;
     private Map mapa;
     private boolean guardado;
-    private Object[] arreglo;
+    private ArrayList<Object> arreglo;
 
 
     /**
@@ -87,14 +87,14 @@ public class WidgetObjectLoading {
     /**
      * @return the arreglo
      */
-    public Object[] getArreglo() {
+    public ArrayList<Object> getArreglo() {
         return arreglo;
     }
 
     /**
      * @param arreglo the arreglo to set
      */
-    public void setArreglo(Object[] arreglo) {
+    public void setArreglo(ArrayList<Object> arreglo) {
         this.arreglo = arreglo;
     }
 

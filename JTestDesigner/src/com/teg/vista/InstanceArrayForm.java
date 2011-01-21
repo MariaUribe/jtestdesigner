@@ -25,6 +25,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.event.PopupMenuListener;
 import org.jdesktop.beansbinding.AutoBinding.UpdateStrategy;
 import org.jdom.JDOMException;
 import org.metawidget.inspector.composite.CompositeInspector;
@@ -51,14 +52,15 @@ public class InstanceArrayForm extends javax.swing.JFrame {
     private javax.swing.JButton buttonCrearOtro;
     private javax.swing.JPanel buttonPanel;
     private SwingMetawidget metawidget;
-    private WidgetObjectLoading widget;
-   private ArrayList<Object> listaObjetos = new ArrayList<Object>();
+    private WidgetObjectLoading widget = new WidgetObjectLoading();
+   private  ArrayList<Object> listaObjetos = new ArrayList<Object>();
     private javax.swing.JTextField valorString;
     
     private javax.swing.JPanel objectContainer;
     private javax.swing.JLabel labelString;
     private Class claseComponente;
     private Inicio inicio;
+  
     private Object objectInspect;
     private String pathFile;
     
@@ -70,9 +72,9 @@ public class InstanceArrayForm extends javax.swing.JFrame {
 
     InstanceArrayForm(Class arrayComponente, String path, WidgetObjectLoading listWidget, Inicio ini) {
 
-        pathFile = path;
+       pathFile = path;
 
-        metawidget = new SwingMetawidget();
+        
 
         inicio = ini;
 
@@ -82,22 +84,21 @@ public class InstanceArrayForm extends javax.swing.JFrame {
         
            
             initComponentsText();
-       
-            
-           
-           
-            
-            
-        
+ 
     }
 
     InstanceArrayForm(Object object, String path, WidgetObjectLoading listWidget, Inicio inicio) {
 
         widget = listWidget;
         objectInspect = object;
+        pathFile = path;
+        this.inicio = inicio;
         initComponentsObject();
+       
 
     }
+
+
 
     public void VisibleObject(){
         InspectObject(objectInspect);
@@ -137,7 +138,7 @@ public class InstanceArrayForm extends javax.swing.JFrame {
             }
         });
 
-        buttonCrearOtro.setText("Crear");
+        buttonCrearOtro.setText("Crear Otro");
         buttonCrearOtro.addActionListener(new java.awt.event.ActionListener() {
 
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -179,7 +180,7 @@ public class InstanceArrayForm extends javax.swing.JFrame {
         labelString.setSize(new Dimension(20,20));
         labelString.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         labelString.setText("Este campo es de valor tipo: "+ claseComponente.getName());
-        labelString.setLocation(70, 70);
+        labelString.setLocation(52, 52);
 
 
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
@@ -203,7 +204,7 @@ public class InstanceArrayForm extends javax.swing.JFrame {
             }
         });
 
-        buttonCrearOtro.setText("Crear");
+        buttonCrearOtro.setText("Crear Otro");
         buttonCrearOtro.addActionListener(new java.awt.event.ActionListener() {
 
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -301,7 +302,8 @@ public class InstanceArrayForm extends javax.swing.JFrame {
     }
 
     public void getArreglo(){
-        widget.setArreglo(listaObjetos.toArray());
+        //Object[] arreglo = listaObjetos.toArray();
+        widget.setArreglo(listaObjetos);
     }
 
     private void instanciaCampos(Object claseInstancia) throws InstantiationException, IllegalAccessException, NoSuchMethodException, IllegalArgumentException, InvocationTargetException {
@@ -364,11 +366,11 @@ public class InstanceArrayForm extends javax.swing.JFrame {
 
     private Object getNuevoObjeto()
     {
-
+        Class claseNueva = objectInspect.getClass();
 
         Object nuevoObjeto = null;
         try {
-            nuevoObjeto = instanciarNuevoObjeto(claseComponente);
+            nuevoObjeto = instanciarNuevoObjeto(claseNueva);
         } catch (InstantiationException ex) {
             Logger.getLogger(InstanceListForm.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
@@ -390,41 +392,51 @@ public class InstanceArrayForm extends javax.swing.JFrame {
 
     private void buttonGuardarActionPerformed(java.awt.event.ActionEvent evt) {
         listaObjetos.add(metawidget.getToInspect());
-        widget.setArreglo(listaObjetos.toArray());
+        //Object[] arreglo = listaObjetos.toArray();
+        
+        widget.setArreglo(listaObjetos);
         this.dispose();
 
      }
 
     private void buttonGuardarStringActionPerformed(java.awt.event.ActionEvent evt) {
-        if (claseComponente.getName().equals("java.lang.Integer")) {
+        if (claseComponente.getName().equals("java.lang.Integer") ||
+                claseComponente.getName().equals("int")) {
             Integer integer = new Integer(Integer.parseInt(valorString.getText()));
             listaObjetos.add(integer);
         } else {
-            if (claseComponente.getName().equals("java.lang.Float")) {
+            if (claseComponente.getName().equals("java.lang.Float") ||
+                    claseComponente.getName().equals("float")) {
                 Float floatable = new Float(Float.parseFloat(valorString.getText()));
                 listaObjetos.add(floatable);
             } else {
-                if (claseComponente.getName().equals("java.lang.Character")) {
+                if (claseComponente.getName().equals("java.lang.Character") ||
+                        claseComponente.getName().equals("char")) {
                     Character character = new Character(valorString.getText().toCharArray()[0]);
                     listaObjetos.add(character);
                 } else {
-                    if (claseComponente.getName().equals("java.lang.Byte")) {
+                    if (claseComponente.getName().equals("java.lang.Byte") ||
+                            claseComponente.getName().equals("byte")) {
                         Byte byter = new Byte(Byte.parseByte(valorString.getText()));
                         listaObjetos.add(byter);
                     } else {
-                        if (claseComponente.getName().equals("java.lang.Double")) {
+                        if (claseComponente.getName().equals("java.lang.Double") ||
+                                claseComponente.getName().equals("double")) {
                             Double doubler = new Double(Double.parseDouble(valorString.getText()));
                             listaObjetos.add(doubler);
                         } else {
-                            if (claseComponente.getName().equals("java.lang.Boolean")) {
+                            if (claseComponente.getName().equals("java.lang.Boolean") ||
+                                    claseComponente.getName().equals("boolean")) {
                                 Boolean booleano = Boolean.parseBoolean(valorString.getText());
                                 listaObjetos.add(booleano);
                             } else {
-                                if (claseComponente.getName().equals("java.lang.Short")) {
+                                if (claseComponente.getName().equals("java.lang.Short") ||
+                                        claseComponente.getName().equals("short")) {
                                     Short shorter = new Short(Short.parseShort(valorString.getText()));
                                     listaObjetos.add(shorter);
                                 } else {
-                                    if (claseComponente.getName().equals("java.lang.Long")) {
+                                    if (claseComponente.getName().equals("java.lang.Long") ||
+                                            claseComponente.getName().equals("long")) {
                                         Long longer = new Long(Long.parseLong(valorString.getText()));
                                         listaObjetos.add(longer);
                                         if (claseComponente.getName().equals("java.lang.String")) {
@@ -442,7 +454,11 @@ public class InstanceArrayForm extends javax.swing.JFrame {
             }
         }
 
-        widget.setArreglo(listaObjetos.toArray());
+        //Object[] arreglo = listaObjetos.toArray();
+
+
+        widget.setArreglo(listaObjetos);
+        this.dispose();
     }
 
 
@@ -458,8 +474,8 @@ public class InstanceArrayForm extends javax.swing.JFrame {
 
      private void buttonCrearOtroStringActionPerformed(java.awt.event.ActionEvent evt){
 
-         listaObjetos.add(labelString.getText());
-         labelString.setText("");
+         listaObjetos.add(valorString.getText());
+         valorString.setText("");
      }
 
      private void buttonCancelarActionPerformed(java.awt.event.ActionEvent evt){

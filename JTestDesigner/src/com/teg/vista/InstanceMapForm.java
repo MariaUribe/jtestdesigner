@@ -15,6 +15,8 @@ import com.teg.logica.WidgetObjectLoading;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -33,6 +35,9 @@ import java.util.WeakHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFormattedTextField;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 
 import org.jdesktop.beansbinding.AutoBinding.UpdateStrategy;
 import org.jdom.*;
@@ -63,7 +68,7 @@ public class InstanceMapForm extends javax.swing.JFrame {
     private SwingMetawidget metawidget;
     private SwingMetawidget secondMetawidget;
 
-    private Map mapa;
+    private static Map mapa;
     private int caso = 0;;
     
     private javax.swing.JTabbedPane tabPanel;
@@ -115,6 +120,9 @@ public class InstanceMapForm extends javax.swing.JFrame {
         obtenerMapa(argument);
         initComponentesObject();
         instanceInspect = classInstances;
+        this.path = path;
+        this.listWidget = listWidget;
+        clase = argument;
          if (verificarDato(instanceInspect.get(0)) == true &&
          verificarDato(instanceInspect.get(1))== true)
         {
@@ -229,9 +237,15 @@ public class InstanceMapForm extends javax.swing.JFrame {
 
         keyField = new javax.swing.JTextField();
         keyField.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        
+        
+        panelKey.add(keyField);
         keyField.setSize(new Dimension(100,20));
         keyField.setLocation(50,50);
-        panelKey.add(keyField);
+        keyField.setVisible(true);
+        
+        tabPanel.validate();
+
 
     }
 
@@ -244,18 +258,32 @@ public class InstanceMapForm extends javax.swing.JFrame {
 
         valueField = new javax.swing.JTextField();
         valueField.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        
+        panelValue.add(valueField);
         valueField.setSize(new Dimension(100,20));
         valueField.setLocation(50,50);
-        panelValue.add(keyField);
+        panelValue.revalidate();
+
+        tabPanel.validate();
         
     }
 
 
     private void initComponentesObject()
     {
-        tabPanel = new javax.swing.JTabbedPane();
-        panelKey = new javax.swing.JPanel();
-        panelValue = new javax.swing.JPanel();
+        tabPanel = new JTabbedPane();
+        panelKey = new JPanel(false);
+       
+        panelKey.setLayout(new FlowLayout(FlowLayout.CENTER));
+        panelKey.setAutoscrolls(true);
+    
+
+        panelValue = new JPanel(false);
+       
+        panelValue.setLayout(new FlowLayout(FlowLayout.CENTER));
+        panelValue.setAutoscrolls(true);
+       
+
 
          buttonPanel = new javax.swing.JPanel();
         buttonCancelar = new javax.swing.JButton();
@@ -292,9 +320,12 @@ public class InstanceMapForm extends javax.swing.JFrame {
 
         setLayout(new BorderLayout());
 
-        tabPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        //tabPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
         tabPanel.addTab("Clave", panelKey);
+        tabPanel.setMnemonicAt(0, KeyEvent.VK_1);
         tabPanel.addTab("Valor",panelValue);
+        tabPanel.setMnemonicAt(1, KeyEvent.VK_2);
+        tabPanel.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         buttonPanel.add(buttonGuardar);
@@ -305,7 +336,7 @@ public class InstanceMapForm extends javax.swing.JFrame {
         getContentPane().add(tabPanel, BorderLayout.CENTER);
 
         setTitle("Editor de Mapas");
-        setSize(500, 500);
+        setSize(700, 700);
 
 
     }
@@ -355,6 +386,7 @@ public class InstanceMapForm extends javax.swing.JFrame {
         }
 
         listWidget.setMapa(mapa);
+        this.dispose();
 
     }
 
