@@ -538,14 +538,13 @@ public class InstanceListForm extends javax.swing.JFrame {
 
         coleccion.add(metawidget.getToInspect());
 
-        this.crearXML(clase, coleccion, instanceClass, casoPrueba);
+        this.crearXML(coleccion, casoPrueba);
 
         this.dispose();
 
     }
 
-    public void crearXML(Class claseActual, Collection coleccion,
-            Object instanceClass, String casoPrueba) {
+    public void crearXML(Collection coleccion, String casoPrueba) {
         try {
             coleccionId++;
             File casoPruebaFile = new File(System.getProperty("user.home")
