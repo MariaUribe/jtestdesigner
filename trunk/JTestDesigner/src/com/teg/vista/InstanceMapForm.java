@@ -103,7 +103,8 @@ public class InstanceMapForm extends javax.swing.JFrame {
                 || clase.getName().equals("java.lang.Byte")
                 || clase.getName().equals("java.lang.Character")
                 || clase.getName().equals("java.lang.String")
-                || clase.getName().equals("java.lang.Boolean"))
+                || clase.getName().equals("java.lang.Boolean")
+                || clase.isPrimitive() == true)
                 {
             verificado = true;
         }
@@ -165,8 +166,10 @@ public class InstanceMapForm extends javax.swing.JFrame {
                         caso = 3;
                         Object object = getInstance(instanceInspect.get(1));
 
+                        Object secondObject = getNuevoObjeto(instanceInspect.get(0));
+
                         InspectObject(object, panelKey);
-                        InspectSecondObject(object, panelValue);
+                        InspectSecondObject(secondObject, panelValue);
                     } catch (IllegalAccessException ex) {
                         Logger.getLogger(InstanceMapForm.class.getName()).log(Level.SEVERE, null, ex);
                     } catch (NoSuchMethodException ex) {
@@ -274,13 +277,13 @@ public class InstanceMapForm extends javax.swing.JFrame {
         tabPanel = new JTabbedPane();
         panelKey = new JPanel(false);
        
-        panelKey.setLayout(new FlowLayout(FlowLayout.CENTER));
+        panelKey.setLayout(new FlowLayout(FlowLayout.LEADING));
         panelKey.setAutoscrolls(true);
     
 
         panelValue = new JPanel(false);
        
-        panelValue.setLayout(new FlowLayout(FlowLayout.CENTER));
+        panelValue.setLayout(new FlowLayout(FlowLayout.LEADING));
         panelValue.setAutoscrolls(true);
        
 
@@ -433,7 +436,7 @@ public class InstanceMapForm extends javax.swing.JFrame {
 
                     InspectObject(firstObj, panelKey);
 
-                    InspectObject(secondObj, panelValue);
+                    InspectSecondObject(secondObj, panelValue);
 
                 } else {
 
@@ -582,7 +585,7 @@ public class InstanceMapForm extends javax.swing.JFrame {
         Field[] campos = clase.getDeclaredFields();
         for (Field field : campos) {
             boolean flag = false;
-            if (!field.getType().isPrimitive() && verificarDato(field.getType()) == false) {
+            if (verificarDato(field.getType()) == false) {
                 Method[] metodosClase = clase.getDeclaredMethods();
                 for (Method method : metodosClase) {
 
@@ -613,7 +616,7 @@ public class InstanceMapForm extends javax.swing.JFrame {
         Field[] campos = claseInstancia.getClass().getDeclaredFields();
         for (Field field : campos) {
             boolean flag = false;
-            if (!field.getType().isPrimitive() && verificarDato(field.getType()) == false) {
+            if (verificarDato(field.getType()) == false) {
                 Method[] metodosClase = claseInstancia.getClass().getDeclaredMethods();
                 for (Method method : metodosClase) {
                     if (method.getParameterTypes().length > 0) {
@@ -644,7 +647,7 @@ public class InstanceMapForm extends javax.swing.JFrame {
         Field[] campos = clase.getDeclaredFields();
         for (Field field : campos) {
             boolean flag = false;
-            if (!field.getType().isPrimitive() && verificarDato(field.getType()) == false) {
+            if (verificarDato(field.getType()) == false) {
                 Method[] metodosClase = clase.getDeclaredMethods();
                 for (Method method : metodosClase) {
 
@@ -728,8 +731,7 @@ public class InstanceMapForm extends javax.swing.JFrame {
 
         for (Field field : secondCampos) {
             boolean flag = false;
-            if (!field.getType().isPrimitive() && !field.getType().getName().equals("java.lang.String")
-                    && !field.getType().getName().equals("java.lang.Integer")) {
+            if (verificarDato(field.getType()) == false) {
                 Method[] metodosClase = secondClass.getDeclaredMethods();
                 for (Method method : metodosClase) {
 
