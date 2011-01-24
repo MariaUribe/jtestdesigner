@@ -6,6 +6,7 @@ import java.beans.PropertyVetoException;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -348,6 +349,13 @@ public class Inicio extends javax.swing.JFrame {
 
     public ArrayList<Class> getClasesManager() {
         ArrayList<Class> clases = classManager.getClases();
+
+        return clases;
+    }
+
+    public ArrayList<Class> obtenerClasesJars(){
+
+        ArrayList<Class> clases = classManager.obtenerClasesJar();
 
         return clases;
     }

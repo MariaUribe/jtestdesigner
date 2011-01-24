@@ -17,6 +17,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Point;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -33,6 +34,7 @@ import java.util.LinkedList;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JTabbedPane;
 import org.jdesktop.beansbinding.AutoBinding.UpdateStrategy;
 
 import org.jdom.JDOMException;
@@ -55,7 +57,8 @@ import org.metawidget.swing.widgetprocessor.binding.beansbinding.BeansBindingPro
  */
 public class InstanceListForm extends javax.swing.JFrame {
 
-    private ArrayList<Object> instanceInspect;
+   
+    private  ArrayList<Class> clasesJars;
     private String path;
     private WidgetObjectLoading listWidget = new WidgetObjectLoading();
     private SwingMetawidget metawidget;
@@ -73,9 +76,15 @@ public class InstanceListForm extends javax.swing.JFrame {
     private Inicio inicio;
     private String casoPrueba;
     private int coleccionId;
+    private javax.swing.JTabbedPane tabPanel;
+    private javax.swing.JPanel panelSeleccion;
+    private javax.swing.JPanel panelObject;
+    private javax.swing.JList listaSeleccion;
+    private javax.swing.JButton aceptarSeleccion;
+    private javax.swing.JButton cancelarSeleccion;
 
-    public InstanceListForm(ArrayList<Object> instance, String dataPath, WidgetObjectLoading listObject, Class argumento, Inicio inicio, int coleccionId) {
-        instanceInspect = instance;
+    public InstanceListForm(Object instance, String dataPath, WidgetObjectLoading listObject, Class argumento, Inicio inicio, int coleccionId) {
+        instanceClass = instance;
 
         path = dataPath;
 
@@ -83,30 +92,30 @@ public class InstanceListForm extends javax.swing.JFrame {
 
         clase = argumento;
 
-        boolean initCollection = false;
+
+
+        
+/*
+        if (esPadre(clase) == true){
+
+            obtenerPadreColeccion(clase);
+            instanceClass = instance.get(0);
+
+        }else{
+
+*/
+
 
         String argumentoClase = argumentoColeccion(clase);
 
-        if (argumentoClase.equals("java.util.List")) {
-            obtenerListaColeccion(clase);
-            instanceClass = instance.get(0);
-
-        } else {
-            if (argumentoClase.equals("ava.util.Set")) {
-                obtenerSetColeccion(clase);
-                instanceClass = instance.get(0);
-
-            } else {
-                if (argumentoClase.equals("java.util.Queue")) {
-                    obtenerQueueColeccion(clase);
-                    instanceClass = instance.get(0);
-                }
-            }
-        }
+        setMapa(argumentoClase);
 
         this.inicio = inicio;
+
         this.casoPrueba = inicio.getNombreCasoPrueba();
+
         this.coleccionId = coleccionId;
+
         initComponentsCollection();
 
     }
@@ -124,20 +133,87 @@ public class InstanceListForm extends javax.swing.JFrame {
 
         String argumentoClase = argumentoColeccion(clase);
 
+        setMapa(argumentoClase);
+
+        initComponentesString();
+
+    }
+
+    InstanceListForm(ArrayList<Class> clasesJar, String path, WidgetObjectLoading listWidget, Class argument, Inicio inicio, int coleccionId) {
+
+        this.clasesJars = clasesJar;
+
+        this.path = path;
+
+        this.listWidget = listWidget;
+
+        clase = argument;
+
+        this.inicio = inicio;
+
+        this.coleccionId = coleccionId;
+
+        String argumentoClase = argumentoColeccion(clase);
+
+        setMapa(argumentoClase);
+
+        initComponentesGeneric();
+
+       
+
+    }
+
+    private void setMapa(String argumentoClase){
+
         if (argumentoClase.equals("java.util.List")) {
+
             obtenerListaColeccion(clase);
+
         } else {
+
             if (argumentoClase.equals("ava.util.Set")) {
+
                 obtenerSetColeccion(clase);
+
             } else {
+
                 if (argumentoClase.equals("java.util.Queue")) {
+
                     obtenerQueueColeccion(clase);
                 }
             }
         }
 
-        initComponentesString();
+    }
 
+    private boolean esPadre (Class clase){
+
+        boolean esPadre = false;
+        if (clase.getName().equals("java.util.List")
+         || clase.getName().equals("java.util.Set")
+         || clase.getName().equals("java.util.Queue"))
+        {
+            esPadre = true;
+        }
+
+        return esPadre;
+    }
+
+    private void obtenerPadreColeccion(Class clase){
+
+        if (clase.getName().equals("java.util.List")){
+
+            coleccion = new ArrayList();
+
+        }else{
+            if (clase.getName().equals("java.util.Set")){
+
+            }else{
+                if (clase.getName().equals("java.util.Queue")){
+
+                }
+            }
+        }
     }
 
     private boolean verificarDato(Class clase) {
@@ -218,11 +294,6 @@ public class InstanceListForm extends javax.swing.JFrame {
         textField.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         textField.setMaximumSize(new Dimension(100, 100));
 
-        // textField.setSize(new Dimension(50, 50));
-        //textField.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        //textField.setLocation(150, 150);
-
-
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
 
         buttonPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -276,6 +347,121 @@ public class InstanceListForm extends javax.swing.JFrame {
 
         setTitle("Editor de Objetos Genericos");
         setSize(500, 500);
+
+
+    }
+
+    private void llenarListaSeleccion(javax.swing.JList lista){
+
+       lista.setListData(clasesJars.toArray());
+    }
+
+    private void initComponentesGeneric(){
+
+        tabPanel = new javax.swing.JTabbedPane();
+        panelSeleccion = new javax.swing.JPanel(false);
+
+        panelSeleccion.setLayout(new BorderLayout());
+        panelSeleccion.setAutoscrolls(true);
+
+        listaSeleccion = new javax.swing.JList();
+
+        llenarListaSeleccion(listaSeleccion);
+
+        panelSeleccion.add(listaSeleccion, BorderLayout.CENTER);
+
+        aceptarSeleccion = new javax.swing.JButton();
+
+        aceptarSeleccion.setText("Aceptar");
+
+        aceptarSeleccion.addActionListener(new java.awt.event.ActionListener() {
+
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+               // aceptarSeleccionActionPerformed(evt);
+            }
+        });
+
+        cancelarSeleccion.setText("Cancelar");
+
+        cancelarSeleccion.addActionListener(new java.awt.event.ActionListener() {
+
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                //cancelarSeleccionActionPerformed(evt);
+            }
+        });
+
+        panelSeleccion.add(aceptarSeleccion, BorderLayout.EAST);
+        panelSeleccion.add(cancelarSeleccion, BorderLayout.EAST);
+
+
+
+
+
+
+
+
+
+
+
+        panelObject = new javax.swing.JPanel(false);
+
+        panelObject.setLayout(new FlowLayout(FlowLayout.LEADING));
+        panelObject.setAutoscrolls(true);
+
+
+
+         buttonPanel = new javax.swing.JPanel();
+        buttonCancelar = new javax.swing.JButton();
+        buttonGuardar = new javax.swing.JButton();
+        buttonCrearOtro = new javax.swing.JButton();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
+
+        buttonPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        buttonCancelar.setText("Cancelar");
+        buttonCancelar.addActionListener(new java.awt.event.ActionListener() {
+
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonCancelarActionPerformed(evt);
+            }
+        });
+
+        buttonGuardar.setText("Guardar");
+        buttonGuardar.addActionListener(new java.awt.event.ActionListener() {
+
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonGuardarActionPerformed(evt);
+            }
+        });
+
+        buttonCrearOtro.setText("Crear");
+        buttonCrearOtro.addActionListener(new java.awt.event.ActionListener() {
+
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonCrearOtroActionPerformed(evt);
+            }
+        });
+
+        setLayout(new BorderLayout());
+
+        //tabPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        tabPanel.addTab("Seleccion", panelSeleccion);
+        tabPanel.setMnemonicAt(0, KeyEvent.VK_1);
+        tabPanel.addTab("Objeto",panelObject);
+        tabPanel.setMnemonicAt(1, KeyEvent.VK_2);
+        tabPanel.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        buttonPanel.add(buttonGuardar);
+        buttonPanel.add(buttonCancelar);
+        buttonPanel.add(buttonCrearOtro);
+
+        getContentPane().add(buttonPanel, BorderLayout.SOUTH);
+        getContentPane().add(tabPanel, BorderLayout.CENTER);
+
+        setTitle("Editor de Colecciones");
+        setSize(700, 700);
 
 
     }
@@ -418,6 +604,65 @@ public class InstanceListForm extends javax.swing.JFrame {
     }
 
     private void obtenerQueueColeccion(Class argumento) {
+
+        if (argumento.getName().equals("java.util.PriorityQueue")) {
+
+           coleccion = new java.util.PriorityQueue();
+
+        } else {
+
+            if (argumento.getName().equals("java.util.concurrent.SynchronousQueue")) {
+
+                coleccion = new java.util.concurrent.SynchronousQueue();
+
+            } else {
+
+                if (argumento.getName().equals("java.util.PriorityBlockingQueue")) {
+
+                    coleccion = new java.util.PriorityQueue();
+                } else {
+
+                    if (argumento.getName().equals("java.util.LinkedList")) {
+
+                        coleccion = new java.util.LinkedList();
+                    } else {
+
+                        if (argumento.getName().equals("java.util.concurrent.LinkedBlockingQueue")) {
+
+                            coleccion = new java.util.concurrent.LinkedBlockingDeque();
+                        } else {
+
+                            if (argumento.getName().equals("java.util.concurrent.DelayQueue")) {
+
+                                coleccion = new java.util.concurrent.DelayQueue();
+
+                            } else {
+
+                                if (argumento.getName().equals("java.util.concurrent.ConcurrentLinkedQueue")) {
+
+                                    coleccion = new java.util.concurrent.ConcurrentLinkedQueue();
+
+                                } else {
+
+
+                                    if (argumento.getName().equals("java.util.ArrayDeque")) {
+
+                                        coleccion = new java.util.ArrayDeque();
+
+                                    }
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+        }
     }
 
     /*private void obtenerMapaColeccion(Class argumento) {
