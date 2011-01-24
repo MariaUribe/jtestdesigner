@@ -89,6 +89,7 @@ public class InstanceArrayForm extends javax.swing.JFrame {
 
         widget = listWidget;
         objectInspect = object;
+
         pathFile = path;
         this.inicio = inicio;
         this.casoPrueba = inicio.getNombreCasoPrueba();
@@ -97,6 +98,7 @@ public class InstanceArrayForm extends javax.swing.JFrame {
 
 
     }
+
 
     public void VisibleObject() {
         InspectObject(objectInspect);
@@ -385,16 +387,15 @@ public class InstanceArrayForm extends javax.swing.JFrame {
     private void buttonGuardarActionPerformed(java.awt.event.ActionEvent evt) {
 
         listaObjetos.add(metawidget.getToInspect());
-
-        widget.setArreglo(listaObjetos);
-
-        Class instancia = objectInspect.getClass();
+     
+        //Object[] arreglo = listaObjetos.toArray();
+        System.out.println(objectInspect.getClass().getName());
         
         ArrayList dest = new ArrayList();
         
         System.out.println("arreglo clase: " + dest.getClass().getName());
 
-        this.crearXML(listaObjetos.toArray(), casoPrueba, instancia.getName());
+        this.crearXML(listaObjetos.toArray(), casoPrueba, objectInspect.getClass().getName());
 
         this.dispose();
 

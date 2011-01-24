@@ -421,6 +421,37 @@ public class ClassManager extends javax.swing.JInternalFrame {
         return clases;
     }
 
+    private ArrayList<Class> agregarClases(ArrayList<Class> clases, ArrayList<Class> clasesJar){
+
+        for (Class class1 : clasesJar) {
+
+            clases.add(class1);
+        }
+
+        return clases;
+
+    }
+
+    public ArrayList<Class> obtenerClasesJar(){
+        
+        ArrayList<Class> clases = new ArrayList<Class>();
+
+        ArrayList<Class> clasesFinales = new ArrayList<Class>();
+
+        for (File jar : jarsRuta){
+            try {
+                clases = classLoader.getClassDetails(jar.getPath());
+                clasesFinales = agregarClases(clasesFinales, clases);
+            } catch (MalformedURLException ex) {
+                Logger.getLogger(ClassManager.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(ClassManager.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        return clasesFinales;
+    }
+
     /**
      * Metodo para agregar en un arreglo las clases de la izquierda
      * @return Lista de las clases del panel izquierdo
