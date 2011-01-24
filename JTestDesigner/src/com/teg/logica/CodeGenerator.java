@@ -2,7 +2,7 @@ package com.teg.logica;
 
 import com.teg.dominio.CasoPrueba;
 import com.teg.dominio.ClaseTemplate;
-import com.teg.reportes.ReporterManager;
+import com.teg.reportes.JyperionListener;
 import com.teg.vista.Inicio;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -18,6 +18,7 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,6 +26,8 @@ import org.testng.TestListenerAdapter;
 import org.testng.TestNG;
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
+import org.testng.ITestContext;
+import org.testng.ITestResult;
 
 /**
  * Clase para la generacion de codigo java 
@@ -171,7 +174,7 @@ public class CodeGenerator {
             System.out.println("Compilation Failed");
         }
     }
-
+    
     public void runTest(Class clase, String rutaResultados, String casoPrueba) {
 
       //  this.printActualClassPath();
@@ -182,8 +185,50 @@ public class CodeGenerator {
         testNG.addListener(tla);
         testNG.setOutputDirectory(rutaResultados);
         testNG.run();
-        this.generarReportePDF(casoPrueba);
 
+        this.generarReportePDF(tla);
+    }
+
+    public void generarReportePDF(TestListenerAdapter tla){
+
+        JyperionListener jl = new JyperionListener();
+        List<ITestContext> testsContexts = tla.getTestContexts();
+
+        for (ITestContext iTestContext : testsContexts) {
+
+            jl.onStart(iTestContext);
+
+            List<ITestResult> passedTests = tla.getPassedTests();
+            if(!passedTests.isEmpty()){
+                for (ITestResult result : passedTests) {
+                    jl.onTestSuccess(result);
+                }
+            }
+
+            List<ITestResult> skippedTests = tla.getSkippedTests();
+            if(!skippedTests.isEmpty()){
+                for (ITestResult result : skippedTests) {
+                    jl.onTestSkipped(result);
+                }
+            }
+
+            List<ITestResult> failedTests = tla.getFailedTests();
+            if(!failedTests.isEmpty()){
+                for (ITestResult result : failedTests) {
+                    jl.onTestFailure(result);
+                }
+            }
+
+            List<ITestResult> failedWithinSuccessTests = tla.getFailedButWithinSuccessPercentageTests();
+            if(!failedWithinSuccessTests.isEmpty()){
+                for (ITestResult result : failedWithinSuccessTests) {
+                    jl.onTestFailedButWithinSuccessPercentage(result);
+                }
+            }
+            
+            jl.onFinish(iTestContext);
+        }
+        
     }
 
     public void printActualClassPath() {
@@ -303,22 +348,6 @@ public class CodeGenerator {
         rutaReportes = command.getPath();
 
         return rutaReportes;
-    }
-
-    public void generarReportePDF(String casoPrueba) {
-        ReporterManager rm = new ReporterManager();
-        String rutaCaso = this.getRutaReportes(casoPrueba);
-        String pdfOutfile = this.getRutaPDF(casoPrueba) + System.getProperty("file.separator") + casoPrueba + ".pdf";
-
-        ArrayList<String> rutasHTML = new ArrayList<String>();
-        //rutasHTML.add("/Users/maya/micaso/resultados/index.html");
-        //rutasHTML.add("/Users/maya/micaso/resultados/Command line suite/Command line test.html");
-        rutasHTML.add(rutaCaso + System.getProperty("file.separator") + "Command line test.html");
-        rutasHTML.add(rutaCaso + System.getProperty("file.separator") + "classes.html");
-        rutasHTML.add(rutaCaso + System.getProperty("file.separator") + "methods.html");
-        rutasHTML.add(rutaCaso + System.getProperty("file.separator") + "testng.xml.html");
-
-        rm.htmlToPdfConverter(rutasHTML, pdfOutfile, rutaCaso);
     }
 
     /**
