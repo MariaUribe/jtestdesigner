@@ -11,7 +11,6 @@
 package com.teg.vista;
 
 import com.teg.dominio.CasoPrueba;
-import com.teg.dominio.MockObject;
 import com.teg.logica.XmlManager;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -23,8 +22,7 @@ import java.util.ArrayList;
  * @author danielbello
  */
 public class DependenciesSelection extends javax.swing.JInternalFrame {
-
-    //private ArrayList<Method> metodosSeleccion = new ArrayList<Method>();
+    
     private ArrayList<Method> metodosSet = new ArrayList<Method>();
     private CasoPrueba casoPrueba = new CasoPrueba();
     private Inicio inicio;
@@ -183,9 +181,9 @@ public class DependenciesSelection extends javax.swing.JInternalFrame {
         } else {
             // inyeccion de dependencias
             Object[] lista = panelSeleccion.getSelectedValues();
-            ArrayList<Method> metodosSeleccionados = getMetodosSeleccionados(lista);
+            ArrayList<Method> metodosSetSeleccionados = getMetodosSeleccionados(lista);
 
-            this.inicio.dependenciesSelectionToEditor(this, metodosSeleccionados, casoPrueba);
+            this.inicio.dependenciesSelectionToEditor(this, metodosSet, metodosSetSeleccionados, casoPrueba);
         }
 
 }//GEN-LAST:event_siguienteActionPerformed
