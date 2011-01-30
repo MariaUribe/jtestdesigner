@@ -9,16 +9,20 @@ import java.util.ArrayList;
 public class CasoPrueba {
 
     private String nombre;
-
-    private String nombrePaquete;
     
-    private ArrayList<EscenarioPrueba> escenariosPrueba;
+    private ArrayList<EscenarioPrueba> escenariosPrueba = new ArrayList<EscenarioPrueba>();
+
+    private ArrayList<MockObject> mockObjects = new ArrayList<MockObject>();
+
+    private boolean mock;
+
+    public CasoPrueba() {
+    }
 
     public CasoPrueba(String nombre) {
         this.nombre = nombre;
     }
-
-
+    
     /**
      * @return the nombre
      */
@@ -32,21 +36,7 @@ public class CasoPrueba {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-
-    /**
-     * @return the nombrePaquete
-     */
-    public String getNombrePaquete() {
-        return nombrePaquete;
-    }
-
-    /**
-     * @param nombrePaquete the nombrePaquete to set
-     */
-    public void setNombrePaquete(String nombrePaquete) {
-        this.nombrePaquete = nombrePaquete;
-    }
-
+    
     /**
      * @return the escenariosPrueba
      */
@@ -60,5 +50,34 @@ public class CasoPrueba {
     public void setEscenariosPrueba(ArrayList<EscenarioPrueba> escenariosPrueba) {
         this.escenariosPrueba = escenariosPrueba;
     }
+
+    /**
+     * @return the mockObjects
+     */
+    public ArrayList<MockObject> getMockObjects() {
+        return mockObjects;
+    }
+
+    /**
+     * @param mockObjects the mockObjects to set
+     */
+    public void setMockObjects(ArrayList<MockObject> mockObjects) {
+        this.mockObjects = mockObjects;
+    }
+
+    /**
+     * @return the mock
+     */
+    public boolean isMock() {
+        return mock;
+    }
+
+    /**
+     * @param mock the mock to set
+     */
+    public void setMock(boolean mock) {
+        this.mock = mock;
+    }
+
 
 }

@@ -48,17 +48,19 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="jPanel2" alignment="0" min="-2" max="-2" attributes="1"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="jScrollPane2" alignment="0" min="-2" pref="383" max="-2" attributes="0"/>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="volver" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="652" max="32767" attributes="0"/>
-                          <Component id="continuar" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                          <Group type="102" alignment="0" attributes="1">
+                              <Component id="volver" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="continuar" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="jPanel2" alignment="0" min="-2" max="-2" attributes="1"/>
                       </Group>
                   </Group>
-                  <EmptySpace pref="39" max="32767" attributes="0"/>
+                  <EmptySpace pref="37" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -98,7 +100,7 @@
                       <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                       <Component id="jScrollPane1" min="-2" pref="338" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jPanel1" min="-2" pref="85" max="-2" attributes="0"/>
+                      <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jScrollPane3" min="-2" pref="322" max="-2" attributes="0"/>
                       <EmptySpace pref="34" max="32767" attributes="0"/>
@@ -111,8 +113,8 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" max="-2" attributes="0">
                           <Component id="jScrollPane3" alignment="1" max="32767" attributes="1"/>
-                          <Component id="jPanel1" alignment="1" max="32767" attributes="1"/>
-                          <Component id="jScrollPane1" alignment="0" min="-2" pref="319" max="-2" attributes="1"/>
+                          <Component id="jPanel1" alignment="0" max="32767" attributes="1"/>
+                          <Component id="jScrollPane1" alignment="0" pref="319" max="32767" attributes="1"/>
                       </Group>
                       <EmptySpace pref="29" max="32767" attributes="0"/>
                   </Group>
@@ -160,12 +162,12 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="selectAllOption" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="selectAllOption" linkSize="1" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Group type="103" alignment="0" groupAlignment="1" attributes="0">
-                                  <Component id="unselectOption" alignment="1" min="-2" max="-2" attributes="0"/>
-                                  <Component id="unselectAllOption" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="unselectOption" linkSize="1" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="unselectAllOption" linkSize="1" alignment="1" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <Component id="selectOption" alignment="0" min="-2" pref="34" max="-2" attributes="0"/>
+                              <Component id="selectOption" linkSize="1" alignment="0" min="-2" pref="34" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="32767" attributes="0"/>
                       </Group>
@@ -174,15 +176,15 @@
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
-                          <Component id="selectOption" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
+                          <Component id="selectOption" linkSize="2" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="selectAllOption" min="-2" max="-2" attributes="0"/>
+                          <Component id="selectAllOption" linkSize="2" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="unselectAllOption" min="-2" max="-2" attributes="0"/>
+                          <Component id="unselectAllOption" linkSize="2" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="unselectOption" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="73" max="32767" attributes="0"/>
+                          <Component id="unselectOption" linkSize="2" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace pref="71" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>

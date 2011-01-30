@@ -1,5 +1,7 @@
 package com.teg.vista;
 
+import com.teg.dominio.CasoPrueba;
+import com.teg.dominio.EscenarioPrueba;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.beans.PropertyVetoException;
@@ -82,7 +84,7 @@ public class Inicio extends javax.swing.JFrame {
         tapa.setLayout(tapaLayout);
         tapaLayout.setHorizontalGroup(
             tapaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 850, Short.MAX_VALUE)
+            .addGap(0, 740, Short.MAX_VALUE)
         );
         tapaLayout.setVerticalGroup(
             tapaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -283,6 +285,47 @@ public class Inicio extends javax.swing.JFrame {
             methodsManager.setVisible(true);
             this.getjDesktopPane().add(methodsManager);
             methodsManager.setMaximum(true);
+
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void caseTestToDependenciesSelection(JInternalFrame caseTestEditor, ArrayList<Method> metodos, CasoPrueba casoPrueba) {
+        try {
+            caseTestEditor.setVisible(false);
+            DependenciesSelection dependencies = new DependenciesSelection(metodos, casoPrueba, this);
+            dependencies.setVisible(true);
+            this.getjDesktopPane().add(dependencies);
+            dependencies.setMaximum(true);
+
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void dependenciesSelectionToCaseTest(JInternalFrame dependencies, ArrayList<Method> metodos, ArrayList<EscenarioPrueba> escenariosPrueba) {
+        try {
+            dependencies.setVisible(false);
+            CaseTestEditor caseTest = new CaseTestEditor(metodos, this);
+            caseTest.setVisible(true);
+            this.getjDesktopPane().add(caseTest);
+            caseTest.setMaximum(true);
+            caseTest.cargarMetodos();
+            caseTest.setEscenariosPrueba(escenariosPrueba);
+
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void dependenciesSelectionToEditor(JInternalFrame dependenciesSelection, ArrayList<Method> metodos, CasoPrueba casoPrueba) {
+        try {
+            dependenciesSelection.setVisible(false);
+            DependenciesEditor editor = new DependenciesEditor(metodos, this, casoPrueba);
+            editor.setVisible(true);
+            this.getjDesktopPane().add(editor);
+            editor.setMaximum(true);
 
         } catch (PropertyVetoException ex) {
             Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);

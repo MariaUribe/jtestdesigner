@@ -169,6 +169,15 @@ public class UpdateCasoPrueba extends javax.swing.JInternalFrame {
         String rutaJava = cg.getRutaJava(nombreCasoPrueba);
         String rutaClass = cg.getRutaClass(nombreCasoPrueba);
 
+        File file = new File(rutaJava);
+        try {
+            String javaContent = FileUtils.readFileToString(file);
+            System.out.println("JAVA CONTENT: ");
+            System.out.println(javaContent);
+        } catch (IOException ex) {
+            Logger.getLogger(UpdateCasoPrueba.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         cg.compileTest(jars, rutaJava, rutaClass);
         
     }//GEN-LAST:event_compilarActionPerformed
@@ -223,6 +232,7 @@ public class UpdateCasoPrueba extends javax.swing.JInternalFrame {
 
         this.inicio.setLocation(x, y);
     }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JEditorPane beanCode;
     private javax.swing.JButton compilar;

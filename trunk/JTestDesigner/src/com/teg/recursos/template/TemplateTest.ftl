@@ -1,15 +1,24 @@
 package ${claseTemplate.nombrePaquete};
 
-import java.util.*;
 import org.testng.Assert;
 import org.testng.annotations.*;
+
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
+
+import java.util.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+<#assign hasMock = casoPrueba.mock />
+<#if hasMock>
+import org.jmock.Mockery;
+import org.jmock.integration.junit4.JUnit4Mockery;
+</#if>
+
 <#list casoPrueba.escenariosPrueba as esc>
 <#list esc.metodos as metodo>
     <#list metodo.argumentos as arg>
@@ -30,7 +39,7 @@ import ${arg.tipo};
 public class ${claseTemplate.nombreClase} {
 
 <#list clasesNoRepetidas as clase>
-	private ${clase.nombre} ${clase.simpleNombre?uncap_first};
+    private ${clase.nombre} ${clase.simpleNombre?uncap_first};
 </#list>
 <#list casoPrueba.escenariosPrueba as esc>
 <#list esc.metodos as metodo>
@@ -42,15 +51,21 @@ public class ${claseTemplate.nombreClase} {
     </#list>
 </#list>
 </#list>
+<#if hasMock>
+    private Mockery jmockContext;
+<#list casoPrueba.mockObjects as mockObject>
+    private ${mockObject.metodoSet.clase.nombre} ${mockObject.nombreVar};
+</#list>
+</#if>
 
-	public ${claseTemplate.nombreClase}() {
-	}
+    public ${claseTemplate.nombreClase}() {
+    }
 
-	@BeforeClass
-	public void setUp(){
-	<#list clasesNoRepetidas as clase>
-		${clase.simpleNombre?uncap_first} = new ${clase.nombre}();
-	</#list>
+    @BeforeClass
+    public void setUp(){
+    <#list clasesNoRepetidas as clase>
+        ${clase.simpleNombre?uncap_first} = new ${clase.nombre}();
+    </#list>
 <#assign miCount = 0 />
 <#assign imprimir = false />
 <#list casoPrueba.escenariosPrueba as esc>
@@ -65,8 +80,8 @@ public class ${claseTemplate.nombreClase} {
             XStream xstream = new XStream(new DomDriver());
         </#if>
         <#assign ruta = codeManager.getRuta(casoPrueba, arg.valor) />
-        InputStream is${miCount} = new FileInputStream("${ruta}");
-        ${arg.valor} = (${arg.tipo}) xstream.fromXML(is${miCount});
+            InputStream is${miCount} = new FileInputStream("${ruta}");
+            ${arg.valor} = (${arg.tipo}) xstream.fromXML(is${miCount});
 
         </#if>
     </#list>
@@ -77,37 +92,48 @@ public class ${claseTemplate.nombreClase} {
             Logger.getLogger(${claseTemplate.nombreClase}.class.getName()).log(Level.SEVERE, null, ex);
         }
     </#if>
+    <#if hasMock>
+        jmockContext = new JUnit4Mockery();
+    <#list casoPrueba.mockObjects as mockObject>
+        ${mockObject.nombreVar} = jmockContext.mock(${mockObject.metodoSet.clase.nombre}.class);
+    </#list>
+    </#if>
     }
 
-	@AfterClass
-	public void tearDown() {
-	}
+    @AfterClass
+    public void tearDown() {
+    }
 
     <#list casoPrueba.escenariosPrueba as escenario>
-	/**
-	 * Test of ${escenario.nombre}.
-	 */
-	@Test
-	public void ${escenario.nombre}Test(){
-        <#assign isEmpty = codeManager.escenarioVacio(escenario) />
-        <#if isEmpty><#else>
-        try {<#assign excepciones = codeManager.generarExcepciones(escenario) />
+    /**
+     * Test of ${escenario.nombre}.
+     */
+    @Test
+    public void ${escenario.nombre}Test(){
+    <#list casoPrueba.mockObjects as mockObject>
+        <#if mockObject.escenario == escenario.nombre>
+        ${mockObject.codigo}
         </#if>
+    </#list>
+    <#assign isEmpty = codeManager.escenarioVacio(escenario) />
+    <#if isEmpty><#else>
+    try {<#assign excepciones = codeManager.generarExcepciones(escenario) />
+    </#if>
 
-            <#assign ordenMetodos = codeManager.generarPrueba(casoPrueba, escenario) />
-            <#list ordenMetodos as metodo>
-            <#if metodo.assertLinea??>${metodo.retorno.retornoSimpleName} ${metodo.retorno.nombreVariable} = </#if>${metodo.clase.simpleNombre?uncap_first}.${metodo.getNombre()}(<#list metodo.argumentos as arg>${arg.valor}<#if arg_has_next>, </#if></#list>);
-            <#if metodo.assertLinea??>Assert.${metodo.assertLinea.condicion}(${metodo.assertLinea.variable},<#if metodo.assertLinea.valorAssert??> <#assign esEnvolvente = codeManager.esClaseEnvolvente(metodo.retorno.retorno) /> <#if esEnvolvente>new ${metodo.retorno.retornoSimpleName}(${metodo.assertLinea.valorAssert}),<#else>${metodo.assertLinea.valorAssert},</#if></#if> "${metodo.assertLinea.mensaje}");</#if>
+    <#assign ordenMetodos = codeManager.generarPrueba(casoPrueba, escenario) />
+    <#list ordenMetodos as metodo>
+        <#if metodo.assertLinea??>${metodo.retorno.retornoSimpleName} ${metodo.retorno.nombreVariable} = </#if>${metodo.clase.simpleNombre?uncap_first}.${metodo.getNombre()}(<#list metodo.argumentos as arg>${arg.valor}<#if arg_has_next>, </#if></#list>);
+        <#if metodo.assertLinea??>Assert.${metodo.assertLinea.condicion}(${metodo.assertLinea.variable},<#if metodo.assertLinea.valorAssert??> <#assign esEnvolvente = codeManager.esClaseEnvolvente(metodo.retorno.retorno) /> <#if esEnvolvente>new ${metodo.retorno.retornoSimpleName}(${metodo.assertLinea.valorAssert}),<#else>${metodo.assertLinea.valorAssert},</#if></#if> "${metodo.assertLinea.mensaje}");</#if>
 
-            </#list>
-         <#if isEmpty><#else>
-         <#list excepciones as exception>
-        } catch (${exception.nombre} ex) {
-            Assert.fail(ex.getMessage());
-        <#if !exception_has_next>}</#if>
-        </#list>
-        </#if>
-	}
+    </#list>
+    <#if isEmpty><#else>
+    <#list excepciones as exception>
+    } catch (${exception.nombre} ex) {
+        Assert.fail(ex.getMessage());
+    <#if !exception_has_next>}</#if>
+    </#list>
+    </#if>
+    }
 	
     </#list>
 }

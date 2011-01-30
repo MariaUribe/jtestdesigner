@@ -8,10 +8,12 @@ package com.teg.vista;
 import com.teg.dominio.Argumento;
 import com.teg.dominio.ArregloInstancia;
 import com.teg.dominio.AssertTest;
+import com.teg.dominio.CasoPrueba;
 import com.teg.dominio.ColeccionInstancia;
 import com.teg.dominio.EscenarioPrueba;
 import com.teg.dominio.MapaInstancia;
 import com.teg.dominio.Metodo;
+import com.teg.dominio.MockObject;
 import com.teg.dominio.VariableInstancia;
 import com.teg.logica.WidgetObjectLoading;
 import com.teg.logica.XmlManager;
@@ -97,14 +99,16 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
         archivosJavaDoc = inicio.getArchivosJavaDoc();
 
-        javax.swing.plaf.InternalFrameUI ifu = this.getUI();
+        this.myInits();
 
+    }
+
+    public final void myInits() {
+
+        javax.swing.plaf.InternalFrameUI ifu = this.getUI();
         ((javax.swing.plaf.basic.BasicInternalFrameUI) ifu).setNorthPane(null);
 
         int w2 = this.getSize().width;
-
-
-
         int h2 = this.getSize().height;
 
         this.inicio.setSize(new Dimension(w2, h2));
@@ -398,9 +402,9 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                     }
                 }
 
-            }else{
+            } else {
 
-                 for (Field field : retorno.getDeclaredFields()) {
+                for (Field field : retorno.getDeclaredFields()) {
 
                     if (field.getType().getName().equals(parameter.getName())) {
 
@@ -881,10 +885,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
         ArrayList<Class> clasesJar = inicio.obtenerClasesJars();
         return clasesJar;
-        }
-
-        
-    
+    }
 
     private ArrayList<Class> obtenerClasesDeInterfaz(Class interfaz) {
 
@@ -968,7 +969,6 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                             Method metodo = getActualMethod();
 
                             if (argument.isInterface()) {
-
                             } else {
 
 
@@ -1163,11 +1163,11 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
                                             editorArray.getArreglo();
 
-                                                ArregloInstancia arregloInstancia = new ArregloInstancia();
+                                            ArregloInstancia arregloInstancia = new ArregloInstancia();
 
                                             arregloInstancia.setClaseComponente(arrayComponente.getName());
 
-                                                addInstanceArreglo(arregloInstancia);
+                                            addInstanceArreglo(arregloInstancia);
                                         } else {
                                             if (!arrayComponente.isPrimitive()
                                                     && verificarDato(arrayComponente) == false) {
@@ -1293,17 +1293,17 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
             } else {
 
-                if (argument.isPrimitive() || verificarDato(argument) == true){
+                if (argument.isPrimitive() || verificarDato(argument) == true) {
 
-                JComboBox combo = new JComboBox();
+                    JComboBox combo = new JComboBox();
 
-                cargarComboItemsPrimitive(combo, argument);
+                    cargarComboItemsPrimitive(combo, argument);
 
-                combo.setEditable(true);
+                    combo.setEditable(true);
 
-                DefaultCellEditor editor = new DefaultCellEditor(combo);
+                    DefaultCellEditor editor = new DefaultCellEditor(combo);
 
-                editores.add(editor);
+                    editores.add(editor);
                 }
             }
         }
@@ -1391,7 +1391,6 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
         jLabel4 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         listaMetodos = new javax.swing.JList();
-        dependencias = new javax.swing.JButton();
         newTestEscenario = new javax.swing.JButton();
         generar = new javax.swing.JButton();
         siguiente = new javax.swing.JButton();
@@ -1652,13 +1651,6 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        dependencias.setText("Dependencias");
-        dependencias.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                dependenciasActionPerformed(evt);
-            }
-        });
-
         newTestEscenario.setText("Nuevo Escenario");
         newTestEscenario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1725,16 +1717,11 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
             .addGroup(panelInicialLayout.createSequentialGroup()
                 .addGap(39, 39, 39)
                 .addGroup(panelInicialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelInicialLayout.createSequentialGroup()
-                        .addGroup(panelInicialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(panelInicialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(29, 29, 29))
-                    .addGroup(panelInicialLayout.createSequentialGroup()
-                        .addComponent(volver)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                    .addComponent(volver)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(29, 29, 29)
                 .addGroup(panelInicialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(panelInicialLayout.createSequentialGroup()
                         .addComponent(jLabel5)
@@ -1748,8 +1735,6 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                                 .addComponent(generar, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(newTestEscenario, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(dependencias)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(siguiente)))))
                 .addGap(73, 73, 73))
@@ -1779,7 +1764,6 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                     .addComponent(volver)
                     .addComponent(siguiente)
                     .addComponent(newTestEscenario)
-                    .addComponent(dependencias)
                     .addComponent(generar, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(62, 62, 62))
         );
@@ -2083,18 +2067,95 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
         this.inicio.caseTestToMethods(this, clases);
     }//GEN-LAST:event_volverActionPerformed
 
-    private void dependenciasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dependenciasActionPerformed
-
-        DependenciesSelection dependenciasMetodo = new DependenciesSelection(metodos, inicio);
-
-        dependenciasMetodo.setVisible(true);
-    }//GEN-LAST:event_dependenciasActionPerformed
-
     private void tablaVariablesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaVariablesMouseClicked
     }//GEN-LAST:event_tablaVariablesMouseClicked
 
     private void siguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_siguienteActionPerformed
+
+        ArrayList<Class> clasesCasoPrueba = this.getClasesCasoPrueba(metodos);
+        ArrayList<Method> metodosSet = this.getMetodosSet(clasesCasoPrueba);
+
+        if (this.hasMetodosSet(metodosSet)) {
+            CasoPrueba casoPrueba = this.crearCasoPrueba(this.inicio.getNombreCasoPrueba(), escenariosPrueba);
+            this.inicio.caseTestToDependenciesSelection(this, metodosSet, casoPrueba);
+        } else {
+            XmlManager xmlManager = new XmlManager();
+            xmlManager.setInicio(inicio);
+            xmlManager.crearCasoPrueba(this.inicio.getNombreCasoPrueba(), escenariosPrueba);
+        }
+
     }//GEN-LAST:event_siguienteActionPerformed
+
+    /**
+     * Metodo para verificar la existencia de una clase
+     * @param clase la clase a comprobar
+     * @return true existe, false no existe
+     */
+    public Boolean existeClase(String clase, ArrayList<Class> clases) {
+
+        Boolean flag = Boolean.FALSE;
+
+        for (Class clazz : clases) {
+
+            if (clase.equals(clazz.getName())) {
+                flag = Boolean.TRUE;
+                break;
+            } else {
+                flag = Boolean.FALSE;
+            }
+        }
+        return flag;
+    }
+
+    public ArrayList<Class> getClasesCasoPrueba(ArrayList<Method> metodosCasoPrueba) {
+
+        ArrayList<Class> clases = new ArrayList<Class>();
+
+        for (Method method : metodosCasoPrueba) {
+
+            if (clases.isEmpty()) {
+                clases.add(method.getDeclaringClass());
+            } else {
+                for (Class clase : clases) {
+                    if (!existeClase(clase.getName(), clases)) {
+                        clases.add(clase);
+                    }
+                }
+            }
+        }
+
+        return clases;
+    }
+
+    public ArrayList<Method> getMetodosSet(ArrayList<Class> clasesCasoPrueba){
+        ArrayList<Method> metodosSet = new ArrayList<Method>();
+
+        for (Class clazz : clasesCasoPrueba) {
+            Method[] methods = clazz.getDeclaredMethods();
+
+            for (Method method : methods) {
+                if (method.getName().startsWith("set") == true && method.getParameterTypes().length == 1
+                        && method.getReturnType().getName().equals("void")) {
+                    metodosSet.add(method);
+                }
+            }
+        }
+
+        return metodosSet;
+    }
+
+    private boolean hasMetodosSet(ArrayList<Method> metodosSet) {
+
+        boolean hasMetodosSet;
+        
+        if (metodosSet.isEmpty()) {
+            hasMetodosSet = false;
+        } else {
+            hasMetodosSet = true;
+        }
+
+        return hasMetodosSet;
+    }
 
     private void resultadoAssertMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_resultadoAssertMouseClicked
         // TODO add your handling code here:
@@ -2130,17 +2191,16 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                 } else if (method.getReturnType().isArray() == true) {
                 }
 
-                } else if (method.getReturnType().isArray() == true) {
-                }
+            } else if (method.getReturnType().isArray() == true) {
             }
+        }
 
-        
+
     }//GEN-LAST:event_resultadoAssertMouseClicked
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox assertCondiciones;
     private javax.swing.JTextField assertMensaje;
     private javax.swing.JComboBox assertVariables;
-    private javax.swing.JButton dependencias;
     private javax.swing.JButton generar;
     private javax.swing.JButton guardarBt;
     private javax.swing.JLabel jLabel1;
@@ -2275,31 +2335,31 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
     }
 
     public String eliminaCaracteres(String s_cadena, String s_caracteres) {
-            String nueva_cadena = "";
-            Character caracter = null;
-            boolean valido = true;
+        String nueva_cadena = "";
+        Character caracter = null;
+        boolean valido = true;
 
-            /* Va recorriendo la cadena s_cadena y copia a la cadena que va a regresar,
-            sólo los caracteres que no estén en la cadena s_caracteres */
-            for (int i = 0; i < s_cadena.length(); i++) {
-                valido = true;
-                for (int j = 0; j < s_caracteres.length(); j++) {
-                    caracter = s_caracteres.charAt(j);
+        /* Va recorriendo la cadena s_cadena y copia a la cadena que va a regresar,
+        sólo los caracteres que no estén en la cadena s_caracteres */
+        for (int i = 0; i < s_cadena.length(); i++) {
+            valido = true;
+            for (int j = 0; j < s_caracteres.length(); j++) {
+                caracter = s_caracteres.charAt(j);
 
-                    if (s_cadena.charAt(i) == caracter) {
-                        valido = false;
-                        break;
-                    }
-                }
-                if (valido) {
-                    nueva_cadena += s_cadena.charAt(i);
+                if (s_cadena.charAt(i) == caracter) {
+                    valido = false;
+                    break;
                 }
             }
-
-            return nueva_cadena;
+            if (valido) {
+                nueva_cadena += s_cadena.charAt(i);
+            }
         }
 
-    public String classNameArray(String tipo){
+        return nueva_cadena;
+    }
+
+    public String classNameArray(String tipo) {
         String nuevaCadena = this.eliminaCaracteres(tipo.substring(2), ";");
         return nuevaCadena;
     }
@@ -2316,11 +2376,11 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
             Argumento argumento = new Argumento();
             argumento.setNombre("arg" + contSimple);
 
-            if(clazz.isArray()){
+            if (clazz.isArray()) {
                 String clase = this.classNameArray(clazz.getName());
                 argumento.setTipo(clase + "[]");
                 argumento.setArreglo(true);
-            } else{
+            } else {
                 argumento.setTipo(clazz.getName());
                 argumento.setArreglo(false);
             }
@@ -2340,7 +2400,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                 if (primerCampo.equals("java")) {
                     boolean isCollection;
                     try {
-                        Class myClass = Class.forName(argumento.getTipo()); 
+                        Class myClass = Class.forName(argumento.getTipo());
                         isCollection = Collection.class.isAssignableFrom(myClass);
 
                         if (isCollection) {
@@ -2359,7 +2419,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                         valorComplejo = "arreglo" + arregloId;
                         argumento.setValor(valorComplejo);
                         argumento.setComplejo(true);
-                        
+
                     } else {
                         valorComplejo = "object" + objId;
                         argumento.setValor(valorComplejo);
@@ -2417,5 +2477,28 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
         } catch (IOException ex) {
             Logger.getLogger(CaseTestEditor.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public CasoPrueba crearCasoPrueba(String nombreCasoPrueba, ArrayList<EscenarioPrueba> escenarios) {
+
+        CasoPrueba casoPrueba = new CasoPrueba(nombreCasoPrueba);
+        //casoPrueba.setNombrePaquete("com.test.prueba");
+        casoPrueba.setEscenariosPrueba(escenarios);
+
+        return casoPrueba;
+    }
+
+    /**
+     * @return the escenariosPrueba
+     */
+    public ArrayList<EscenarioPrueba> getEscenariosPrueba() {
+        return escenariosPrueba;
+    }
+
+    /**
+     * @param escenariosPrueba the escenariosPrueba to set
+     */
+    public void setEscenariosPrueba(ArrayList<EscenarioPrueba> escenariosPrueba) {
+        this.escenariosPrueba = escenariosPrueba;
     }
 }

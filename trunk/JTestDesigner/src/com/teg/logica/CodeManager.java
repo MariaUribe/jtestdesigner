@@ -305,11 +305,14 @@ public class CodeManager {
         if ((method.getParameterTypes() == null) && (metodo.getArgumentos().isEmpty())) {
             iguales = Boolean.TRUE;
         } else if (args1.length == args2.size()) {
+            System.out.println("args1.length == args2.size(): " + args1.length + ", " + args2.size());
 
             for (int i = 0; i < args1.length; i++) {
-                if (args1[i].getName().equals(args2.get(i).getNombre())) {
+                if (args1[i].getName().equals(args2.get(i).getTipo())) {
+                    System.out.println("Si son iguales: " + args1[i].getName() + " y " + args2.get(i).getTipo());
                     iguales = Boolean.TRUE;
                 } else {
+                    System.out.println("No son iguales: " + args1[i].getName() + " y " + args2.get(i).getTipo());
                     iguales = Boolean.FALSE;
                     break;
                 }
@@ -324,8 +327,25 @@ public class CodeManager {
 
         // si pertenecen a la misma clase
         if (method.getDeclaringClass().getName().equals(metodo.getClase().getNombre())) {
+            System.out.println("");
             // si tienen el mismo nombre y los argumentos son iguales
+            if (method.getName().equals(metodo.getNombre())){
+                System.out.println("SI tienen el mismo nombre!!: " + method.getName() + " y " + metodo.getNombre());
+            } else {
+                System.out.println("NO tienen el mismo nombre!!: " + method.getName() + " y " + metodo.getNombre());
+            }
+
+
+
+            if (sonArgumentosIguales(method, metodo)){
+                System.out.println("SI son argumentos iguales!: " + method.getName() + " y " + metodo.getNombre());
+            } else {
+                System.out.println("NO son argumentos iguales!: " + method.getName() + " y " + metodo.getNombre());
+            }
+
+            
             if ((method.getName().equals(metodo.getNombre())) && (sonArgumentosIguales(method, metodo))) {
+                System.out.println("SI tienen el mismo nombre y argumentos iguales: " + method.getName() + " y " + metodo.getNombre());
                 sonIguales = Boolean.TRUE;
             }
         }
