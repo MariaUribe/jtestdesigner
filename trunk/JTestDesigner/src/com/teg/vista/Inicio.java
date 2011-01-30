@@ -319,10 +319,23 @@ public class Inicio extends javax.swing.JFrame {
         }
     }
 
-    public void dependenciesSelectionToEditor(JInternalFrame dependenciesSelection, ArrayList<Method> metodos, CasoPrueba casoPrueba) {
+    public void dependenciesEditorToSelection(JInternalFrame editor, ArrayList<Method> metodosSet, CasoPrueba casoPrueba) {
+        try {
+            editor.setVisible(false);
+            DependenciesSelection selection = new DependenciesSelection(metodosSet, casoPrueba, this);
+            selection.setVisible(true);
+            this.getjDesktopPane().add(selection);
+            selection.setMaximum(true);
+
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void dependenciesSelectionToEditor(JInternalFrame dependenciesSelection, ArrayList<Method> metodosSet, ArrayList<Method> metodosSetSeleccionados, CasoPrueba casoPrueba) {
         try {
             dependenciesSelection.setVisible(false);
-            DependenciesEditor editor = new DependenciesEditor(metodos, this, casoPrueba);
+            DependenciesEditor editor = new DependenciesEditor(metodosSet, metodosSetSeleccionados, this, casoPrueba);
             editor.setVisible(true);
             this.getjDesktopPane().add(editor);
             editor.setMaximum(true);

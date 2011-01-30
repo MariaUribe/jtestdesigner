@@ -29,6 +29,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 import javax.swing.JEditorPane;
+import javax.swing.text.EditorKit;
+import javax.swing.text.StyledEditorKit;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -38,6 +40,7 @@ import net.miginfocom.swing.MigLayout;
  */
 public class DependenciesEditor extends javax.swing.JInternalFrame {
 
+    private ArrayList<Method> metodosSet = new ArrayList<Method>();
     private ArrayList<Method> metodosSetSeleccionados = new ArrayList<Method>();
     private ArrayList<MockObject> mockObjects = new ArrayList<MockObject>();
     private CasoPrueba casoPrueba = new CasoPrueba();
@@ -46,9 +49,10 @@ public class DependenciesEditor extends javax.swing.JInternalFrame {
     private JScrollPane scrollPane;
 
     /** Creates new form DependenciesEditor */
-    public DependenciesEditor(ArrayList<Method> metodosSetSeleccionados, Inicio inicio, CasoPrueba casoPrueba) {
+    public DependenciesEditor(ArrayList<Method> metodosSet, ArrayList<Method> metodosSetSeleccionados, Inicio inicio, CasoPrueba casoPrueba) {
         initComponents();
         this.inicio = inicio;
+        this.metodosSet = metodosSet;
         this.metodosSetSeleccionados = metodosSetSeleccionados;
         this.casoPrueba = casoPrueba;
         this.myInits();
@@ -154,32 +158,33 @@ public class DependenciesEditor extends javax.swing.JInternalFrame {
 
     private void atrasButtonActionPerformed() {
         // volver a DependenciesSelection
+        this.inicio.dependenciesEditorToSelection(this, metodosSet, casoPrueba);
     }
 
     private void finalizarButtonActionPerformed() {
         // generacion de codigo
-        
+
         ArrayList<String> escenarios = new ArrayList<String>();
         ArrayList<String> codigos = new ArrayList<String>();
-        
+
         Component[] componentes = scrollPaneContent.getComponents();
 
         for (Component componente : componentes) {
 
-            if(componente.getName().equals("escenarios")){
+            if (componente.getName().equals("escenarios")) {
                 JComboBox comboBox = (JComboBox) componente;
                 escenarios.add(comboBox.getSelectedItem().toString());
                 System.out.println("combobox: " + comboBox.getSelectedItem().toString());
             }
-            
-            if(componente.getName().equals("scroll")){
+
+            if (componente.getName().equals("scroll")) {
                 JScrollPane scrollPanel = (JScrollPane) componente;
                 JViewport view = scrollPanel.getViewport();
 
                 Component[] viewComponents = view.getComponents();
-                
+
                 for (Component component : viewComponents) {
-                    if(component.getName().equals("codigo")){
+                    if (component.getName().equals("codigo")) {
                         JEditorPane editor = (JEditorPane) component;
                         codigos.add(editor.getText());
                         System.out.println("codigo: " + editor.getText());
@@ -205,7 +210,7 @@ public class DependenciesEditor extends javax.swing.JInternalFrame {
 
             MockObject mockObject = new MockObject(metodoSet, nombreVar, escenarios.get(cont), codigos.get(cont));
             mockObjects.add(mockObject);
-            
+
             cont++;
         }
 
@@ -219,15 +224,13 @@ public class DependenciesEditor extends javax.swing.JInternalFrame {
 
     private class MyLabel extends JLabel {
 
-        //public MyLabel(String metodo, String objeto) {
         public MyLabel(String texto, boolean negritas) {
 
             setName("etiqueta");
-            //setText("<HTML>Metodo: " + metodo + "<BR><BR>Objeto: " + objeto + "<BR><BR>Codigo:<BR><BR></HTML>");
             setText(texto);
             setVisible(true);
-            
-            if(negritas){
+
+            if (negritas) {
                 setFont(new java.awt.Font("Lucida Grande", 1, 13));
             }
 
@@ -270,8 +273,18 @@ public class DependenciesEditor extends javax.swing.JInternalFrame {
 
             setName("scroll");
             setViewportView(editorPane);
-            //editorPane.setText("<Codigo>");
 
+            editorPane.setEditable(true);
+            editorPane.setContentType("text/x-java");
+            EditorKit kit = JEditorPane.createEditorKitForContentType("text/x-java");
+            if (kit == null) {
+                kit = new StyledEditorKit();
+            }
+            editorPane.setEditorKit(kit);
+            editorPane.setEditorKitForContentType("text/x-java", kit);
+            kit.install(editorPane);
+
+            editorPane.setText("// TODO add your handling code here:");
             pack();
         }
     }
