@@ -4,14 +4,18 @@ import com.teg.dominio.CasoPrueba;
 import com.teg.dominio.ClaseTemplate;
 import com.teg.reportes.JyperionListener;
 import com.teg.vista.Inicio;
+
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -22,10 +26,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.testng.TestListenerAdapter;
-import org.testng.TestNG;
+
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
+import org.apache.commons.io.FileUtils;
+
+import org.testng.TestListenerAdapter;
+import org.testng.TestNG;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
 
@@ -139,6 +146,8 @@ public class CodeGenerator {
             URLClassLoader cl = new URLClassLoader(urls);
             clase = cl.loadClass("com.codeGeneratorTest." + nombreCaso);
 
+            //myObj = clase.newInstance().getClass();
+
             ClassPathHandler cph = new ClassPathHandler();
             cph.addURLs(urls);
 
@@ -153,9 +162,9 @@ public class CodeGenerator {
     }
 
     public void compileTest(ArrayList<File> jars, String rutaJava, String rutaClass) {
+       
         String jarList = "";
         int cont = 1;
-
         for (File file : jars) {
             if (cont == 1) {
                 jarList = file.getPath();
@@ -166,18 +175,23 @@ public class CodeGenerator {
         }
 
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+
         int compilationResult = compiler.run(null, null, null, "-classpath", jarList, rutaJava, "-d", rutaClass);
 
         if (compilationResult == 0) {
+            System.out.println("");
             System.out.println("Compilation is successful");
         } else {
+            System.out.println("");
             System.out.println("Compilation Failed");
         }
+
     }
-    
+
     public void runTest(Class clase, String rutaResultados, String casoPrueba) {
 
-      //  this.printActualClassPath();
+        //this.printActualClassPath();
+
         Class[] classes = {clase};
         TestListenerAdapter tla = new TestListenerAdapter();
         TestNG testNG = new TestNG();
@@ -189,7 +203,7 @@ public class CodeGenerator {
         this.generarReportePDF(tla);
     }
 
-    public void generarReportePDF(TestListenerAdapter tla){
+    public void generarReportePDF(TestListenerAdapter tla) {
 
         JyperionListener jl = new JyperionListener();
         List<ITestContext> testsContexts = tla.getTestContexts();
@@ -199,36 +213,36 @@ public class CodeGenerator {
             jl.onStart(iTestContext);
 
             List<ITestResult> passedTests = tla.getPassedTests();
-            if(!passedTests.isEmpty()){
+            if (!passedTests.isEmpty()) {
                 for (ITestResult result : passedTests) {
                     jl.onTestSuccess(result);
                 }
             }
 
             List<ITestResult> skippedTests = tla.getSkippedTests();
-            if(!skippedTests.isEmpty()){
+            if (!skippedTests.isEmpty()) {
                 for (ITestResult result : skippedTests) {
                     jl.onTestSkipped(result);
                 }
             }
 
             List<ITestResult> failedTests = tla.getFailedTests();
-            if(!failedTests.isEmpty()){
+            if (!failedTests.isEmpty()) {
                 for (ITestResult result : failedTests) {
                     jl.onTestFailure(result);
                 }
             }
 
             List<ITestResult> failedWithinSuccessTests = tla.getFailedButWithinSuccessPercentageTests();
-            if(!failedWithinSuccessTests.isEmpty()){
+            if (!failedWithinSuccessTests.isEmpty()) {
                 for (ITestResult result : failedWithinSuccessTests) {
                     jl.onTestFailedButWithinSuccessPercentage(result);
                 }
             }
-            
+
             jl.onFinish(iTestContext);
         }
-        
+
     }
 
     public void printActualClassPath() {
@@ -249,14 +263,14 @@ public class CodeGenerator {
         File casoPruebaFile = new File(System.getProperty("user.home")
                 + System.getProperty("file.separator") + casoPrueba
                 + System.getProperty("file.separator"));
-        
+
         File lib = new File(casoPruebaFile.getPath()
                 + System.getProperty("file.separator") + "lib"
                 + System.getProperty("file.separator"));
 
         File[] jars = lib.listFiles();
         jarList.addAll(Arrays.asList(jars));
-        
+
         return jarList;
     }
 

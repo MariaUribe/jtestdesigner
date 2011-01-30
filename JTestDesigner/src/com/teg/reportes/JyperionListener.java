@@ -4,11 +4,16 @@
  */
 package com.teg.reportes;
 
+import com.lowagie.text.BadElementException;
 import java.awt.Color;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.testng.ITestContext;
 import org.testng.ITestListener;
@@ -20,11 +25,15 @@ import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
 import com.lowagie.text.Font;
 import com.lowagie.text.FontFactory;
+import com.lowagie.text.Header;
+import com.lowagie.text.Image;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
+import java.awt.Desktop;
 import java.io.File;
+import java.net.URL;
 
 /**
  *
@@ -48,6 +57,10 @@ public class JyperionListener implements ITestListener {
      * nbExceptions
      */
     private int nbExceptions = 0;
+    /**
+     * ruta del reporte PDF
+     */
+    private String rutaPDF;
 
     /**
      * JyperionListener
@@ -67,23 +80,23 @@ public class JyperionListener implements ITestListener {
 
         if (successTable == null) {
             this.successTable = new PdfPTable(new float[]{.3f, .3f, .1f, .3f});
-            Paragraph p = new Paragraph("PASSED TESTS", new Font(Font.HELVETICA, Font.DEFAULTSIZE, Font.BOLD));
+            Paragraph p = new Paragraph("PRUEBAS PASADAS", new Font(Font.HELVETICA, Font.DEFAULTSIZE, Font.BOLD));
             p.setAlignment(Element.ALIGN_CENTER);
             PdfPCell cell = new PdfPCell(p);
             cell.setColspan(4);
             cell.setBackgroundColor(Color.GREEN);
             this.successTable.addCell(cell);
 
-            cell = new PdfPCell(new Paragraph("Class"));
+            cell = new PdfPCell(new Paragraph("Clase"));
             cell.setBackgroundColor(Color.LIGHT_GRAY);
             this.successTable.addCell(cell);
-            cell = new PdfPCell(new Paragraph("Method"));
+            cell = new PdfPCell(new Paragraph("Método"));
             cell.setBackgroundColor(Color.LIGHT_GRAY);
             this.successTable.addCell(cell);
-            cell = new PdfPCell(new Paragraph("Time (ms)"));
+            cell = new PdfPCell(new Paragraph("Tiempo (ms)"));
             cell.setBackgroundColor(Color.LIGHT_GRAY);
             this.successTable.addCell(cell);
-            cell = new PdfPCell(new Paragraph("Exception"));
+            cell = new PdfPCell(new Paragraph("Excepción"));
             cell.setBackgroundColor(Color.LIGHT_GRAY);
             this.successTable.addCell(cell);
         }
@@ -118,23 +131,23 @@ public class JyperionListener implements ITestListener {
         if (this.failTable == null) {
             this.failTable = new PdfPTable(new float[]{.3f, .3f, .1f, .3f});
             this.failTable.setTotalWidth(20f);
-            Paragraph p = new Paragraph("FAILED TESTS", new Font(Font.HELVETICA, Font.DEFAULTSIZE, Font.BOLD));
+            Paragraph p = new Paragraph("PRUEBAS FALLIDAS", new Font(Font.HELVETICA, Font.DEFAULTSIZE, Font.BOLD));
             p.setAlignment(Element.ALIGN_CENTER);
             PdfPCell cell = new PdfPCell(p);
             cell.setColspan(4);
             cell.setBackgroundColor(Color.RED);
             this.failTable.addCell(cell);
 
-            cell = new PdfPCell(new Paragraph("Class"));
+            cell = new PdfPCell(new Paragraph("Clase"));
             cell.setBackgroundColor(Color.LIGHT_GRAY);
             this.failTable.addCell(cell);
-            cell = new PdfPCell(new Paragraph("Method"));
+            cell = new PdfPCell(new Paragraph("Método"));
             cell.setBackgroundColor(Color.LIGHT_GRAY);
             this.failTable.addCell(cell);
-            cell = new PdfPCell(new Paragraph("Time (ms)"));
+            cell = new PdfPCell(new Paragraph("Tiempo (ms)"));
             cell.setBackgroundColor(Color.LIGHT_GRAY);
             this.failTable.addCell(cell);
-            cell = new PdfPCell(new Paragraph("Exception"));
+            cell = new PdfPCell(new Paragraph("Excepción"));
             cell.setBackgroundColor(Color.LIGHT_GRAY);
             this.failTable.addCell(cell);
         }
@@ -173,23 +186,23 @@ public class JyperionListener implements ITestListener {
         if (this.skippedTable == null) {
             this.skippedTable = new PdfPTable(new float[]{.3f, .3f, .1f, .3f});
             this.skippedTable.setTotalWidth(20f);
-            Paragraph p = new Paragraph("SKIPPED TESTS", new Font(Font.HELVETICA, Font.DEFAULTSIZE, Font.BOLD));
+            Paragraph p = new Paragraph("PRUEBAS SALTADAS", new Font(Font.HELVETICA, Font.DEFAULTSIZE, Font.BOLD));
             p.setAlignment(Element.ALIGN_CENTER);
             PdfPCell cell = new PdfPCell(p);
             cell.setColspan(4);
             cell.setBackgroundColor(Color.YELLOW);
             this.skippedTable.addCell(cell);
 
-            cell = new PdfPCell(new Paragraph("Class"));
+            cell = new PdfPCell(new Paragraph("Clase"));
             cell.setBackgroundColor(Color.LIGHT_GRAY);
             this.skippedTable.addCell(cell);
-            cell = new PdfPCell(new Paragraph("Method"));
+            cell = new PdfPCell(new Paragraph("Método"));
             cell.setBackgroundColor(Color.LIGHT_GRAY);
             this.skippedTable.addCell(cell);
-            cell = new PdfPCell(new Paragraph("Time (ms)"));
+            cell = new PdfPCell(new Paragraph("Tiempo (ms)"));
             cell.setBackgroundColor(Color.LIGHT_GRAY);
             this.skippedTable.addCell(cell);
-            cell = new PdfPCell(new Paragraph("Exception"));
+            cell = new PdfPCell(new Paragraph("Excepción"));
             cell.setBackgroundColor(Color.LIGHT_GRAY);
             this.skippedTable.addCell(cell);
         }
@@ -223,21 +236,23 @@ public class JyperionListener implements ITestListener {
      * @see com.beust.testng.ITestListener#onStart(com.beust.testng.ITestContext)
      */
     public void onStart(ITestContext context) {
+
         log("onStart(" + "context" + ")");
         try {
             File file = new File(context.getOutputDirectory());
-            
+            rutaPDF = file.getParent() + System.getProperty("file.separator") + "pdf"
+                    + System.getProperty("file.separator") + context.getName() + ".pdf";
+
             PdfWriter.getInstance(this.document,
-                    new FileOutputStream(file.getParent()
-                    + System.getProperty("file.separator") + "pdf"
-                    + System.getProperty("file.separator") + context.getName() + ".pdf"));
+                    new FileOutputStream(rutaPDF));
+            this.setRutaPDF(rutaPDF);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         this.document.open();
         document.newPage();
 
-        Paragraph p = new Paragraph("TEST RESULTS",
+        Paragraph p = new Paragraph("RESULTADOS",
                 FontFactory.getFont(FontFactory.HELVETICA, 20, Font.BOLD, new Color(0, 0, 255)));
         p.setAlignment(Element.ALIGN_CENTER);
 
@@ -246,6 +261,11 @@ public class JyperionListener implements ITestListener {
             Paragraph fecha = new Paragraph("(" + new Date().toString() + ")");
             fecha.setAlignment(Element.ALIGN_CENTER);
             this.document.add(fecha);
+
+            //com.lowagie.text.Image image = com.lowagie.text.Image.getInstance("/Users/maya/Desktop/java.jpg");
+            //document.add(image);
+        } catch (BadElementException ex) {
+            Logger.getLogger(JyperionListener.class.getName()).log(Level.SEVERE, null, ex);
         } catch (DocumentException e1) {
             System.out.println(e1.getMessage());
         }
@@ -283,11 +303,11 @@ public class JyperionListener implements ITestListener {
             System.out.println(e.getMessage());
         }
 
-        if ((this.failTable != null) ||  (this.skippedTable != null)) {
-            Paragraph p = new Paragraph("EXCEPTIONS SUMMARY",
+        if ((this.failTable != null) || (this.skippedTable != null)) {
+            Paragraph p = new Paragraph("SUMARIO DE EXCEPCIONES",
                     FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD, new Color(255, 0, 0)));
             p.setAlignment(Element.ALIGN_CENTER);
-            
+
             try {
                 this.document.add(new Paragraph(" "));
                 this.document.add(p);
@@ -326,6 +346,18 @@ public class JyperionListener implements ITestListener {
         }
 
         this.document.close();
+        this.showPDF();
+    }
+
+    public void showPDF() {
+        String ruta = this.getRutaPDF();
+
+        try {
+            File path = new File(ruta);
+            Desktop.getDesktop().open(path);
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     /**
@@ -342,5 +374,19 @@ public class JyperionListener implements ITestListener {
 
     public void onTestFailedButWithinSuccessPercentage(ITestResult itr) {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    /**
+     * @return the rutaPDF
+     */
+    public String getRutaPDF() {
+        return rutaPDF;
+    }
+
+    /**
+     * @param rutaPDF the rutaPDF to set
+     */
+    public void setRutaPDF(String rutaPDF) {
+        this.rutaPDF = rutaPDF;
     }
 }

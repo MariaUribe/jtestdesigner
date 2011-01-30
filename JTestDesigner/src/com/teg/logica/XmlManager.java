@@ -6,6 +6,7 @@ import com.teg.dominio.EscenarioPrueba;
 import com.teg.dominio.CasoPrueba;
 import com.teg.dominio.ClaseTest;
 import com.teg.dominio.Metodo;
+import com.teg.dominio.MockObject;
 import com.teg.dominio.Retorno;
 import com.teg.vista.Inicio;
 import com.thoughtworks.xstream.XStream;
@@ -41,6 +42,7 @@ public class XmlManager {
 
         XStream xstream = new XStream(new DomDriver());
         xstream.alias("casoPrueba", CasoPrueba.class);
+        xstream.alias("mockObject", MockObject.class);
         xstream.alias("escenarioPrueba", EscenarioPrueba.class);
         xstream.alias("claseTest", ClaseTest.class);
         xstream.alias("metodo", Metodo.class);
@@ -67,6 +69,7 @@ public class XmlManager {
 
         XStream xstream = new XStream(new DomDriver());
         xstream.alias("casoPrueba", CasoPrueba.class);
+        xstream.alias("mockObject", MockObject.class);
         xstream.alias("escenarioPrueba", EscenarioPrueba.class);
         xstream.alias("claseTest", ClaseTest.class);
         xstream.alias("metodo", Metodo.class);
@@ -79,7 +82,6 @@ public class XmlManager {
         try {
             InputStream is = new FileInputStream(rutaCasoPrueba);
             casoPrueba = (CasoPrueba) xstream.fromXML(is);
-            System.out.println("valor del XML " + casoPrueba.getNombre());
         } catch (FileNotFoundException ex) {
             Logger.getLogger(XmlManager.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -91,11 +93,11 @@ public class XmlManager {
      * @param nombreCasoPrueba el nombre del caso de prueba a crear
      * @param metodos los metodos a setear al caso de prueba
      */
-    public void crearCasoPrueba(String nombreCasoPrueba, ArrayList<EscenarioPrueba> escenarios) {
+    public CasoPrueba crearCasoPrueba(String nombreCasoPrueba, ArrayList<EscenarioPrueba> escenarios) {
 
         CasoPrueba casoPrueba = new CasoPrueba(nombreCasoPrueba);
         CodeGenerator cg = new CodeGenerator();
-        cg.setInicio(getInicio());
+        cg.setInicio(this.getInicio());
 
         File casoPruebaFile = new File(System.getProperty("user.home") +
                 System.getProperty("file.separator") + nombreCasoPrueba +
@@ -105,14 +107,53 @@ public class XmlManager {
                 System.getProperty("file.separator") + "metadata" +
                 System.getProperty("file.separator"));
 
-        casoPrueba.setNombrePaquete("com.test.prueba");
         casoPrueba.setEscenariosPrueba(escenarios);
+        casoPrueba.setMock(false);
+        
+        this.crearXml(casoPrueba, metadata.getPath() +
+                System.getProperty("file.separator") + nombreCasoPrueba + ".xml");
+
+        cg.generateTest(metadata.getPath() + System.getProperty("file.separator")
+                + nombreCasoPrueba + ".xml");
+        
+        return casoPrueba;
+
+    }
+
+    /**
+     * Metodo para crear un Caso de Prueba
+     * @param nombreCasoPrueba el nombre del caso de prueba a crear
+     * @param metodos los metodos a setear al caso de prueba
+     */
+    public CasoPrueba crearCasoPrueba(String nombreCasoPrueba, ArrayList<EscenarioPrueba> escenarios, ArrayList<MockObject> mockObjects) {
+
+        CasoPrueba casoPrueba = new CasoPrueba(nombreCasoPrueba);
+        CodeGenerator cg = new CodeGenerator();
+        cg.setInicio(this.getInicio());
+
+        File casoPruebaFile = new File(System.getProperty("user.home") +
+                System.getProperty("file.separator") + nombreCasoPrueba +
+                System.getProperty("file.separator"));
+
+        File metadata = new File(casoPruebaFile.getPath() +
+                System.getProperty("file.separator") + "metadata" +
+                System.getProperty("file.separator"));
+
+        //casoPrueba.setNombrePaquete("com.test.prueba");
+        casoPrueba.setEscenariosPrueba(escenarios);
+        casoPrueba.setMock(true);
+
+        if(!mockObjects.isEmpty()){
+            casoPrueba.setMockObjects(mockObjects);
+        }
 
         this.crearXml(casoPrueba, metadata.getPath() +
                 System.getProperty("file.separator") + nombreCasoPrueba + ".xml");
 
         cg.generateTest(metadata.getPath() + System.getProperty("file.separator")
                 + nombreCasoPrueba + ".xml");
+
+        return casoPrueba;
 
     }
 
@@ -127,6 +168,7 @@ public class XmlManager {
      */
     public Metodo agregarMetodoALista(ArrayList<Metodo> metodos, Method method,
            int numVariable, ArrayList<Argumento> argumentos, AssertTest condAssert) {
+           //int numVariable, ArrayList<Argumento> argumentos, AssertTest condAssert, MockObject mockObject) {
 
         Metodo miMetodo = new Metodo(method.getName(), new ClaseTest(method.getDeclaringClass().getName(),
                 method.getDeclaringClass().getSimpleName()));
@@ -144,6 +186,10 @@ public class XmlManager {
         }
 
         miMetodo.setExcepciones(excepciones);
+
+//        if(mockObject != null){
+//            miMetodo.setMockObject(mockObject);
+//        }
 
         metodos.add(miMetodo);
 

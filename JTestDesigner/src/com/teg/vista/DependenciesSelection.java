@@ -8,9 +8,13 @@
  *
  * Created on Jan 18, 2011, 12:42:00 PM
  */
-
 package com.teg.vista;
 
+import com.teg.dominio.CasoPrueba;
+import com.teg.dominio.MockObject;
+import com.teg.logica.XmlManager;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
@@ -18,41 +22,26 @@ import java.util.ArrayList;
  *
  * @author danielbello
  */
-public class DependenciesSelection extends javax.swing.JFrame {
+public class DependenciesSelection extends javax.swing.JInternalFrame {
 
-    ArrayList<Method> metodosSeleccion = new ArrayList<Method>();
+    //private ArrayList<Method> metodosSeleccion = new ArrayList<Method>();
+    private ArrayList<Method> metodosSet = new ArrayList<Method>();
+    private CasoPrueba casoPrueba = new CasoPrueba();
+    private Inicio inicio;
+
     /** Creates new form DependenciesSelection */
     public DependenciesSelection() {
         initComponents();
     }
 
-    DependenciesSelection(ArrayList<Method> metodos, Inicio inicio) {
+    DependenciesSelection(ArrayList<Method> metodosSet, CasoPrueba casoPrueba, Inicio inicio) {
 
-        this.metodosSeleccion = metodos;
-
+        this.metodosSet = metodosSet;
+        this.inicio = inicio;
         initComponents();
-
-        ArrayList<Method> metodosSet = getMetodosSet(metodos);
-
+        this.myInits();
         panelSeleccion.setListData(metodosSet.toArray());
-
-    }
-
-    private ArrayList<Method> getMetodosSet(ArrayList<Method> metodos){
-
-
-        ArrayList<Method> dependenciasMetodos = new ArrayList<Method>();
-
-        for (Method method : metodos) {
-
-            if (method.getName().startsWith("set") == true && method.getParameterTypes().length == 1
-                    && method.getReturnType().getName().equals("void")){
-
-                dependenciasMetodos.add(method);
-            }
-        }
-        return dependenciasMetodos;
-        
+        this.casoPrueba = casoPrueba;
     }
 
     /** This method is called from within the constructor to
@@ -64,22 +53,26 @@ public class DependenciesSelection extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         panelSeleccion = new javax.swing.JList();
-        jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         checkDependencias = new javax.swing.JCheckBox();
-        btSiguiente = new javax.swing.JButton();
-        btAtras = new javax.swing.JButton();
+        atras = new javax.swing.JButton();
+        siguiente = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setBackground(new java.awt.Color(255, 255, 255));
+        setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
+        jLabel1.setFont(new java.awt.Font("Lucida Grande", 1, 13));
+        jLabel1.setText("Se han identificado dependencias en los siguientes metodos: ");
+
+        panelSeleccion.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                panelSeleccionMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(panelSeleccion);
-
-        jLabel1.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel1.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
-        jLabel1.setText("Se han identificado dependencias en los siguientes metodos :");
 
         jLabel2.setText("Seleccione los metodos a los que desea aplicar dependencias");
 
@@ -90,81 +83,130 @@ public class DependenciesSelection extends javax.swing.JFrame {
             }
         });
 
-        btSiguiente.setText("Siguiente..");
-        btSiguiente.addActionListener(new java.awt.event.ActionListener() {
+        atras.setText("Atras");
+        atras.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btSiguienteActionPerformed(evt);
+                atrasActionPerformed(evt);
             }
         });
 
-        btAtras.setText("Atras..");
+        siguiente.setText("Siguiente");
+        siguiente.setEnabled(false);
+        siguiente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                siguienteActionPerformed(evt);
+            }
+        });
+
+        org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
+                .add(77, 77, 77)
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(checkDependencias)
+                    .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                        .add(jLabel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 415, Short.MAX_VALUE)
+                        .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 415, Short.MAX_VALUE)
+                        .add(jLabel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .add(69, 69, 69))
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
+                .add(atras)
+                .add(303, 303, 303)
+                .add(siguiente)
+                .add(47, 47, 47))
+        );
+
+        jPanel1Layout.linkSize(new java.awt.Component[] {checkDependencias, jLabel1, jLabel2, jScrollPane1}, org.jdesktop.layout.GroupLayout.HORIZONTAL);
+
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(jPanel1Layout.createSequentialGroup()
+                .add(38, 38, 38)
+                .add(jLabel1)
+                .add(26, 26, 26)
+                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 222, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(18, 18, 18)
+                .add(jLabel2)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(checkDependencias)
+                .add(26, 26, 26)
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(atras)
+                    .add(siguiente))
+                .addContainerGap(69, Short.MAX_VALUE))
+        );
+
+        jPanel1Layout.linkSize(new java.awt.Component[] {checkDependencias, jLabel1, jLabel2}, org.jdesktop.layout.GroupLayout.VERTICAL);
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(69, Short.MAX_VALUE)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                    .add(jLabel2)
-                    .add(jLabel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 376, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .add(77, 77, 77))
-            .add(layout.createSequentialGroup()
-                .add(77, 77, 77)
-                .add(checkDependencias)
-                .addContainerGap(227, Short.MAX_VALUE))
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .add(btAtras)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 302, Short.MAX_VALUE)
-                .add(btSiguiente)
-                .addContainerGap())
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(99, Short.MAX_VALUE)
-                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 345, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(87, 87, 87))
+            .add(jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(layout.createSequentialGroup()
-                .add(31, 31, 31)
-                .add(jLabel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 24, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(18, 18, 18)
-                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 157, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(18, 18, 18)
-                .add(jLabel2)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(checkDependencias)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 35, Short.MAX_VALUE)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(btSiguiente)
-                    .add(btAtras))
-                .addContainerGap())
+            .add(jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void checkDependenciasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkDependenciasActionPerformed
-        // TODO add your handling code here:
-        if (checkDependencias.isSelected() == true)
-        {
+
+        if (checkDependencias.isSelected()) {
             panelSeleccion.setEnabled(false);
-
-            btSiguiente.setEnabled(false);
-        
-        }else{
-
-            if (checkDependencias.isSelected() == false){
-
-                panelSeleccion.setEnabled(true);
-
-                btSiguiente.setEnabled(true);
+            siguiente.setEnabled(true);
+            siguiente.setText("Ejecutar");
+        } else {
+            if (panelSeleccion.isSelectionEmpty()) {
+                siguiente.setEnabled(false);
+            } else {
+                siguiente.setEnabled(true);
             }
+            panelSeleccion.setEnabled(true);
+            siguiente.setText("Siguiente");
         }
-    }//GEN-LAST:event_checkDependenciasActionPerformed
 
-    private ArrayList<Method> getMetodosSeleccionados(Object[] lista){
+}//GEN-LAST:event_checkDependenciasActionPerformed
+
+    private void siguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_siguienteActionPerformed
+
+        if (checkDependencias.isSelected()) {
+            // generacion de codigo
+            XmlManager xmlManager = new XmlManager();
+            xmlManager.setInicio(inicio);
+            xmlManager.crearCasoPrueba(this.inicio.getNombreCasoPrueba(), casoPrueba.getEscenariosPrueba());
+
+        } else {
+            // inyeccion de dependencias
+            Object[] lista = panelSeleccion.getSelectedValues();
+            ArrayList<Method> metodosSeleccionados = getMetodosSeleccionados(lista);
+
+            this.inicio.dependenciesSelectionToEditor(this, metodosSeleccionados, casoPrueba);
+        }
+
+}//GEN-LAST:event_siguienteActionPerformed
+
+    private void atrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_atrasActionPerformed
+
+        this.inicio.dependenciesSelectionToCaseTest(this, metodosSet, casoPrueba.getEscenariosPrueba());
+
+    }//GEN-LAST:event_atrasActionPerformed
+
+    private void panelSeleccionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelSeleccionMouseClicked
+
+        if ((panelSeleccion.isSelectionEmpty()) && (!checkDependencias.isSelected())) {
+            siguiente.setEnabled(false);
+        } else {
+            siguiente.setEnabled(true);
+        }
+
+    }//GEN-LAST:event_panelSeleccionMouseClicked
+
+    private ArrayList<Method> getMetodosSeleccionados(Object[] lista) {
 
         ArrayList<Method> methods = new ArrayList<Method>();
 
@@ -172,44 +214,43 @@ public class DependenciesSelection extends javax.swing.JFrame {
 
             String nombreMetodo = object.toString();
 
-            for (Method method : metodosSeleccion){
+            for (Method method : metodosSet) {
 
-                if (method.getName().equals(nombreMetodo)){
-
+                if (method.toString().equals(nombreMetodo)) {
                     methods.add(method);
-                    
                 }
             }
         }
-        
-        
-        return null;
+
+        return methods;
     }
 
-    private void btSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSiguienteActionPerformed
-        // TODO add your handling code here:
-        if (checkDependencias.isSelected() == false){
+    public final void myInits() {
 
-            Object[] lista = panelSeleccion.getSelectedValues();
+        javax.swing.plaf.InternalFrameUI ifu = this.getUI();
+        ((javax.swing.plaf.basic.BasicInternalFrameUI) ifu).setNorthPane(null);
 
-            ArrayList<Method> metodosSeleccionados = getMetodosSeleccionados(lista);
+        int w2 = this.getSize().width;
+        int h2 = this.getSize().height;
+        this.inicio.setSize(new Dimension(w2, h2));
 
-            DependenciesEditor editorDependencias = new DependenciesEditor(metodosSeleccionados);
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 
-            editorDependencias.setVisible(true);
-        }
-    }//GEN-LAST:event_btSiguienteActionPerformed
+        int w = this.inicio.getSize().width;
+        int h = this.inicio.getSize().height;
+        int x = (dim.width - w) / 2;
+        int y = (dim.height - h) / 2;
 
-   
-
+        this.inicio.setLocation(x, y);
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btAtras;
-    private javax.swing.JButton btSiguiente;
+    private javax.swing.JButton atras;
     private javax.swing.JCheckBox checkDependencias;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JList panelSeleccion;
+    private javax.swing.JButton siguiente;
     // End of variables declaration//GEN-END:variables
-
 }
