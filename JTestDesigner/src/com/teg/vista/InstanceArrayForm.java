@@ -145,7 +145,7 @@ public class InstanceArrayForm extends javax.swing.JFrame {
 
         setLayout(new BorderLayout());
 
-        objectContainer.setLayout(new BorderLayout());
+        objectContainer.setLayout(new FlowLayout(FlowLayout.CENTER));
 
 
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -171,9 +171,9 @@ public class InstanceArrayForm extends javax.swing.JFrame {
         buttonCrearOtro = new javax.swing.JButton();
         valorString = new javax.swing.JTextField();
         labelString = new javax.swing.JLabel();
-        valorString.setSize(new Dimension(100, 20));
+        valorString.setPreferredSize(new Dimension(100, 50));
         valorString.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        valorString.setLocation(50, 50);
+        valorString.setLocation(100, 100);
         labelString.setSize(new Dimension(20, 20));
         labelString.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         labelString.setText("Este campo es de valor tipo: " + claseComponente.getName());
@@ -211,7 +211,7 @@ public class InstanceArrayForm extends javax.swing.JFrame {
 
         setLayout(new BorderLayout());
 
-        objectContainer.setLayout(new BorderLayout());
+        objectContainer.setLayout(new FlowLayout(FlowLayout.CENTER));
         objectContainer.add(valorString);
         objectContainer.add(labelString);
 

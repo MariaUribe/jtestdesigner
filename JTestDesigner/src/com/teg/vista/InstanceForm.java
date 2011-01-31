@@ -56,18 +56,27 @@ public class InstanceForm extends javax.swing.JFrame {
     private Method metodoActual;
     private Inicio inicio;
     private String casoPrueba;
+    private Class clase;
+    private ArrayList<Class> clasesJar;
     private ClassLoading classLoader = new ClassLoading();
     private int objId;
 
     /** Creates new form InstanceForm */
     public InstanceForm(Object instance, String dataPath, WidgetObjectLoading listObject, Method metodo, Inicio inicio, int objId) {
         listWidget = listObject;
+
         instanceInspect = instance;
+
         path = dataPath;
+
         metodoActual = metodo;
+
         this.inicio = inicio;
+
         this.casoPrueba = inicio.getNombreCasoPrueba();
+
         this.objId = objId;
+
         initComponents2();
 
     }
@@ -75,6 +84,25 @@ public class InstanceForm extends javax.swing.JFrame {
     public InstanceForm() {
         initComponents();
     }
+    public InstanceForm(ArrayList<Class> clasesJars, String path, WidgetObjectLoading listObject, Inicio inicio, int objId){
+
+       
+
+        this.path = path;
+
+        this.listWidget = listObject;
+
+        this.inicio = inicio;
+
+        this.objId = objId;
+
+       
+
+       // initComponentsInterface();
+
+    }
+
+    
 
     public void InspectObject(Object instance) {
         // asociamor al metawidget la instancia que va a manejar el "binding" de propiedades
@@ -135,6 +163,7 @@ public class InstanceForm extends javax.swing.JFrame {
         });
 
         buttonGuardar.setText("Guardar");
+
         buttonGuardar.addActionListener(new java.awt.event.ActionListener() {
 
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -152,7 +181,7 @@ public class InstanceForm extends javax.swing.JFrame {
 
         setLayout(new BorderLayout());
 
-        objectContainer.setLayout(new BorderLayout());
+        objectContainer.setLayout(new FlowLayout(FlowLayout.CENTER));
 
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         buttonPanel.add(buttonGuardar);
