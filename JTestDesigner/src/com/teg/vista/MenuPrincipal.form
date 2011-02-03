@@ -158,6 +158,10 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="casoPrueba">
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="casoPruebaActionPerformed"/>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="casoPruebaKeyTyped"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JTextField" name="rutaJavaDoc">
               <Events>
@@ -177,6 +181,7 @@
         <Component class="javax.swing.JButton" name="continuar">
           <Properties>
             <Property name="text" type="java.lang.String" value="Crear Caso"/>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="continuarActionPerformed"/>
@@ -185,6 +190,7 @@
         <Component class="javax.swing.JButton" name="editarCaso">
           <Properties>
             <Property name="text" type="java.lang.String" value="Editar Caso"/>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="editarCasoActionPerformed"/>

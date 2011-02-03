@@ -24,7 +24,8 @@ public class ClassLoading {
         packageName = packageName.replaceAll("\\.", "/");
 
         try {
-            JarInputStream jarFile = new JarInputStream(new FileInputStream(jarName));
+            JarInputStream jarFile =
+                    new JarInputStream(new FileInputStream(jarName));
             JarEntry jarEntry;
 
             while (true) {
