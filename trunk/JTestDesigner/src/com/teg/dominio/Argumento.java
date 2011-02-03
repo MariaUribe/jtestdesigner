@@ -1,7 +1,5 @@
 package com.teg.dominio;
 
-import java.util.ArrayList;
-
 /**
  *
  * @author maya
@@ -13,12 +11,6 @@ public class Argumento {
     private String valor;
     private boolean complejo;
     private boolean arreglo;
-
-    private ArrayList<MapaInstancia> mapasGuardados;
-
-    private ArrayList<ColeccionInstancia> coleccionesGuardadas;
-
-    private ArrayList<ArregloInstancia> arreglosGuardados;
 
     /**
      *

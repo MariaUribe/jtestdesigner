@@ -3,6 +3,7 @@ package com.teg.logica;
 import com.teg.dominio.CasoPrueba;
 import com.teg.dominio.ClaseTemplate;
 import com.teg.reportes.JyperionListener;
+import com.teg.util.SwingDialog;
 import com.teg.vista.Inicio;
 
 import freemarker.template.Configuration;
@@ -44,6 +45,7 @@ public class CodeGenerator {
 
     private Inicio inicio;
     private XmlManager xmlManager = new XmlManager();
+    private SwingDialog dialogo = new SwingDialog();
 
     public CodeGenerator() {
     }
@@ -146,8 +148,6 @@ public class CodeGenerator {
             URLClassLoader cl = new URLClassLoader(urls);
             clase = cl.loadClass("com.codeGeneratorTest." + nombreCaso);
 
-            //myObj = clase.newInstance().getClass();
-
             ClassPathHandler cph = new ClassPathHandler();
             cph.addURLs(urls);
 
@@ -162,29 +162,41 @@ public class CodeGenerator {
     }
 
     public void compileTest(ArrayList<File> jars, String rutaJava, String rutaClass) {
-       
-        String jarList = "";
-        int cont = 1;
-        for (File file : jars) {
-            if (cont == 1) {
-                jarList = file.getPath();
-            } else {
-                jarList = jarList + ":" + file.getPath();
+        OutputStream seqOut = null;
+        try {
+            String jarList = "";
+            int cont = 1;
+
+            for (File file : jars) {
+                if (cont == 1) {
+                    jarList = file.getPath();
+                } else {
+                    jarList = jarList + ":" + file.getPath();
+                }
+                cont++;
             }
-            cont++;
-        }
 
-        JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+            File outPut = new File("/Users/maya/Desktop/error.txt");
 
-        int compilationResult = compiler.run(null, null, null, "-classpath", jarList, rutaJava, "-d", rutaClass);
+            seqOut = new FileOutputStream(outPut);
 
-        if (compilationResult == 0) {
-            System.out.println("");
-            System.out.println("Compilation is successful");
-        } else {
-            System.out.println("");
-            System.out.println("Compilation Failed");
-        }
+            JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+            int compilationResult = compiler.run(null, null, seqOut, "-classpath", jarList, rutaJava, "-d", rutaClass);
+            String error = FileUtils.readFileToString(outPut);
+
+            if (compilationResult == 0) {
+                System.out.println("");
+                System.out.println("Compilation is successful");
+                dialogo.exitoDialog("Compilación exitosa", inicio);
+            } else {
+                System.out.println("");
+                System.out.println("Compilation Failed");
+                dialogo.errorDialog("<html><strong>Compilación Fallida:</strong></html>" + "\n" + error, inicio);
+            }
+
+        } catch (IOException ex) {
+            Logger.getLogger(CodeGenerator.class.getName()).log(Level.SEVERE, null, ex);
+        } 
 
     }
 

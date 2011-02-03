@@ -5,6 +5,8 @@
  */
 package com.teg.vista;
 
+import com.teg.util.SwingDialog;
+import com.teg.util.SwingUtils;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
@@ -23,6 +25,7 @@ public class MenuPrincipal extends javax.swing.JInternalFrame {
 
     private Inicio inicio;
     private ArrayList<File> archivosJavaDoc = new ArrayList<File>();
+    private SwingDialog dialogo = new SwingDialog();
 
     /** Creates new form MenuPrincipal */
     public MenuPrincipal(Inicio inicio) {
@@ -69,6 +72,17 @@ public class MenuPrincipal extends javax.swing.JInternalFrame {
 
         jLabel3.setFont(new java.awt.Font("DejaVu Sans", 1, 13));
         jLabel3.setText("Introduzca los siguientes campos: ");
+
+        casoPrueba.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                casoPruebaActionPerformed(evt);
+            }
+        });
+        casoPrueba.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                casoPruebaKeyTyped(evt);
+            }
+        });
 
         rutaJavaDoc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -132,6 +146,7 @@ public class MenuPrincipal extends javax.swing.JInternalFrame {
         panelLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {buscar, casoPrueba, jLabel1, jLabel2, rutaJavaDoc});
 
         continuar.setText("Crear Caso");
+        continuar.setEnabled(false);
         continuar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 continuarActionPerformed(evt);
@@ -139,6 +154,7 @@ public class MenuPrincipal extends javax.swing.JInternalFrame {
         });
 
         editarCaso.setText("Editar Caso");
+        editarCaso.setEnabled(false);
         editarCaso.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 editarCasoActionPerformed(evt);
@@ -218,11 +234,32 @@ public class MenuPrincipal extends javax.swing.JInternalFrame {
 
     private void editarCasoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarCasoActionPerformed
 
-        //File javaTest = this.inicio.getJava(nombreCasoPrueba);
         String nombreCasoPrueba = this.casoPrueba.getText();
-        this.inicio.principalToUpdate(this, nombreCasoPrueba);
+
+        File javaTest = this.inicio.getJava(nombreCasoPrueba);
+        
+        if(javaTest.exists()){
+            this.inicio.principalToUpdate(this, nombreCasoPrueba);
+        } else {
+            dialogo.errorDialog("El caso de prueba introducido no existe", inicio);
+        }
 
     }//GEN-LAST:event_editarCasoActionPerformed
+
+    private void casoPruebaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_casoPruebaActionPerformed
+    }//GEN-LAST:event_casoPruebaActionPerformed
+
+    private void casoPruebaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_casoPruebaKeyTyped
+
+        if(casoPrueba.getText().isEmpty()){
+            continuar.setEnabled(false);
+            editarCaso.setEnabled(false);
+        } else {
+            continuar.setEnabled(true);
+            editarCaso.setEnabled(true);
+        }
+        
+    }//GEN-LAST:event_casoPruebaKeyTyped
 
     /**
      * Metodo para la creacion de los directorios de la prueba

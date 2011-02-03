@@ -14,7 +14,6 @@ public class Metodo {
     private ArrayList<Argumento> argumentos;
     private AssertTest assertLinea;
     private ArrayList<ClaseTest> excepciones;
-    private MockObject mockObject;
 
     public Metodo() {
     }
@@ -113,17 +112,4 @@ public class Metodo {
         this.excepciones = excepciones;
     }
 
-    /**
-     * @return the mockObject
-     */
-    public MockObject getMockObject() {
-        return mockObject;
-    }
-
-    /**
-     * @param mockObject the mockObject to set
-     */
-    public void setMockObject(MockObject mockObject) {
-        this.mockObject = mockObject;
-    }
 }

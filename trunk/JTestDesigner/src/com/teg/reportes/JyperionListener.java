@@ -8,7 +8,6 @@ import com.lowagie.text.BadElementException;
 import java.awt.Color;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Set;
@@ -25,15 +24,12 @@ import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
 import com.lowagie.text.Font;
 import com.lowagie.text.FontFactory;
-import com.lowagie.text.Header;
-import com.lowagie.text.Image;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import java.awt.Desktop;
 import java.io.File;
-import java.net.URL;
 
 /**
  *
@@ -79,7 +75,7 @@ public class JyperionListener implements ITestListener {
         log("onTestSuccess(" + result + ")");
 
         if (successTable == null) {
-            this.successTable = new PdfPTable(new float[]{.3f, .3f, .1f, .3f});
+            this.successTable = new PdfPTable(new float[]{.4f, .4f, .3f, .4f});
             Paragraph p = new Paragraph("PRUEBAS PASADAS", new Font(Font.HELVETICA, Font.DEFAULTSIZE, Font.BOLD));
             p.setAlignment(Element.ALIGN_CENTER);
             PdfPCell cell = new PdfPCell(p);
@@ -129,7 +125,7 @@ public class JyperionListener implements ITestListener {
         log("onTestFailure(" + result + ")");
 
         if (this.failTable == null) {
-            this.failTable = new PdfPTable(new float[]{.3f, .3f, .1f, .3f});
+            this.failTable = new PdfPTable(new float[]{.4f, .4f, .3f, .4f});
             this.failTable.setTotalWidth(20f);
             Paragraph p = new Paragraph("PRUEBAS FALLIDAS", new Font(Font.HELVETICA, Font.DEFAULTSIZE, Font.BOLD));
             p.setAlignment(Element.ALIGN_CENTER);
@@ -184,7 +180,7 @@ public class JyperionListener implements ITestListener {
         log("onTestSkipped(" + result + ")");
 
         if (this.skippedTable == null) {
-            this.skippedTable = new PdfPTable(new float[]{.3f, .3f, .1f, .3f});
+            this.skippedTable = new PdfPTable(new float[]{.4f, .4f, .3f, .4f});
             this.skippedTable.setTotalWidth(20f);
             Paragraph p = new Paragraph("PRUEBAS SALTADAS", new Font(Font.HELVETICA, Font.DEFAULTSIZE, Font.BOLD));
             p.setAlignment(Element.ALIGN_CENTER);
@@ -261,6 +257,12 @@ public class JyperionListener implements ITestListener {
             Paragraph fecha = new Paragraph("(" + new Date().toString() + ")");
             fecha.setAlignment(Element.ALIGN_CENTER);
             this.document.add(fecha);
+
+//             PROBAR ESTO
+//            HeaderFooter header = new HeaderFooter(new Phrase("This is a header."), false);
+//            HeaderFooter footer = new HeaderFooter(new Phrase("This is page "), new Phrase("."));
+//            document.setHeader(header);
+//            document.setFooter(footer);
 
             //com.lowagie.text.Image image = com.lowagie.text.Image.getInstance("/Users/maya/Desktop/java.jpg");
             //document.add(image);

@@ -439,5 +439,5 @@ public final class SwingUtils {
         return clazz;
     }
 
-    
+  
 }

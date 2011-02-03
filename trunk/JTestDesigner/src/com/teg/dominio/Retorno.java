@@ -8,7 +8,7 @@ public class Retorno {
 
     private String retorno;
 
-    private String retornoSimpleName;
+    private String retornoNombreSimple;
 
     private String nombreVariable;
 
@@ -17,9 +17,9 @@ public class Retorno {
      * @param retorno the retorno to set
      * @param nombreVariable the nombreVariable to set
      */
-    public Retorno(String retorno, String retornoSimpleName, String nombreVariable) {
+    public Retorno(String retorno, String retornoNombreSimple, String nombreVariable) {
         this.retorno = retorno;
-        this.retornoSimpleName = retornoSimpleName;
+        this.retornoNombreSimple = retornoNombreSimple;
         this.nombreVariable = nombreVariable;
     }
     
@@ -52,17 +52,17 @@ public class Retorno {
     }
 
     /**
-     * @return the retornoSimpleName
+     * @return the retornoNombreSimple
      */
-    public String getRetornoSimpleName() {
-        return retornoSimpleName;
+    public String getRetornoNombreSimple() {
+        return retornoNombreSimple;
     }
 
     /**
-     * @param retornoSimpleName the retornoSimpleName to set
+     * @param retornoNombreSimple the retornoNombreSimple to set
      */
-    public void setRetornoSimpleName(String retornoSimpleName) {
-        this.retornoSimpleName = retornoSimpleName;
+    public void setRetornoNombreSimple(String retornoNombreSimple) {
+        this.retornoNombreSimple = retornoNombreSimple;
     }
 
 }
