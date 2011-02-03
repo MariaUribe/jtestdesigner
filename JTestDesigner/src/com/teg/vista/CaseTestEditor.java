@@ -108,28 +108,51 @@ import javax.swing.table.TableCellEditor;
  */
 public class CaseTestEditor extends javax.swing.JInternalFrame {
 
+
     private ArrayList<Method> metodos = new ArrayList<Method>();
+
     private ArrayList<DefaultCellEditor> editores = new ArrayList<DefaultCellEditor>();
+
     private ArrayList<Metodo> metodosGuardados = new ArrayList<Metodo>();
+
     private ArrayList<VariableInstancia> variablesGuardadas = new ArrayList<VariableInstancia>();
+
     private ArrayList<ColeccionInstancia> coleccionesGuardadas = new ArrayList<ColeccionInstancia>();
+
     private Object[] arregloGuardado;
+
     private ArrayList<MapaInstancia> mapasGuardados = new ArrayList<MapaInstancia>();
+
     private ArrayList<ArregloInstancia> arreglosGuardados = new ArrayList<ArregloInstancia>();
+
     private ArrayList<File> archivosJavaDoc = new ArrayList<File>();
+
     private ArrayList<EscenarioPrueba> escenariosPrueba = new ArrayList<EscenarioPrueba>();
+
     private WidgetObjectLoading listWidget = new WidgetObjectLoading();
+
     private static int varId = 0;
+
     private static int objId = 0;
+
     private static int coleccionId = 0;
+
     private static int mapaId = 0;
+
     private static int arregloId = 0;
+
     private Class tipoVarRetorno;
+
     private String actualNameMethod;
+
     private JTable tablaArgumentos;
+
     private Inicio inicio;
+
     private Document docXml;
+
     private Integer contComplejo = 1;
+
     private SwingDialog dialogo = new SwingDialog();
 
     /** Creates new form CaseTestEditor */

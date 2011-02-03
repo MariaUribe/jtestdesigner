@@ -6,36 +6,67 @@
 package com.teg.vista;
 
 import com.teg.logica.ClassLoading;
+
 import com.teg.logica.WidgetObjectLoading;
+
 import com.thoughtworks.xstream.XStream;
+
 import com.thoughtworks.xstream.io.xml.DomDriver;
+
 import java.awt.BorderLayout;
+
 import java.awt.Dimension;
+
 import java.awt.FlowLayout;
+
 import java.awt.Label;
+
 import java.io.File;
+
 import java.io.FileInputStream;
+
 import java.io.FileNotFoundException;
+
 import java.io.FileOutputStream;
+
 import java.lang.reflect.Method;
+
 import java.lang.reflect.ParameterizedType;
+
 import java.lang.reflect.Type;
+
 import java.net.MalformedURLException;
+
 import java.util.ArrayList;
+
 import java.util.logging.Level;
+
 import java.util.logging.Logger;
+
 import org.jdesktop.beansbinding.AutoBinding.UpdateStrategy;
+
 import org.metawidget.inspector.composite.CompositeInspector;
+
 import org.metawidget.inspector.composite.CompositeInspectorConfig;
+
 import org.metawidget.inspector.iface.Inspector;
+
 import org.metawidget.inspector.propertytype.PropertyTypeInspector;
+
 import org.metawidget.inspector.xml.XmlInspector;
+
 import org.metawidget.inspector.xml.XmlInspectorConfig;
+
 import org.metawidget.swing.SwingMetawidget;
+
 import org.metawidget.swing.layout.GridBagLayoutConfig;
+
 import org.metawidget.swing.layout.TabbedPaneLayoutDecorator;
+
 import org.metawidget.swing.layout.TabbedPaneLayoutDecoratorConfig;
+
 import org.metawidget.swing.widgetprocessor.binding.beansbinding.BeansBindingProcessor;
+
 import org.metawidget.swing.widgetprocessor.binding.beansbinding.BeansBindingProcessorConfig;
 
 /**
@@ -45,24 +76,38 @@ import org.metawidget.swing.widgetprocessor.binding.beansbinding.BeansBindingPro
 public class InstanceForm extends javax.swing.JFrame {
 
     private Object instanceInspect;
+
     private String path;
+
     private WidgetObjectLoading listWidget = new WidgetObjectLoading();
+
     private SwingMetawidget metawidget = new SwingMetawidget();
+
     private javax.swing.JButton buttonCancelar;
+
     private javax.swing.JButton buttonGuardar;
-    private javax.swing.JButton buttonCrearOtro;
+
     private javax.swing.JPanel buttonPanel;
+
     private javax.swing.JPanel objectContainer;
+
     private Method metodoActual;
+
     private Inicio inicio;
+
     private String casoPrueba;
+
     private Class clase;
+
     private ArrayList<Class> clasesJar;
+
     private ClassLoading classLoader = new ClassLoading();
+
     private int objId;
 
     /** Creates new form InstanceForm */
     public InstanceForm(Object instance, String dataPath, WidgetObjectLoading listObject, Method metodo, Inicio inicio, int objId) {
+
         listWidget = listObject;
 
         instanceInspect = instance;
@@ -97,9 +142,6 @@ public class InstanceForm extends javax.swing.JFrame {
         this.objId = objId;
 
        
-
-       // initComponentsInterface();
-
     }
 
     
@@ -128,7 +170,9 @@ public class InstanceForm extends javax.swing.JFrame {
         }
 
         GridBagLayoutConfig nestedLayoutConfig = new GridBagLayoutConfig().setNumberOfColumns(2);
+
         nestedLayoutConfig.setRequiredAlignment(2);
+
         TabbedPaneLayoutDecoratorConfig layoutConfig = new TabbedPaneLayoutDecoratorConfig().setLayout(
                 new org.metawidget.swing.layout.GridBagLayout(nestedLayoutConfig));
 
@@ -144,17 +188,21 @@ public class InstanceForm extends javax.swing.JFrame {
     private void initComponents2() {
 
         objectContainer = new javax.swing.JPanel();
+
         buttonPanel = new javax.swing.JPanel();
+
         buttonCancelar = new javax.swing.JButton();
+
         buttonGuardar = new javax.swing.JButton();
-        buttonCrearOtro = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
 
         buttonPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
         objectContainer.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         buttonCancelar.setText("Cancelar");
+
         buttonCancelar.addActionListener(new java.awt.event.ActionListener() {
 
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -162,7 +210,7 @@ public class InstanceForm extends javax.swing.JFrame {
             }
         });
 
-        buttonGuardar.setText("Guardar");
+        buttonGuardar.setText("Guardar Objeto");
 
         buttonGuardar.addActionListener(new java.awt.event.ActionListener() {
 
@@ -171,47 +219,38 @@ public class InstanceForm extends javax.swing.JFrame {
             }
         });
 
-        buttonCrearOtro.setText("Crear");
-        buttonCrearOtro.addActionListener(new java.awt.event.ActionListener() {
-
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonCrearOtroActionPerformed(evt);
-            }
-        });
 
         setLayout(new BorderLayout());
 
         objectContainer.setLayout(new FlowLayout(FlowLayout.CENTER));
 
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-        buttonPanel.add(buttonGuardar);
-        buttonPanel.add(buttonCancelar);
-        buttonPanel.add(buttonCrearOtro);
 
+        buttonPanel.add(buttonGuardar);
+
+        buttonPanel.add(buttonCancelar);
 
         getContentPane().add(objectContainer, BorderLayout.CENTER);
+
         getContentPane().add(buttonPanel, BorderLayout.SOUTH);
 
-        setTitle("Editor de Objetos Genericos");
+        setTitle("Editor de Objetos");
+
         setSize(500, 500);
     }
 
     public void getObject() {
+
         ArrayList<Object> objects = new ArrayList<Object>();
+
         objects.add(metawidget.getToInspect());
+
         listWidget.setObject(objects);
 
     }
 
     private void buttonCrearOtroActionPerformed(java.awt.event.ActionEvent evt) {
-        objectContainer.removeAll();
-        metawidget.removeAll();
-        this.repaint();
-        Label label = new Label();
-        label.setText("olaa");
-        label.setSize(new Dimension(50, 50));
-        label.setLocation(50, 50);
-        objectContainer.add(label);
+
         //InspectObject(instanceInspect);
     }
 
@@ -229,18 +268,25 @@ public class InstanceForm extends javax.swing.JFrame {
     }
 
     public void crearXML(Class claseJar, Object instance, String casoPrueba) {
+
         objId++;
         
         try {
+
             File casoPruebaFile = new File(System.getProperty("user.home")
+
                     + System.getProperty("file.separator") + casoPrueba
+
                     + System.getProperty("file.separator"));
 
             File metadata = new File(casoPruebaFile.getPath()
+
                     + System.getProperty("file.separator") + "metadata"
+
                     + System.getProperty("file.separator"));
 
             FileOutputStream fos = new FileOutputStream(metadata.getPath()
+
                     + System.getProperty("file.separator") + "object" + objId + ".xml");
 
             XStream xstream = new XStream(new DomDriver());
@@ -249,19 +295,27 @@ public class InstanceForm extends javax.swing.JFrame {
             xstream.toXML(instance, fos);
 
         } catch (FileNotFoundException ex) {
+
             Logger.getLogger(InstanceForm.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     public Class loadClass(Class miClase) {
+
         Class claseJar = null;
 
         for (File jar : inicio.getJarsRuta()) {
+
             try {
+
                 claseJar = classLoader.getClassDetail(jar.getPath(), miClase.getName());
+
             } catch (MalformedURLException ex) {
+
                 Logger.getLogger(InstanceForm.class.getName()).log(Level.SEVERE, null, ex);
+
             } catch (ClassNotFoundException ex) {
+
                 Logger.getLogger(InstanceForm.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -270,24 +324,15 @@ public class InstanceForm extends javax.swing.JFrame {
     }
 
     private void buttonCancelarActionPerformed(java.awt.event.ActionEvent evt) {
+
         this.dispose();
     }
 
     public void Visible() {
 
-        Type[] genericParameterTypes = metodoActual.getGenericParameterTypes();
 
-        for (Type genericParameterType : genericParameterTypes) {
-            if (genericParameterType instanceof ParameterizedType) {
-                ParameterizedType aType = (ParameterizedType) genericParameterType;
-                Type[] parameterArgTypes = aType.getActualTypeArguments();
-                for (Type parameterArgType : parameterArgTypes) {
-                    Class parameterArgClass = (Class) parameterArgType;
-                    //System.out.println("parameterArgClass = " + parameterArgClass);
-                }
-            }
-        }
         InspectObject(instanceInspect);
+
         this.setVisible(true);
     }
 
