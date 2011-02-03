@@ -39,4 +39,14 @@ public class SwingDialog {
 
         return n;
     }
+
+    public String modificarNombreVarDialog(JFrame frame) {
+
+        String response = JOptionPane.showInputDialog(null,
+                "Ingrese el nuevo nombre de la variable",
+                "Nombre",
+                JOptionPane.QUESTION_MESSAGE);
+        return response;
+
+    }
 }

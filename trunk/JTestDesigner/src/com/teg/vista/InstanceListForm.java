@@ -418,7 +418,7 @@ public class InstanceListForm extends javax.swing.JFrame {
             }
         });
 
-        buttonGuardar.setText("Guardar");
+        buttonGuardar.setText("Guardar coleccion");
         buttonGuardar.addActionListener(new java.awt.event.ActionListener() {
 
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -456,7 +456,7 @@ public class InstanceListForm extends javax.swing.JFrame {
         getContentPane().add(buttonPanel, BorderLayout.SOUTH);
 
 
-        setTitle("Editor de Objetos Genericos");
+        setTitle("Editor de Colecciones");
         setSize(500, 500);
 
 
@@ -608,7 +608,7 @@ public class InstanceListForm extends javax.swing.JFrame {
             }
         });
 
-        buttonGuardar.setText("Guardar");
+        buttonGuardar.setText("Guardar Coleccion");
 
         buttonGuardar.addActionListener(new java.awt.event.ActionListener() {
 
@@ -617,7 +617,7 @@ public class InstanceListForm extends javax.swing.JFrame {
             }
         });
 
-        buttonCrearOtro.setText("Crear");
+        buttonCrearOtro.setText("Crear Otro Objeto");
 
         buttonCrearOtro.addActionListener(new java.awt.event.ActionListener() {
 
@@ -801,7 +801,7 @@ public class InstanceListForm extends javax.swing.JFrame {
             }
         });
 
-        buttonGuardar.setText("Guardar");
+        buttonGuardar.setText("Guardar Coleccion");
 
         buttonGuardar.addActionListener(new java.awt.event.ActionListener() {
 
@@ -810,7 +810,7 @@ public class InstanceListForm extends javax.swing.JFrame {
             }
         });
 
-        buttonCrearOtro.setText("Crear");
+        buttonCrearOtro.setText("Crear Otro Objeto");
 
         buttonCrearOtro.addActionListener(new java.awt.event.ActionListener() {
 
@@ -971,7 +971,7 @@ public class InstanceListForm extends javax.swing.JFrame {
             }
         });
 
-        buttonGuardar.setText("Guardar");
+        buttonGuardar.setText("Guardar Coleccion");
 
         buttonGuardar.addActionListener(new java.awt.event.ActionListener() {
 
@@ -980,7 +980,7 @@ public class InstanceListForm extends javax.swing.JFrame {
             }
         });
 
-        buttonCrearOtro.setText("Crear");
+        buttonCrearOtro.setText("Crear Otro Objeto");
 
         buttonCrearOtro.addActionListener(new java.awt.event.ActionListener() {
 
@@ -1228,7 +1228,7 @@ public class InstanceListForm extends javax.swing.JFrame {
             }
         });
 
-        buttonGuardar.setText("Guardar");
+        buttonGuardar.setText("Guardar Coleccion");
         buttonGuardar.addActionListener(new java.awt.event.ActionListener() {
 
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1259,7 +1259,7 @@ public class InstanceListForm extends javax.swing.JFrame {
         getContentPane().add(objectContainer, BorderLayout.CENTER);
         getContentPane().add(buttonPanel, BorderLayout.SOUTH);
 
-        setTitle("Editor de Objetos Genericos");
+        setTitle("Editor de Colecciones");
         setSize(500, 500);
 
 
@@ -1831,6 +1831,7 @@ public class InstanceListForm extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
     /**
      * @param args the command line arguments
      */

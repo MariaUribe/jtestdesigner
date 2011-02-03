@@ -11,6 +11,7 @@
 package com.teg.vista;
 
 import com.teg.dominio.MapaInstancia;
+
 import com.teg.logica.WidgetObjectLoading;
 
 import java.awt.BorderLayout;
@@ -54,7 +55,6 @@ import java.util.WeakHashMap;
 import java.util.logging.Level;
 
 import java.util.logging.Logger;
-import javax.swing.JList;
 
 import javax.swing.JPanel;
 
@@ -99,40 +99,72 @@ import org.metawidget.swing.widgetprocessor.binding.beansbinding.BeansBindingPro
 public class InstanceMapForm extends javax.swing.JFrame {
 
     private ArrayList<Class> instanceInspect;
+
     private String path;
+
     private int mapaId;
+
     private WidgetObjectLoading listWidget = new WidgetObjectLoading();
+
     private SwingMetawidget metawidget;
+
     private SwingMetawidget secondMetawidget;
+
     private static Map mapa;
+
     private int caso = 0;
+
     private javax.swing.JPanel panelSeleccion;
+
     private javax.swing.JList listaSeleccionKey;
+
     private javax.swing.JList listaSeleccionValue;
+
     private javax.swing.JTabbedPane tabPanel;
+
     private javax.swing.JPanel panelKey;
+
     private javax.swing.JPanel panelValue;
+
     private org.jdom.Document docXml;
+
     private Class clase;
+
     private Object instanceClass;
+
     private javax.swing.JButton buttonCancelar;
+
     private javax.swing.JButton buttonGuardar;
+
     private javax.swing.JButton buttonCrearOtro;
+
     private javax.swing.JButton aceptarSeleccion;
+
     private javax.swing.JButton cancelarSeleccion;
+
     private javax.swing.JPanel buttonPanel;
+
     private javax.swing.JTextField keyField;
+
     private javax.swing.JTextField valueField;
+
     private ArrayList<Class> clasesJars;
+
     private Class claseKey;
+
     private Class claseValue;
+
     private MapaInstancia mapaInstancia;
+
     private ArrayList<Class> clasesColeccion;
+
     private Inicio inicio;
+
     private javax.swing.JList listaSeleccionMapa;
 
     /** Creates new form InstanceMapForm */
     public InstanceMapForm() {
+
         initComponents();
     }
 
@@ -148,9 +180,7 @@ public class InstanceMapForm extends javax.swing.JFrame {
 
         obtenerMapa(argument);
 
-
         initComponentesGeneric();
-
 
     }
 
@@ -218,15 +248,25 @@ public class InstanceMapForm extends javax.swing.JFrame {
 
         boolean verificado = false;
         if (clase.getName().equals("java.lang.Integer")
+
                 || clase.getName().equals("java.lang.Float")
+
                 || clase.getName().equals("java.lang.Double")
+
                 || clase.getName().equals("java.lang.Long")
+
                 || clase.getName().equals("java.lang.Short")
+
                 || clase.getName().equals("java.lang.Byte")
+
                 || clase.getName().equals("java.lang.Character")
+
                 || clase.getName().equals("java.lang.String")
+
                 || clase.getName().equals("java.lang.Boolean")
+
                 || clase.isPrimitive() == true) {
+
             verificado = true;
         }
 
@@ -249,6 +289,7 @@ public class InstanceMapForm extends javax.swing.JFrame {
 
         if (verificarDato(instanceInspect.get(0)) == true
                 && verificarDato(instanceInspect.get(1)) == true) {
+
             caso = 1;
 
             addKeyField();
@@ -435,12 +476,15 @@ public class InstanceMapForm extends javax.swing.JFrame {
     private void addKeyField() {
 
         keyField = new javax.swing.JTextField();
+
         keyField.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-
         panelKey.add(keyField);
+
         keyField.setPreferredSize(new Dimension(100, 20));
+
         keyField.setLocation(50, 50);
+
         keyField.setVisible(true);
 
         tabPanel.validate();
@@ -456,11 +500,15 @@ public class InstanceMapForm extends javax.swing.JFrame {
     private void addValueField() {
 
         valueField = new javax.swing.JTextField();
+
         valueField.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         panelValue.add(valueField);
+
         valueField.setPreferredSize(new Dimension(100, 50));
+
         valueField.setLocation(50, 50);
+
         panelValue.revalidate();
 
         tabPanel.validate();
@@ -495,7 +543,6 @@ public class InstanceMapForm extends javax.swing.JFrame {
 
         listaSeleccionMapaScroller.setPreferredSize(new Dimension(200, 300));
 
-
         c.gridx = 0;
 
         c.gridy = 0;
@@ -505,8 +552,6 @@ public class InstanceMapForm extends javax.swing.JFrame {
         c.anchor = java.awt.GridBagConstraints.CENTER;
 
         panelSeleccion.add(listaSeleccionMapaScroller, c);
-
-
 
         listaSeleccionMapa.setListData(clasesColeccion.toArray());
 
@@ -651,7 +696,7 @@ public class InstanceMapForm extends javax.swing.JFrame {
             }
         });
 
-        buttonGuardar.setText("Guardar");
+        buttonGuardar.setText("Guardar Mapa");
 
         buttonGuardar.setEnabled(false);
 
@@ -662,7 +707,7 @@ public class InstanceMapForm extends javax.swing.JFrame {
             }
         });
 
-        buttonCrearOtro.setText("Crear");
+        buttonCrearOtro.setText("Crear Otro Objeto");
 
         buttonCrearOtro.setEnabled(false);
 
@@ -679,11 +724,11 @@ public class InstanceMapForm extends javax.swing.JFrame {
 
         tabPanel.setMnemonicAt(0, KeyEvent.VK_1);
 
-        tabPanel.addTab("Key", panelKey);
+        tabPanel.addTab("Objeto Key", panelKey);
 
         tabPanel.setMnemonicAt(1, KeyEvent.VK_2);
 
-        tabPanel.addTab("Value", panelValue);
+        tabPanel.addTab("Objeto Value", panelValue);
 
 
 
@@ -741,7 +786,6 @@ public class InstanceMapForm extends javax.swing.JFrame {
 
         listaKeyScroller.setPreferredSize(new Dimension(200, 300));
 
-
         c.gridx = 0;
 
         c.gridy = 0;
@@ -751,8 +795,6 @@ public class InstanceMapForm extends javax.swing.JFrame {
         c.anchor = java.awt.GridBagConstraints.CENTER;
 
         panelSeleccion.add(listaKeyScroller, c);
-
-
 
         listaSeleccionMapa.setListData(clasesColeccion.toArray());
 
@@ -840,7 +882,7 @@ public class InstanceMapForm extends javax.swing.JFrame {
             }
         });
 
-        buttonGuardar.setText("Guardar");
+        buttonGuardar.setText("Guardar Mapa");
 
         buttonGuardar.setEnabled(false);
 
@@ -851,7 +893,7 @@ public class InstanceMapForm extends javax.swing.JFrame {
             }
         });
 
-        buttonCrearOtro.setText("Crear");
+        buttonCrearOtro.setText("Crear Otro Objeto");
 
         buttonCrearOtro.setEnabled(false);
 
@@ -868,13 +910,11 @@ public class InstanceMapForm extends javax.swing.JFrame {
 
         tabPanel.setMnemonicAt(0, KeyEvent.VK_1);
 
-        tabPanel.addTab("Key", panelKey);
+        tabPanel.addTab("Objeto Key", panelKey);
 
         tabPanel.setMnemonicAt(1, KeyEvent.VK_2);
 
-        tabPanel.addTab("Value", panelValue);
-
-
+        tabPanel.addTab("Objeto Value", panelValue);
 
         tabPanel.setMnemonicAt(2, KeyEvent.VK_3);
 
@@ -1017,13 +1057,9 @@ public class InstanceMapForm extends javax.swing.JFrame {
 
         panelKey.setLayout(new FlowLayout(FlowLayout.CENTER));
 
-
-
         panelValue = new javax.swing.JPanel();
 
         panelValue.setLayout(new FlowLayout(FlowLayout.CENTER));
-
-
 
         buttonPanel = new javax.swing.JPanel();
 
@@ -1050,7 +1086,7 @@ public class InstanceMapForm extends javax.swing.JFrame {
             }
         });
 
-        buttonGuardar.setText("Guardar");
+        buttonGuardar.setText("Guardar Mapa");
 
         buttonGuardar.setEnabled(false);
 
@@ -1061,7 +1097,7 @@ public class InstanceMapForm extends javax.swing.JFrame {
             }
         });
 
-        buttonCrearOtro.setText("Crear");
+        buttonCrearOtro.setText("Crear Otro Objeto");
 
         buttonCrearOtro.setEnabled(false);
 
@@ -1078,11 +1114,11 @@ public class InstanceMapForm extends javax.swing.JFrame {
 
         tabPanel.setMnemonicAt(0, KeyEvent.VK_1);
 
-        tabPanel.addTab("Key", panelKey);
+        tabPanel.addTab("Objeto Key", panelKey);
 
         tabPanel.setMnemonicAt(1, KeyEvent.VK_2);
 
-        tabPanel.addTab("Value", panelValue);
+        tabPanel.addTab("Objeto Value", panelValue);
 
 
 
@@ -1115,6 +1151,10 @@ public class InstanceMapForm extends javax.swing.JFrame {
 
         panelValue.removeAll();
 
+        buttonCrearOtro.setEnabled(false);
+
+        buttonGuardar.setEnabled(false);
+
     }
 
     private void aceptarSeleccionMapaActionPerformed(java.awt.event.ActionEvent evt) {
@@ -1123,10 +1163,19 @@ public class InstanceMapForm extends javax.swing.JFrame {
 
         obtenerMapa(claseMapa);
 
-        if (instanceInspect.isEmpty() == false) {
+      buttonGuardar.setEnabled(true);
 
-            if (verificarDato(instanceInspect.get(0)) == true
-                    && verificarDato(instanceInspect.get(1)) == true) {
+      buttonCrearOtro.setEnabled(true);
+
+        if (instanceInspect.isEmpty() == true) {
+
+            claseKey = (Class) listaSeleccionKey.getSelectedValue();
+
+            claseValue = (Class) listaSeleccionValue.getSelectedValue();
+
+            if (verificarDato(claseKey) == true
+                    && verificarDato(claseValue) == true) {
+
                 caso = 1;
 
                 addKeyField();
@@ -1135,14 +1184,14 @@ public class InstanceMapForm extends javax.swing.JFrame {
 
             } else {
 
-                if (verificarDato(instanceInspect.get(0)) == false
-                        && verificarDato(instanceInspect.get(1)) == true) {
+                if (verificarDato(claseKey) == false
+                        && verificarDato(claseValue) == true) {
 
                     try {
 
                         caso = 2;
 
-                        Object object = getInstance(instanceInspect.get(0));
+                        Object object = getInstance((claseKey));
 
                         InspectObject(object, panelKey);
 
@@ -1150,7 +1199,9 @@ public class InstanceMapForm extends javax.swing.JFrame {
 
 
                     } catch (InstantiationException ex) {
+
                         Logger.getLogger(InstanceMapForm.class.getName()).log(Level.SEVERE, null, ex);
+
                     } catch (IllegalAccessException ex) {
 
                         Logger.getLogger(InstanceMapForm.class.getName()).log(Level.SEVERE, null, ex);
@@ -1175,25 +1226,27 @@ public class InstanceMapForm extends javax.swing.JFrame {
 
                         Logger.getLogger(InstanceMapForm.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                } else if (verificarDato(instanceInspect.get(0)) == false
-                        && verificarDato(instanceInspect.get(1)) == false) {
+                } else if (verificarDato(claseKey) == false
+                        && verificarDato(claseValue) == false) {
 
-                    if (instanceInspect.get(0).getName().equals(instanceInspect.get(1).getName())) {
+                    if (claseKey.getName().equals(claseValue.getName())) {
 
                         try {
 
                             caso = 3;
 
-                            Object object = getInstance(instanceInspect.get(1));
+                            Object object = getInstance(claseKey);
 
-                            Object secondObject = getNuevoObjeto(instanceInspect.get(0));
+                            Object secondObject = getNuevoObjeto(claseValue);
 
                             InspectObject(object, panelKey);
 
                             InspectSecondObject(secondObject, panelValue);
 
                         } catch (InstantiationException ex) {
+
                             Logger.getLogger(InstanceMapForm.class.getName()).log(Level.SEVERE, null, ex);
+
                         } catch (IllegalAccessException ex) {
 
                             Logger.getLogger(InstanceMapForm.class.getName()).log(Level.SEVERE, null, ex);
@@ -1224,14 +1277,16 @@ public class InstanceMapForm extends javax.swing.JFrame {
 
                             caso = 4;
 
-                            ArrayList<Object> instancias = getDobleInstance(instanceInspect.get(0), instanceInspect.get(1));
+                            ArrayList<Object> instancias = getDobleInstance(claseKey, claseValue);
 
                             InspectObject(instancias.get(0), panelKey);
 
                             InspectSecondObject(instancias.get(1), panelValue);
 
                         } catch (InstantiationException ex) {
+
                             Logger.getLogger(InstanceMapForm.class.getName()).log(Level.SEVERE, null, ex);
+
                         } catch (IllegalAccessException ex) {
 
                             Logger.getLogger(InstanceMapForm.class.getName()).log(Level.SEVERE, null, ex);
@@ -1276,7 +1331,9 @@ public class InstanceMapForm extends javax.swing.JFrame {
                             addKeyField();
 
                         } catch (InstantiationException ex) {
+
                             Logger.getLogger(InstanceMapForm.class.getName()).log(Level.SEVERE, null, ex);
+
                         } catch (IllegalAccessException ex) {
 
                             Logger.getLogger(InstanceMapForm.class.getName()).log(Level.SEVERE, null, ex);
@@ -1311,14 +1368,8 @@ public class InstanceMapForm extends javax.swing.JFrame {
 
         } else {
 
-
-            claseKey = (Class) listaSeleccionKey.getSelectedValue();
-
-            claseValue = (Class) listaSeleccionValue.getSelectedValue();
-
-
-            if (verificarDato(claseKey) == true
-                    && verificarDato(claseValue) == true) {
+            if (verificarDato(instanceInspect.get(0)) == true
+                    && verificarDato(instanceInspect.get(1)) == true) {
                 caso = 1;
 
                 addKeyField();
@@ -1327,14 +1378,14 @@ public class InstanceMapForm extends javax.swing.JFrame {
 
             } else {
 
-                if (verificarDato(claseKey) == false
-                        && verificarDato(claseValue) == true) {
+                if (verificarDato(instanceInspect.get(0)) == false
+                        && verificarDato(instanceInspect.get(1)) == true) {
 
                     try {
 
                         caso = 2;
 
-                        Object object = getInstance(claseKey);
+                        Object object = getInstance(instanceInspect.get(0));
 
                         InspectObject(object, panelKey);
 
@@ -1342,7 +1393,9 @@ public class InstanceMapForm extends javax.swing.JFrame {
 
 
                     } catch (InstantiationException ex) {
+
                         Logger.getLogger(InstanceMapForm.class.getName()).log(Level.SEVERE, null, ex);
+
                     } catch (IllegalAccessException ex) {
 
                         Logger.getLogger(InstanceMapForm.class.getName()).log(Level.SEVERE, null, ex);
@@ -1367,25 +1420,27 @@ public class InstanceMapForm extends javax.swing.JFrame {
 
                         Logger.getLogger(InstanceMapForm.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                } else if (verificarDato(claseKey) == false
-                        && verificarDato(claseValue) == false) {
+                } else if (verificarDato(instanceInspect.get(0)) == false
+                        && verificarDato(instanceInspect.get(1)) == false) {
 
-                    if (claseKey.getName().equals(claseValue.getName())) {
+                    if (instanceInspect.get(0).getName().equals(instanceInspect.get(1).getName())) {
 
                         try {
 
                             caso = 3;
 
-                            Object object = getInstance(claseValue);
+                            Object object = getInstance(instanceInspect.get(0));
 
-                            Object secondObject = getNuevoObjeto(claseKey);
+                            Object secondObject = getNuevoObjeto(instanceInspect.get(1));
 
                             InspectObject(object, panelKey);
 
                             InspectSecondObject(secondObject, panelValue);
 
                         } catch (InstantiationException ex) {
+
                             Logger.getLogger(InstanceMapForm.class.getName()).log(Level.SEVERE, null, ex);
+
                         } catch (IllegalAccessException ex) {
 
                             Logger.getLogger(InstanceMapForm.class.getName()).log(Level.SEVERE, null, ex);
@@ -1416,14 +1471,16 @@ public class InstanceMapForm extends javax.swing.JFrame {
 
                             caso = 4;
 
-                            ArrayList<Object> instancias = getDobleInstance(claseKey, claseValue);
+                            ArrayList<Object> instancias = getDobleInstance(instanceInspect.get(0), instanceInspect.get(1));
 
                             InspectObject(instancias.get(0), panelKey);
 
                             InspectSecondObject(instancias.get(1), panelValue);
 
                         } catch (InstantiationException ex) {
+
                             Logger.getLogger(InstanceMapForm.class.getName()).log(Level.SEVERE, null, ex);
+
                         } catch (IllegalAccessException ex) {
 
                             Logger.getLogger(InstanceMapForm.class.getName()).log(Level.SEVERE, null, ex);
@@ -1454,14 +1511,14 @@ public class InstanceMapForm extends javax.swing.JFrame {
 
                 } else {
 
-                    if (verificarDato(claseKey) == true
-                            && verificarDato(claseValue) == false) {
+                    if (verificarDato(instanceInspect.get(0)) == true
+                            && verificarDato(instanceInspect.get(1)) == false) {
 
                         try {
 
                             caso = 5;
 
-                            Object object = getInstance(claseValue);
+                            Object object = getInstance(instanceInspect.get(1));
 
                             InspectObject(object, panelValue);
 
@@ -1547,7 +1604,9 @@ public class InstanceMapForm extends javax.swing.JFrame {
 
 
                 } catch (InstantiationException ex) {
+
                     Logger.getLogger(InstanceMapForm.class.getName()).log(Level.SEVERE, null, ex);
+
                 } catch (IllegalAccessException ex) {
 
                     Logger.getLogger(InstanceMapForm.class.getName()).log(Level.SEVERE, null, ex);
@@ -1590,7 +1649,9 @@ public class InstanceMapForm extends javax.swing.JFrame {
                         InspectSecondObject(secondObject, panelValue);
 
                     } catch (InstantiationException ex) {
+
                         Logger.getLogger(InstanceMapForm.class.getName()).log(Level.SEVERE, null, ex);
+
                     } catch (IllegalAccessException ex) {
 
                         Logger.getLogger(InstanceMapForm.class.getName()).log(Level.SEVERE, null, ex);
@@ -1628,7 +1689,9 @@ public class InstanceMapForm extends javax.swing.JFrame {
                         InspectSecondObject(instancias.get(1), panelValue);
 
                     } catch (InstantiationException ex) {
+
                         Logger.getLogger(InstanceMapForm.class.getName()).log(Level.SEVERE, null, ex);
+
                     } catch (IllegalAccessException ex) {
 
                         Logger.getLogger(InstanceMapForm.class.getName()).log(Level.SEVERE, null, ex);
@@ -1673,7 +1736,9 @@ public class InstanceMapForm extends javax.swing.JFrame {
                         addKeyField();
 
                     } catch (InstantiationException ex) {
+
                         Logger.getLogger(InstanceMapForm.class.getName()).log(Level.SEVERE, null, ex);
+
                     } catch (IllegalAccessException ex) {
 
                         Logger.getLogger(InstanceMapForm.class.getName()).log(Level.SEVERE, null, ex);
@@ -1752,13 +1817,105 @@ public class InstanceMapForm extends javax.swing.JFrame {
         }
 
         listWidget.setMapa(mapa);
+
         this.dispose();
 
     }
 
     private void buttonCrearOtroGenericoActionPerformed(java.awt.event.ActionEvent evt) {
 
+
+
+        if (instanceInspect == null || instanceInspect.isEmpty() == true){
+
+
         if (caso == 1) {
+
+            mapa.put(keyField.getText(), valueField.getText());
+
+            keyField.setText("");
+
+            valueField.setText("");
+
+        } else {
+
+            if (caso == 2) {
+
+                mapa.put(metawidget.getToInspect(), valueField.getText());
+
+                panelKey.removeAll();
+
+                Object object = getNuevoObjeto(claseKey);
+
+                valueField.setText("");
+
+                this.repaint();
+
+                InspectObject(object, panelKey);
+
+            } else {
+
+                if (caso == 3) {
+
+                    mapa.put(metawidget.getToInspect(), secondMetawidget.getToInspect());
+
+                    panelValue.removeAll();
+
+                    panelKey.removeAll();
+
+                    Object firstObj = getNuevoObjeto(claseKey);
+
+                    Object secondObj = getNuevoObjeto(claseValue);
+
+                    InspectObject(firstObj, panelKey);
+
+                    InspectSecondObject(secondObj, panelValue);
+
+                } else {
+
+                    if (caso == 4) {
+
+                        mapa.put(metawidget.getToInspect(), secondMetawidget.getToInspect());
+
+                        panelValue.removeAll();
+
+                        panelKey.removeAll();
+
+                        Object firstObj = getNuevoObjeto(claseKey);
+
+                        Object secondObj = getNuevoObjeto(claseValue);
+
+                        InspectObject(firstObj, panelKey);
+
+                        InspectObject(secondObj, panelValue);
+
+                    } else {
+
+                        if (caso == 5) {
+
+                            mapa.put(keyField.getText(), metawidget.getToInspect());
+
+                            panelValue.removeAll();
+
+                            Object object = getNuevoObjeto(claseValue);
+
+                            keyField.setText("");
+
+                            this.repaint();
+
+                            InspectObject(object, panelValue);
+
+                        }
+                    }
+                }
+            }
+        }
+
+        }else
+        {
+            if (instanceInspect.isEmpty() == false){
+
+                if (caso == 1) {
 
             mapa.put(keyField.getText(), valueField.getText());
 
@@ -1840,28 +1997,35 @@ public class InstanceMapForm extends javax.swing.JFrame {
             }
         }
 
-
+            }
+        }
 
     }
 
     private void initComponentesObject() {
         tabPanel = new JTabbedPane();
+
         panelKey = new JPanel(false);
 
         panelKey.setLayout(new FlowLayout(FlowLayout.LEADING));
+
         panelKey.setAutoscrolls(true);
 
 
         panelValue = new JPanel(false);
 
         panelValue.setLayout(new FlowLayout(FlowLayout.LEADING));
+
         panelValue.setAutoscrolls(true);
 
 
 
         buttonPanel = new javax.swing.JPanel();
+
         buttonCancelar = new javax.swing.JButton();
+
         buttonGuardar = new javax.swing.JButton();
+
         buttonCrearOtro = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
@@ -1869,6 +2033,7 @@ public class InstanceMapForm extends javax.swing.JFrame {
         buttonPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         buttonCancelar.setText("Cancelar");
+
         buttonCancelar.addActionListener(new java.awt.event.ActionListener() {
 
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1877,6 +2042,7 @@ public class InstanceMapForm extends javax.swing.JFrame {
         });
 
         buttonGuardar.setText("Guardar");
+
         buttonGuardar.addActionListener(new java.awt.event.ActionListener() {
 
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1885,6 +2051,7 @@ public class InstanceMapForm extends javax.swing.JFrame {
         });
 
         buttonCrearOtro.setText("Crear");
+
         buttonCrearOtro.addActionListener(new java.awt.event.ActionListener() {
 
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1893,23 +2060,32 @@ public class InstanceMapForm extends javax.swing.JFrame {
         });
 
         setLayout(new BorderLayout());
+ 
+        tabPanel.addTab("Objecto key", panelKey);
 
-        //tabPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-        tabPanel.addTab("Clave", panelKey);
         tabPanel.setMnemonicAt(0, KeyEvent.VK_1);
-        tabPanel.addTab("Valor", panelValue);
+
+        tabPanel.addTab("Objeto Value", panelValue);
+
         tabPanel.setMnemonicAt(1, KeyEvent.VK_2);
+
         tabPanel.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+
         buttonPanel.add(buttonGuardar);
+
         buttonPanel.add(buttonCancelar);
+
         buttonPanel.add(buttonCrearOtro);
 
+
         getContentPane().add(buttonPanel, BorderLayout.SOUTH);
+
         getContentPane().add(tabPanel, BorderLayout.CENTER);
 
         setTitle("Editor de Mapas");
+
         setSize(700, 700);
 
 
@@ -1960,6 +2136,7 @@ public class InstanceMapForm extends javax.swing.JFrame {
         }
 
         listWidget.setMapa(mapa);
+
         this.dispose();
 
     }
@@ -2059,35 +2236,55 @@ public class InstanceMapForm extends javax.swing.JFrame {
     public void crearMetawidgetMetadata(org.jdom.Document doc) throws JDOMException, IOException {
 
         try {
+
             XMLOutputter out = new XMLOutputter();
+
             FileOutputStream file = new FileOutputStream(path + "/" + "metawidgetData.xml");
+
             out.output(doc, file);
+
             file.flush();
+
             file.close();
+
             out.output(doc, System.out);
+
         } catch (Exception e) {
+
         }
     }
 
     public void deepInstantiate(Object claseInstancia, Element raiz) throws InstantiationException, IllegalAccessException, NoSuchMethodException, IllegalArgumentException, InvocationTargetException {
 
         raiz.addContent("\n");
+
         Element entidad = getEntity(claseInstancia.getClass());
+
         raiz.addContent(entidad);
 
         Field[] campos = claseInstancia.getClass().getDeclaredFields();
+
         for (Field field : campos) {
+
             boolean flag = false;
+
             if (!field.getType().isPrimitive() && verificarDato(field.getType()) == false) {
                 Method[] metodosClase = claseInstancia.getClass().getDeclaredMethods();
+
                 for (Method method : metodosClase) {
+
                     if (method.getParameterTypes().length > 0) {
+
                         if (method.getParameterTypes()[0].getName().equals(field.getType().getName())
                                 && (method.getReturnType().getName() == null ? "void" == null : method.getReturnType().getName().equals("void"))
                                 && flag == false) {
+
                             Object campoInstance = field.getType().newInstance();
+
                             claseInstancia.getClass().getMethod(method.getName(), field.getType()).invoke(claseInstancia, campoInstance);
+
                             flag = true;
+
                             deepInstantiate(campoInstance, raiz);
 
                         }
@@ -2098,26 +2295,37 @@ public class InstanceMapForm extends javax.swing.JFrame {
     }
 
     public Element getEntity(Class clase) {
+
         Element entidad = new Element("entity");
+
         Attribute tipoEntidad = new Attribute("type", clase.getName());
 
         entidad.setAttribute(tipoEntidad);
+
         entidad.addContent("\n \t");
+
         Field[] fields = clase.getDeclaredFields();
+
         for (Field field : fields) {
+
             Element prop = new Element("property");
 
             Attribute atr = new Attribute("name", field.getName());
+
             Attribute atrSeccion = new Attribute("section", clase.getSimpleName());
+
             ArrayList<Attribute> listaAtributosProperty = new ArrayList<Attribute>();
 
             if (verificarDato(field.getType()) == false) {
 
                 Attribute atr2 = new Attribute("section", clase.getSimpleName());
+
                 Attribute atr3 = new Attribute("type", field.getType().getName());
 
                 listaAtributosProperty.add(atr);
+
                 listaAtributosProperty.add(atr2);
+
                 listaAtributosProperty.add(atr3);
 
                 prop.setAttributes(listaAtributosProperty);
@@ -2127,7 +2335,9 @@ public class InstanceMapForm extends javax.swing.JFrame {
             } else {
 
                 listaAtributosProperty.add(atr);
+
                 listaAtributosProperty.add(atrSeccion);
+
                 prop.setAttributes(listaAtributosProperty);
 
                 entidad.addContent("\n \t");
@@ -2135,6 +2345,7 @@ public class InstanceMapForm extends javax.swing.JFrame {
             }
 
             entidad.addContent(prop);
+
             entidad.addContent("\n");
         }
 
@@ -2145,26 +2356,38 @@ public class InstanceMapForm extends javax.swing.JFrame {
 
 
         Element raiz = new Element("inspection-result");
+
         raiz.addContent("\n");
+
         Element entidad = getEntity(clase);
+
         raiz.addContent(entidad);
 
         Object claseInstancia = clase.newInstance();
 
         Field[] campos = clase.getDeclaredFields();
+
         for (Field field : campos) {
+
             boolean flag = false;
+
             if (verificarDato(field.getType()) == false) {
+
                 Method[] metodosClase = clase.getDeclaredMethods();
+
                 for (Method method : metodosClase) {
 
                     if (method.getParameterTypes().length == 1
                             && method.getParameterTypes()[0].getName().equals(field.getType().getName())
                             && (method.getReturnType().getName() == null ? "void" == null : method.getReturnType().getName().equals("void"))
                             && flag == false) {
+
                         Object campoInstance = field.getType().newInstance();
+
                         clase.getMethod(method.getName(), field.getType()).invoke(claseInstancia, campoInstance);
+
                         flag = true;
+
                         deepInstantiate(campoInstance, raiz);
                     }
                 }
@@ -2183,18 +2406,29 @@ public class InstanceMapForm extends javax.swing.JFrame {
 
 
         Field[] campos = claseInstancia.getClass().getDeclaredFields();
+
         for (Field field : campos) {
+
             boolean flag = false;
+
             if (verificarDato(field.getType()) == false) {
+
                 Method[] metodosClase = claseInstancia.getClass().getDeclaredMethods();
+
                 for (Method method : metodosClase) {
+
                     if (method.getParameterTypes().length > 0) {
+
                         if (method.getParameterTypes()[0].getName().equals(field.getType().getName())
                                 && (method.getReturnType().getName() == null ? "void" == null : method.getReturnType().getName().equals("void"))
                                 && flag == false) {
+
                             Object campoInstance = field.getType().newInstance();
+
                             claseInstancia.getClass().getMethod(method.getName(), field.getType()).invoke(claseInstancia, campoInstance);
+
                             flag = true;
+
                             instanciaCampos(campoInstance);
 
                         }
@@ -2214,19 +2448,28 @@ public class InstanceMapForm extends javax.swing.JFrame {
         Object claseInstancia = clase.newInstance();
 
         Field[] campos = clase.getDeclaredFields();
+
         for (Field field : campos) {
+
             boolean flag = false;
+
             if (verificarDato(field.getType()) == false) {
+
                 Method[] metodosClase = clase.getDeclaredMethods();
+
                 for (Method method : metodosClase) {
 
                     if (method.getParameterTypes().length == 1
                             && method.getParameterTypes()[0].getName().equals(field.getType().getName())
                             && (method.getReturnType().getName() == null ? "void" == null : method.getReturnType().getName().equals("void"))
                             && flag == false) {
+
                         Object campoInstance = field.getType().newInstance();
+
                         clase.getMethod(method.getName(), field.getType()).invoke(claseInstancia, campoInstance);
+
                         flag = true;
+
                         instanciaCampos(campoInstance);
                     }
                 }
@@ -2241,21 +2484,37 @@ public class InstanceMapForm extends javax.swing.JFrame {
 
 
         Object nuevoObjeto = null;
+
         try {
+
             nuevoObjeto = instanciarNuevoObjeto(clase);
+
         } catch (InstantiationException ex) {
+
             Logger.getLogger(InstanceListForm.class.getName()).log(Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
+
             Logger.getLogger(InstanceListForm.class.getName()).log(Level.SEVERE, null, ex);
+
         } catch (NoSuchMethodException ex) {
+
             Logger.getLogger(InstanceListForm.class.getName()).log(Level.SEVERE, null, ex);
+
         } catch (IllegalArgumentException ex) {
+
             Logger.getLogger(InstanceListForm.class.getName()).log(Level.SEVERE, null, ex);
+
         } catch (InvocationTargetException ex) {
+
             Logger.getLogger(InstanceListForm.class.getName()).log(Level.SEVERE, null, ex);
+
         } catch (JDOMException ex) {
+
             Logger.getLogger(InstanceListForm.class.getName()).log(Level.SEVERE, null, ex);
+
         } catch (IOException ex) {
+
             Logger.getLogger(InstanceListForm.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -2263,32 +2522,49 @@ public class InstanceMapForm extends javax.swing.JFrame {
     }
 
     private ArrayList<Object> getDobleInstance(Class firstClass, Class secondClass) throws InstantiationException, IllegalAccessException, NoSuchMethodException, IllegalArgumentException, InvocationTargetException, JDOMException, IOException {
+
         Element raiz = new Element("inspection-result");
+
         raiz.addContent("\n");
+
         Element entidad = getEntity(firstClass);
+
         raiz.addContent(entidad);
+
         raiz.addContent("\n");
+
         Element secondEntidad = getEntity(secondClass);
+
         raiz.addContent(secondEntidad);
 
         Object firstInstancia = firstClass.newInstance();
 
         Object secondInstancia = secondClass.newInstance();
 
+
         Field[] campos = firstClass.getDeclaredFields();
+
         for (Field field : campos) {
+
             boolean flag = false;
+
             if (verificarDato(field.getType()) == false) {
+
                 Method[] metodosClase = firstClass.getDeclaredMethods();
+
                 for (Method method : metodosClase) {
 
                     if (method.getParameterTypes().length == 1
                             && method.getParameterTypes()[0].getName().equals(field.getType().getName())
                             && (method.getReturnType().getName() == null ? "void" == null : method.getReturnType().getName().equals("void"))
                             && flag == false) {
+
                         Object campoInstance = field.getType().newInstance();
+
                         firstClass.getMethod(method.getName(), field.getType()).invoke(firstInstancia, campoInstance);
+
                         flag = true;
+
                         deepInstantiate(campoInstance, raiz);
                     }
                 }
@@ -2298,18 +2574,26 @@ public class InstanceMapForm extends javax.swing.JFrame {
         Field[] secondCampos = secondClass.getDeclaredFields();
 
         for (Field field : secondCampos) {
+
             boolean flag = false;
+
             if (verificarDato(field.getType()) == false) {
+
                 Method[] metodosClase = secondClass.getDeclaredMethods();
+
                 for (Method method : metodosClase) {
 
                     if (method.getParameterTypes().length == 1
                             && method.getParameterTypes()[0].getName().equals(field.getType().getName())
                             && (method.getReturnType().getName() == null ? "void" == null : method.getReturnType().getName().equals("void"))
                             && flag == false) {
+
                         Object campoInstance = field.getType().newInstance();
+
                         secondClass.getMethod(method.getName(), field.getType()).invoke(secondInstancia, campoInstance);
+
                         flag = true;
+
                         deepInstantiate(campoInstance, raiz);
                     }
                 }
@@ -2321,7 +2605,9 @@ public class InstanceMapForm extends javax.swing.JFrame {
         crearMetawidgetMetadata(docXml);
 
         ArrayList<Object> instancias = new ArrayList<Object>();
+
         instancias.add(firstInstancia);
+
         instancias.add(secondInstancia);
 
         return instancias;
@@ -2355,8 +2641,11 @@ public class InstanceMapForm extends javax.swing.JFrame {
         }
 
         GridBagLayoutConfig nestedLayoutConfig = new GridBagLayoutConfig().setNumberOfColumns(2);
+
         nestedLayoutConfig.setRequiredAlignment(2);
+
         TabbedPaneLayoutDecoratorConfig layoutConfig = new TabbedPaneLayoutDecoratorConfig().setLayout(
+
                 new org.metawidget.swing.layout.GridBagLayout(nestedLayoutConfig));
 
         secondMetawidget.setMetawidgetLayout(new TabbedPaneLayoutDecorator(layoutConfig));
@@ -2370,7 +2659,9 @@ public class InstanceMapForm extends javax.swing.JFrame {
 
 
         panel.add(secondMetawidget);
+
         panel.validate();
+
         this.repaint();
     }
 
@@ -2391,18 +2682,24 @@ public class InstanceMapForm extends javax.swing.JFrame {
 
 
             xmlConfig.setInputStream(new FileInputStream(new File(path + "/" + "metawidgetData.xml")));
+
             PropertyTypeInspector inspector = new PropertyTypeInspector();
 
             inspectorConfig = new CompositeInspectorConfig().setInspectors(
+
                     new Inspector[]{new PropertyTypeInspector(),
-                        new XmlInspector(xmlConfig)});
+
+                    new XmlInspector(xmlConfig)});
 
         } catch (FileNotFoundException ex) {
         }
 
         GridBagLayoutConfig nestedLayoutConfig = new GridBagLayoutConfig().setNumberOfColumns(2);
+
         nestedLayoutConfig.setRequiredAlignment(2);
+
         TabbedPaneLayoutDecoratorConfig layoutConfig = new TabbedPaneLayoutDecoratorConfig().setLayout(
+
                 new org.metawidget.swing.layout.GridBagLayout(nestedLayoutConfig));
 
         metawidget.setMetawidgetLayout(new TabbedPaneLayoutDecorator(layoutConfig));
@@ -2411,15 +2708,11 @@ public class InstanceMapForm extends javax.swing.JFrame {
 
         metawidget.setToInspect(instance);
 
-
-
-
-
         panel.add(metawidget);
+
         panel.validate();
 
         this.repaint();
-
 
     }
 
@@ -2452,19 +2745,33 @@ public class InstanceMapForm extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     private void obtenerMapa(Class argument) {
+
         if (argument.getName().equals("java.util.HashMap")) {
+
             mapa = new HashMap();
+
         } else {
+
             if (argument.getName().equals("java.util.Hashtable")) {
+
                 mapa = new Hashtable();
+
             } else {
+
                 if (argument.getName().equals("java.util.LinkedHashMap")) {
+
                     mapa = new LinkedHashMap();
+
                 } else {
+
                     if (argument.getName().equals("java.util.TreeMap")) {
+
                         mapa = new TreeMap();
+
                     } else {
+
                         if (argument.getName().equals("java.util.WeakHashMap")) {
+
                             mapa = new WeakHashMap();
                         }
                     }
