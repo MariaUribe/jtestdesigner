@@ -14,6 +14,8 @@ import com.teg.dominio.MapaInstancia;
 
 import com.teg.logica.WidgetObjectLoading;
 
+import com.teg.util.SwingDialog;
+
 import java.awt.BorderLayout;
 
 import java.awt.Dimension;
@@ -161,6 +163,7 @@ public class InstanceMapForm extends javax.swing.JFrame {
     private Inicio inicio;
 
     private javax.swing.JList listaSeleccionMapa;
+    private SwingDialog dialogoColeccion;
 
     /** Creates new form InstanceMapForm */
     public InstanceMapForm() {
@@ -1145,15 +1148,26 @@ public class InstanceMapForm extends javax.swing.JFrame {
 
     private void cancelarSeleccionActionPerformed(java.awt.event.ActionEvent evt) {
 
-        mapa.clear();
+        dialogoColeccion = new com.teg.util.SwingDialog();
 
-        panelKey.removeAll();
+        int opcion = dialogoColeccion.advertenciaDialog("Se perderan todos los objetos guardados, Desea continuar ?", this);     
 
-        panelValue.removeAll();
+        if (opcion == 0) {
 
-        buttonCrearOtro.setEnabled(false);
+            mapa.clear();
 
-        buttonGuardar.setEnabled(false);
+            panelKey.removeAll();
+
+            panelValue.removeAll();
+
+            buttonCrearOtro.setEnabled(false);
+
+            buttonGuardar.setEnabled(false);
+
+            aceptarSeleccion.setEnabled(true);
+        }
+
+       
 
     }
 
@@ -1561,6 +1575,7 @@ public class InstanceMapForm extends javax.swing.JFrame {
 
 
 
+      aceptarSeleccion.setEnabled(false);
 
 
     }
@@ -1770,6 +1785,8 @@ public class InstanceMapForm extends javax.swing.JFrame {
             }
         }
 
+        aceptarSeleccion.setEnabled(false);
+
     }
 
     private void buttonGuardarGenericoActionPerformed(java.awt.event.ActionEvent evt) {
@@ -1817,6 +1834,7 @@ public class InstanceMapForm extends javax.swing.JFrame {
         }
 
         listWidget.setMapa(mapa);
+        System.out.println("ola");
 
         this.dispose();
 
@@ -2041,7 +2059,7 @@ public class InstanceMapForm extends javax.swing.JFrame {
             }
         });
 
-        buttonGuardar.setText("Guardar");
+        buttonGuardar.setText("Guardar Mapa");
 
         buttonGuardar.addActionListener(new java.awt.event.ActionListener() {
 
@@ -2050,7 +2068,7 @@ public class InstanceMapForm extends javax.swing.JFrame {
             }
         });
 
-        buttonCrearOtro.setText("Crear");
+        buttonCrearOtro.setText("Crear Otro Objeto");
 
         buttonCrearOtro.addActionListener(new java.awt.event.ActionListener() {
 
@@ -2773,6 +2791,63 @@ public class InstanceMapForm extends javax.swing.JFrame {
                         if (argument.getName().equals("java.util.WeakHashMap")) {
 
                             mapa = new WeakHashMap();
+                        
+                        } else {
+
+                            if (argument.getName().equals("java.util.jar.Attributes")) {
+
+                                mapa = new java.util.jar.Attributes();
+                            
+                            } else {
+
+                                if (argument.getName().equals("java.util.concurrent.ConcurrentHashMap")) {
+
+                                    mapa = new java.util.concurrent.ConcurrentHashMap();
+                                
+                                } else {
+
+                                    if (argument.getName().equals("java.util.concurrent.ConcurrentSkipListMap")) {
+
+                                        mapa = new java.util.concurrent.ConcurrentSkipListMap();
+                                    } else {
+
+                                        if (argument.getName().equals("java.util.IdentityHashMap")) {
+
+                                            mapa = new java.util.IdentityHashMap();
+
+                                        } else {
+
+                                            if (argument.getName().equals("javax.print.attribute.standard."
+                                                    + "PrinterStateReasons")) {
+
+                                                mapa = new javax.print.attribute.standard.PrinterStateReasons();
+
+                                            } else {
+
+                                                if (argument.getName().equals("java.util.Properties")) {
+
+                                                    mapa = new java.util.Properties();
+
+                                                } else {
+
+                                                    if (argument.getName().equals("javax.script.SimpleBindings")) {
+
+                                                        mapa = new javax.script.SimpleBindings();
+
+                                                    } else {
+
+                                                        if (argument.getName().equals("javax.swing.UIDefaults")) {
+
+                                                            mapa = new javax.swing.UIDefaults();
+
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
 
