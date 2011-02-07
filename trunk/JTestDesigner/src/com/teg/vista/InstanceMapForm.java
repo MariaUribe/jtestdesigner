@@ -276,7 +276,7 @@ public class InstanceMapForm extends javax.swing.JFrame {
         return verificado;
     }
 
-    public InstanceMapForm(ArrayList<Class> classInstances, String path, WidgetObjectLoading listWidget, Class argument) throws InstantiationException {
+    public InstanceMapForm(ArrayList<Class> classInstances, String path, WidgetObjectLoading listWidget, Class argument, int mapaId) throws InstantiationException {
 
         obtenerMapa(argument);
 
@@ -287,6 +287,8 @@ public class InstanceMapForm extends javax.swing.JFrame {
         this.path = path;
 
         this.listWidget = listWidget;
+
+        this.mapaId = mapaId;
 
         clase = argument;
 

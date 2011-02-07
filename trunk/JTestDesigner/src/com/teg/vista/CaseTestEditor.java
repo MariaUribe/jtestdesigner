@@ -18,7 +18,6 @@ import com.teg.dominio.EscenarioPrueba;
 import com.teg.dominio.MapaInstancia;
 
 import com.teg.dominio.Metodo;
-import com.teg.dominio.MockObject;
 import com.teg.dominio.VariableInstancia;
 
 import com.teg.logica.WidgetObjectLoading;
@@ -985,7 +984,6 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
             }
         }
 
-        //clasesObtener.addAll(obtenerClasesDeInterfaz(interfaz));
 
 
 
@@ -1039,14 +1037,23 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
 
         if (clase.getName().equals("java.lang.Integer")
+
                 || clase.getName().equals("java.lang.Float")
+
                 || clase.getName().equals("java.lang.Double")
+
                 || clase.getName().equals("java.lang.Long")
+
                 || clase.getName().equals("java.lang.Short")
+
                 || clase.getName().equals("java.lang.Byte")
+
                 || clase.getName().equals("java.lang.Character")
+
                 || clase.getName().equals("java.lang.String")
+
                 || clase.getName().equals("java.lang.Boolean")) {
+
             verificado = true;
         }
 
@@ -1206,12 +1213,19 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
                             ArrayList<Object> objectInstances;
 
+                            ColeccionInstancia coleccionInstancia;
+                            MapaInstancia mapaInstancia;
+
                             if (argument.isInterface()) {
                                 if (argumentoEsColeccion(argument) == true && argumentoEsMapa(argument) == false) {
 
-                                    InstanceListForm editorInstance = new InstanceListForm(getClasesColeccion(argument), obtenerGenericos(metodo, pos), obtenerClasesJars(), inicio.getDirectorioCasoPrueba().getPath(), listWidget, inicio, coleccionId);
+                                    coleccionInstancia = new ColeccionInstancia();
+
+                                    InstanceListForm editorInstance = new InstanceListForm(coleccionInstancia, getClasesColeccion(argument), obtenerGenericos(metodo, pos), obtenerClasesJars(), inicio.getDirectorioCasoPrueba().getPath(), listWidget, inicio, coleccionId);
 
                                     editorInstance.setVisible(true);
+
+
 
                                 } else {
 
@@ -1251,19 +1265,19 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                                         if (classInstances.size() == 2) {
 
                                             try {
-                                                InstanceMapForm editorMap = new InstanceMapForm(classInstances, inicio.getDirectorioCasoPrueba().getPath(), listWidget, argument);
+                                                InstanceMapForm editorMap = new InstanceMapForm(classInstances, inicio.getDirectorioCasoPrueba().getPath(), listWidget, argument, mapaId);
 
                                                 editorMap.setVisible(true);
 
                                                 editorMap.getMapa();
 
-                                                MapaInstancia mapInstancia = new MapaInstancia();
+                                                 mapaInstancia = new MapaInstancia();
 
-                                                mapInstancia.setClaseKey(classInstances.get(0));
+                                                mapaInstancia.setClaseKey(classInstances.get(0));
 
-                                                mapInstancia.setClaseValue(classInstances.get(1));
+                                                mapaInstancia.setClaseValue(classInstances.get(1));
 
-                                                addInstanceMap(mapInstancia);
+                                                addInstanceMap(mapaInstancia);
 
                                             } catch (InstantiationException ex) {
 
@@ -1302,13 +1316,13 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
                                                         editorList.getColeccion();
 
-                                                        ColeccionInstancia colInstancia = new ColeccionInstancia();
+                                                         coleccionInstancia = new ColeccionInstancia();
 
 
 
-                                                        colInstancia.setTipoDatoColeccion(claseInstance.getClass().getName());
+                                                        coleccionInstancia.setTipoDatoColeccion(claseInstance.getClass().getName());
 
-                                                        addInstanceCollection(colInstancia);
+                                                        addInstanceCollection(coleccionInstancia);
 
                                                     } catch (InstantiationException ex) {
 
@@ -1343,19 +1357,19 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                                                     if (classInstances.get(0).isPrimitive()
                                                             || verificarDato(classInstances.get(0)) == true) {
 
-                                                        InstanceListForm editorList = new InstanceListForm(classInstances.get(0), listWidget, argument);
+                                                        InstanceListForm editorList = new InstanceListForm(classInstances.get(0), listWidget, argument, coleccionId);
 
                                                         editorList.setVisible(true);
 
                                                         editorList.getColeccion();
 
-                                                        ColeccionInstancia colInstancia = new ColeccionInstancia();
+                                                         coleccionInstancia = new ColeccionInstancia();
 
 
 
-                                                        colInstancia.setTipoDatoColeccion(classInstances.get(0).getName());
+                                                        coleccionInstancia.setTipoDatoColeccion(classInstances.get(0).getName());
 
-                                                        addInstanceCollection(colInstancia);
+                                                        addInstanceCollection(coleccionInstancia);
 
 
                                                     }
@@ -1363,6 +1377,8 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                                             } else {
 
                                                 if (classInstances.isEmpty()) {
+
+                                                    coleccionInstancia = new ColeccionInstancia();
 
                                                     if (java.util.Map.class.isAssignableFrom(argument) == false) {
 
@@ -1372,13 +1388,9 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
                                                         selector.getColeccion();
 
-                                                        ColeccionInstancia colInstancia = new ColeccionInstancia();
+                                                        coleccionInstancia.setTipoDatoColeccion(argument.getName());
 
-
-
-                                                        colInstancia.setTipoDatoColeccion(argument.getName());
-
-                                                        addInstanceCollection(colInstancia);
+                                                        addInstanceCollection(coleccionInstancia);
 
 
 
@@ -1386,9 +1398,9 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                                                         if (argumentoEsMapa(argument) == true) {
 
 
-                                                            MapaInstancia mapInstancia = new MapaInstancia();
+                                                             mapaInstancia = new MapaInstancia();
 
-                                                            InstanceMapForm selector = new InstanceMapForm(obtenerClasesJars(), listWidget, argument, inicio, mapaId, mapInstancia);
+                                                            InstanceMapForm selector = new InstanceMapForm(obtenerClasesJars(), listWidget, argument, inicio, mapaId, mapaInstancia);
 
                                                             selector.setVisible(true);
 
@@ -1400,7 +1412,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
                                                             //mapInstancia.setClaseValue(classInstances.get(1));
 
-                                                            addInstanceMap(mapInstancia);
+                                                            addInstanceMap(mapaInstancia);
 
                                                         }
                                                     }
@@ -1666,6 +1678,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
         nombreEscenario = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         volver = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setBorder(null);
         setTitle("Case Test Editor");
@@ -1976,6 +1989,13 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
             }
         });
 
+        jButton1.setText("Revisar Escenarios");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelInicialLayout = new javax.swing.GroupLayout(panelInicial);
         panelInicial.setLayout(panelInicialLayout);
         panelInicialLayout.setHorizontalGroup(
@@ -1987,22 +2007,24 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(29, 29, 29)
-                .addGroup(panelInicialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(panelInicialLayout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(nombreEscenario))
-                    .addGroup(panelInicialLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(panelInicialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(panelMetodoInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(panelInicialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelInicialLayout.createSequentialGroup()
+                        .addGap(29, 29, 29)
+                        .addGroup(panelInicialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(panelInicialLayout.createSequentialGroup()
-                                .addComponent(generar, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel5)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(newTestEscenario, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(siguiente)))))
+                                .addComponent(nombreEscenario))
+                            .addComponent(panelMetodoInfo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(panelInicialLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(generar, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(newTestEscenario, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(siguiente)))
                 .addGap(73, 73, 73))
         );
 
@@ -2025,13 +2047,18 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(14, 14, 14)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addGroup(panelInicialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(volver)
-                    .addComponent(siguiente)
-                    .addComponent(newTestEscenario)
-                    .addComponent(generar, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(62, 62, 62))
+                .addGroup(panelInicialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelInicialLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(volver))
+                    .addGroup(panelInicialLayout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addGroup(panelInicialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton1)
+                            .addComponent(generar, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(newTestEscenario)
+                            .addComponent(siguiente))))
+                .addContainerGap())
         );
 
         panelInicialLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jPanel1, jPanel2, jPanel4});
@@ -2044,7 +2071,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelInicial, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(panelInicial, javax.swing.GroupLayout.PREFERRED_SIZE, 653, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -2470,12 +2497,20 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
 
     }//GEN-LAST:event_resultadoAssertMouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+       EscenariosVista vistaEscenarios = new EscenariosVista(inicio, false, escenariosPrueba);
+       vistaEscenarios.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox assertCondiciones;
     private javax.swing.JTextField assertMensaje;
     private javax.swing.JComboBox assertVariables;
     private javax.swing.JButton generar;
     private javax.swing.JButton guardarBt;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
