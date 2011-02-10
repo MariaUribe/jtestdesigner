@@ -15,6 +15,8 @@ import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import javax.swing.DefaultListModel;
 
 /**
@@ -273,6 +275,8 @@ public class MethodsManager extends javax.swing.JInternalFrame {
         metodosDerecha.addAll(metodosIzquierda);
         metodosIzquierda.removeAll(metodosIzquierda);
 
+        System.out.println(metodosDerecha.size());
+
         metodosLista.setListData(metodosIzquierda.toArray());
         selectedMethodsList.setListData(metodosDerecha.toArray());
 }//GEN-LAST:event_selectAllOptionMouseClicked
@@ -285,6 +289,7 @@ public class MethodsManager extends javax.swing.JInternalFrame {
         metodosDerecha = this.getMetodosDerecha();
 
         metodosIzquierda.addAll(metodosDerecha);
+        System.out.println(metodosIzquierda.size());
         metodosDerecha.removeAll(metodosDerecha);
 
         metodosLista.setListData(metodosIzquierda.toArray());
@@ -338,19 +343,60 @@ public class MethodsManager extends javax.swing.JInternalFrame {
         if (MouseEvent.BUTTON1 == 1) {
 
             Method[] methods = null;
+            Method[] methodsHeritance = null;
+
+
             String nameClass = classList.getSelectedValue().toString();
 
             for (Class clazz : clases) {
                 if (clazz.getName().equals(nameClass)) {
+
                     methods = clazz.getDeclaredMethods();
+                   
+                    methodsHeritance = clazz.getMethods();
+                   
+                    
                 }
             }
+            
+          
+
+            String cadena[];
+              String nombre;
 
             ArrayList<String> nameMethods = new ArrayList<String>();
 
+            try{
+                
             for (Method method : methods) {
-                nameMethods.add(method.getDeclaringClass().getSimpleName() + "." + method.getName());
+              String[] name = method.toString().split(" throws ");
+
+
+                 
+
+                nameMethods.add(name[0]);
+
+                //nameMethods.add(method.getDeclaringClass().getSimpleName() + "." + method.getName());
             }
+            }catch (java.lang.ArrayIndexOutOfBoundsException e){
+                System.out.println(e);
+            }
+             System.out.println("metodos hereados generic string");
+
+            for(Method method : methodsHeritance){
+               
+                cadena = method.toString().split(" throws ");
+
+
+              
+                if (nameMethods.contains(cadena[0]) == false){
+
+                    nameMethods.add(cadena[0]);
+                }
+              
+            }
+
+          
 
             if (selectedMethodsList.getModel().getSize() > 0) {
                 metodosDerecha = this.getMetodosDerecha();
@@ -380,22 +426,54 @@ public class MethodsManager extends javax.swing.JInternalFrame {
      * @return Lista con los metodos seleccionados
      */
     public ArrayList<Method> getMetodos() {
+
         ArrayList<Method> metodos = new ArrayList<Method>();
+
         ArrayList<String> metodosDerecha = new ArrayList<String>();
-        Method[] metodosTodos;
+
+
+        ArrayList<Method> metodosTodos = new ArrayList<Method>();
+
+
+
+
+        ArrayList<String> metodoNombre = new ArrayList<String>();
 
         metodosDerecha = this.getMetodosDerecha();
 
+        String cadena[];
+
+
         for (Class clazz : clases) {
-            metodosTodos = clazz.getMethods();
-            for (Method method : metodosTodos) {
-                for (String metodoDerecha : metodosDerecha) {
-                    if ((method.getDeclaringClass().getSimpleName() + "." + method.getName()).equals(metodoDerecha)) {
-                        metodos.add(method);
-                    }
+            
+            metodosTodos.addAll(Arrays.asList(clazz.getDeclaredMethods()));
+
+            for (Method method : clazz.getMethods()){
+
+                if (metodosTodos.contains(method) == false){
+                    metodosTodos.add(method);
                 }
             }
+
+           
         }
+        
+        for (String str : metodosDerecha){
+            
+           for (Method method : metodosTodos){
+               String[] nombre = method.toString().split(" throws ");
+               
+               if (str.equals(nombre[0]) == true){
+                   metodos.add(method);
+               }
+               
+           }
+        }
+
+
+
+
+
 
         return metodos;
     }

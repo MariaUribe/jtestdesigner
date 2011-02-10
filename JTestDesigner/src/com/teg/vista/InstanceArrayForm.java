@@ -27,7 +27,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.event.PopupMenuListener;
 import org.jdesktop.beansbinding.AutoBinding.UpdateStrategy;
 import org.jdom.JDOMException;
 import org.metawidget.inspector.composite.CompositeInspector;
@@ -282,11 +281,9 @@ public class InstanceArrayForm extends javax.swing.JFrame {
 
         metawidget.setInspector(new CompositeInspector(inspectorConfig));
 
+        metawidget.setPreferredSize(new java.awt.Dimension(500,500));
+
         metawidget.setToInspect(instance);
-
-
-
-
 
         objectContainer.add(metawidget);
         objectContainer.validate();

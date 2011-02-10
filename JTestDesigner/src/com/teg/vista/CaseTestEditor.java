@@ -10,7 +10,9 @@ import com.teg.dominio.Argumento;
 import com.teg.dominio.ArregloInstancia;
 
 import com.teg.dominio.AssertTest;
+
 import com.teg.dominio.CasoPrueba;
+
 import com.teg.dominio.ColeccionInstancia;
 
 import com.teg.dominio.EscenarioPrueba;
@@ -18,11 +20,13 @@ import com.teg.dominio.EscenarioPrueba;
 import com.teg.dominio.MapaInstancia;
 
 import com.teg.dominio.Metodo;
+
 import com.teg.dominio.VariableInstancia;
 
 import com.teg.logica.WidgetObjectLoading;
 
 import com.teg.logica.XmlManager;
+
 import com.teg.util.SwingDialog;
 
 import java.awt.Color;
@@ -2500,7 +2504,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-       EscenariosVista vistaEscenarios = new EscenariosVista(inicio, false, escenariosPrueba);
+       EscenariosVista vistaEscenarios = new EscenariosVista(inicio, true, escenariosPrueba);
        vistaEscenarios.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
