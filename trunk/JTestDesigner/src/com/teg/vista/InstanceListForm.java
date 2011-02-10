@@ -61,11 +61,8 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 
 import java.util.LinkedList;
-import java.util.Stack;
 
 import java.util.TreeSet;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.ConcurrentSkipListSet;
 
 import java.util.logging.Level;
 
@@ -260,9 +257,6 @@ public class InstanceListForm extends javax.swing.JFrame {
         }
 
 
-
-
-
     }
 
     private void setLista(Class argumentoClase){
@@ -353,6 +347,8 @@ public class InstanceListForm extends javax.swing.JFrame {
         metawidget.setMetawidgetLayout(new TabbedPaneLayoutDecorator(layoutConfig));
 
         metawidget.setInspector(new CompositeInspector(inspectorConfig));
+
+        metawidget.setPreferredSize(new java.awt.Dimension(450, 450));
 
         metawidget.setToInspect(instance);
 
@@ -586,7 +582,7 @@ public class InstanceListForm extends javax.swing.JFrame {
 
         objectContainer = new javax.swing.JPanel(false);
 
-        objectContainer.setLayout(new GridBagLayout());
+        objectContainer.setLayout(new FlowLayout(FlowLayout.CENTER));
 
         objectContainer.setAutoscrolls(true);
 
@@ -783,7 +779,7 @@ public class InstanceListForm extends javax.swing.JFrame {
 
         objectContainer = new javax.swing.JPanel(false);
 
-        objectContainer.setLayout(new GridBagLayout());
+        objectContainer.setLayout(new FlowLayout(FlowLayout.CENTER));
 
         objectContainer.setAutoscrolls(true);
 
@@ -1265,7 +1261,7 @@ public class InstanceListForm extends javax.swing.JFrame {
 
         setLayout(new BorderLayout());
 
-        objectContainer.setLayout(new BorderLayout());
+        objectContainer.setLayout(new FlowLayout(FlowLayout.CENTER));
 
         buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 

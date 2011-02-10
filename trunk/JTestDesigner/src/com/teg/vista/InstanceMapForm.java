@@ -486,7 +486,7 @@ public class InstanceMapForm extends javax.swing.JFrame {
 
         panelKey.add(keyField);
 
-        keyField.setPreferredSize(new Dimension(100, 20));
+        keyField.setPreferredSize(new Dimension(100, 50));
 
         keyField.setLocation(50, 50);
 
@@ -2027,14 +2027,14 @@ public class InstanceMapForm extends javax.swing.JFrame {
 
         panelKey = new JPanel(false);
 
-        panelKey.setLayout(new FlowLayout(FlowLayout.LEADING));
+        panelKey.setLayout(new FlowLayout(FlowLayout.CENTER));
 
         panelKey.setAutoscrolls(true);
 
 
         panelValue = new JPanel(false);
 
-        panelValue.setLayout(new FlowLayout(FlowLayout.LEADING));
+        panelValue.setLayout(new FlowLayout(FlowLayout.CENTER));
 
         panelValue.setAutoscrolls(true);
 
@@ -2672,6 +2672,8 @@ public class InstanceMapForm extends javax.swing.JFrame {
 
         secondMetawidget.setInspector(new CompositeInspector(inspectorConfig));
 
+        secondMetawidget.setPreferredSize(new java.awt.Dimension(600,600));
+
         secondMetawidget.setToInspect(instance);
 
 
@@ -2725,6 +2727,8 @@ public class InstanceMapForm extends javax.swing.JFrame {
         metawidget.setMetawidgetLayout(new TabbedPaneLayoutDecorator(layoutConfig));
 
         metawidget.setInspector(new CompositeInspector(inspectorConfig));
+
+        metawidget.setPreferredSize(new java.awt.Dimension(600,600));
 
         metawidget.setToInspect(instance);
 

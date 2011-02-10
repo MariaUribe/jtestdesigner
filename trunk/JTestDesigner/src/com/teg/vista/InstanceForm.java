@@ -15,11 +15,9 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 
 import java.awt.BorderLayout;
 
-import java.awt.Dimension;
 
 import java.awt.FlowLayout;
 
-import java.awt.Label;
 
 import java.io.File;
 
@@ -31,9 +29,7 @@ import java.io.FileOutputStream;
 
 import java.lang.reflect.Method;
 
-import java.lang.reflect.ParameterizedType;
 
-import java.lang.reflect.Type;
 
 import java.net.MalformedURLException;
 
@@ -91,7 +87,7 @@ public class InstanceForm extends javax.swing.JFrame {
 
     private javax.swing.JPanel objectContainer;
 
-    private Method metodoActual;
+ 
 
     private Inicio inicio;
 
@@ -114,7 +110,6 @@ public class InstanceForm extends javax.swing.JFrame {
 
         path = dataPath;
 
-        metodoActual = metodo;
 
         this.inicio = inicio;
 
@@ -179,6 +174,7 @@ public class InstanceForm extends javax.swing.JFrame {
         metawidget.setMetawidgetLayout(new TabbedPaneLayoutDecorator(layoutConfig));
 
         metawidget.setInspector(new CompositeInspector(inspectorConfig));
+        metawidget.setPreferredSize(new java.awt.Dimension(450, 450));
 
         metawidget.setToInspect(instance);
 
@@ -230,7 +226,7 @@ public class InstanceForm extends javax.swing.JFrame {
 
         buttonPanel.add(buttonCancelar);
 
-        getContentPane().add(objectContainer, BorderLayout.CENTER);
+        getContentPane().add(objectContainer);
 
         getContentPane().add(buttonPanel, BorderLayout.SOUTH);
 

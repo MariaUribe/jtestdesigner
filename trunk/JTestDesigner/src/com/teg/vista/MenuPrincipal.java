@@ -6,16 +6,11 @@
 package com.teg.vista;
 
 import com.teg.util.SwingDialog;
-import com.teg.util.SwingUtils;
 import java.awt.Dimension;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import org.testng.internal.Utils;
-import org.testng.reporters.TestHTMLReporter;
 
 /**
  *
