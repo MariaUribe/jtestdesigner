@@ -16,6 +16,7 @@ import java.util.logging.Logger;
 <#assign hasMock = casoPrueba.mock />
 <#if hasMock>
 import org.jmock.Mockery;
+import org.jmock.Expectations;
 import org.jmock.integration.junit4.JUnit4Mockery;
 </#if>
 
@@ -24,7 +25,8 @@ import org.jmock.integration.junit4.JUnit4Mockery;
     <#list metodo.argumentos as arg>
     <#assign esComplejo = arg.complejo />
     <#assign esArreglo = arg.arreglo />
-    <#if esComplejo && !esArreglo>
+    <#assign esMapa = arg.mapa />
+    <#if esComplejo && !esArreglo && !esMapa>
 import ${arg.tipo};
     </#if>
     </#list>
@@ -71,9 +73,10 @@ public class ${claseTemplate.nombreClase} {
 <#list casoPrueba.escenariosPrueba as esc>
 <#list esc.metodos as metodo>
     <#list metodo.argumentos as arg>
+    <#assign generarXstream = arg.generarXstream />
     <#assign esComplejo = arg.complejo />
     <#assign nombreClase = arg.tipo />
-        <#if esComplejo> 
+        <#if esComplejo && generarXstream>
         <#assign miCount = miCount + 1 />
         <#if miCount==1 ><#assign imprimir = true />
         try {
@@ -109,7 +112,7 @@ public class ${claseTemplate.nombreClase} {
      * Test of ${escenario.nombre}.
      */
     @Test
-    public void ${escenario.nombre}Test(){
+    public void ${escenario.nombre}(){
     <#list casoPrueba.mockObjects as mockObject>
         <#if mockObject.escenario == escenario.nombre>
         ${mockObject.codigo}
@@ -123,7 +126,7 @@ public class ${claseTemplate.nombreClase} {
     <#assign ordenMetodos = codeManager.generarPrueba(casoPrueba, escenario) />
     <#list ordenMetodos as metodo>
         <#if metodo.assertLinea??>${metodo.retorno.retornoNombreSimple} ${metodo.retorno.nombreVariable} = </#if>${metodo.clase.simpleNombre?uncap_first}.${metodo.getNombre()}(<#list metodo.argumentos as arg>${arg.valor}<#if arg_has_next>, </#if></#list>);
-        <#if metodo.assertLinea??>Assert.${metodo.assertLinea.condicion}(${metodo.assertLinea.variable},<#if metodo.assertLinea.valorAssert??> <#assign esEnvolvente = codeManager.esClaseEnvolvente(metodo.retorno.retorno) /> <#if esEnvolvente>new ${metodo.retorno.retornoNombreSimple}(${metodo.assertLinea.valorAssert}),<#else>${metodo.assertLinea.valorAssert},</#if></#if> "${metodo.assertLinea.mensaje}");</#if>
+        <#if metodo.assertLinea??>Assert.${metodo.assertLinea.condicion}(${metodo.assertLinea.variable},<#if metodo.assertLinea.valorAssert??> <#assign esEnvolvente = codeManager.esClaseEnvolvente(metodo.retorno.retorno) /> <#if esEnvolvente>new ${metodo.retorno.retorno}(${metodo.assertLinea.valorAssert}),<#else>${metodo.assertLinea.valorAssert},</#if></#if> "${metodo.assertLinea.mensaje}");</#if>
 
     </#list>
     <#if isEmpty><#else>

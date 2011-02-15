@@ -187,7 +187,6 @@ public class DependenciesEditor extends javax.swing.JInternalFrame {
                     if (component.getName().equals("codigo")) {
                         JEditorPane editor = (JEditorPane) component;
                         codigos.add(editor.getText());
-                        System.out.println("codigo: " + editor.getText());
                     }
                 }
             }

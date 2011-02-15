@@ -11,18 +11,21 @@ public class Argumento {
     private String valor;
     private boolean complejo;
     private boolean arreglo;
+    private boolean mapa;
+    private boolean generarXstream;
 
     /**
      *
      * @param nombre the nombre to set
      * @param tipo the tipo to set
      */
-    public Argumento(String nombre, String tipo, String valor, boolean complejo, boolean arreglo) {
+    public Argumento(String nombre, String tipo, String valor, boolean complejo, boolean arreglo, boolean mapa) {
         this.nombre = nombre;
         this.tipo = tipo;
         this.valor = valor;
         this.complejo = complejo;
         this.arreglo = arreglo;
+        this.mapa = mapa;
     }
 
     public Argumento() {
@@ -97,5 +100,35 @@ public class Argumento {
     public void setArreglo(boolean arreglo) {
         this.arreglo = arreglo;
     }
+
+    /**
+     * @return the mapa
+     */
+    public boolean isMapa() {
+        return mapa;
+    }
+
+    /**
+     * @param mapa the mapa to set
+     */
+    public void setMapa(boolean mapa) {
+        this.mapa = mapa;
+    }
+
+    /**
+     * @return the generarXstream
+     */
+    public boolean isGenerarXstream() {
+        return generarXstream;
+    }
+
+    /**
+     * @param generarXstream the generarXstream to set
+     */
+    public void setGenerarXstream(boolean generarXstream) {
+        this.generarXstream = generarXstream;
+    }
+
+    
     
 }

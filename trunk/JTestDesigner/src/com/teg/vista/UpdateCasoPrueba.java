@@ -168,6 +168,7 @@ public class UpdateCasoPrueba extends javax.swing.JInternalFrame {
         
         String rutaJava = cg.getRutaJava(nombreCasoPrueba);
         String rutaClass = cg.getRutaClass(nombreCasoPrueba);
+        String rutaError = cg.getRutaFileError(nombreCasoPrueba);
 
         File file = new File(rutaJava);
         try {
@@ -178,7 +179,7 @@ public class UpdateCasoPrueba extends javax.swing.JInternalFrame {
             Logger.getLogger(UpdateCasoPrueba.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        cg.compileTest(jars, rutaJava, rutaClass);
+        cg.compileTest(jars, rutaJava, rutaClass, rutaError);
         
     }//GEN-LAST:event_compilarActionPerformed
 

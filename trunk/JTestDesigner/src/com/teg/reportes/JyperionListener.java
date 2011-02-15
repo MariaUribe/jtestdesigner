@@ -236,7 +236,8 @@ public class JyperionListener implements ITestListener {
         log("onStart(" + "context" + ")");
         try {
             File file = new File(context.getOutputDirectory());
-            rutaPDF = file.getParent() + System.getProperty("file.separator") + "pdf"
+            File html = file.getParentFile();
+            rutaPDF = html.getParent() + System.getProperty("file.separator") + "pdf"
                     + System.getProperty("file.separator") + context.getName() + ".pdf";
 
             PdfWriter.getInstance(this.document,
