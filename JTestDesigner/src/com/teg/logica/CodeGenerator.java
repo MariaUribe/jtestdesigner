@@ -11,12 +11,10 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -79,8 +77,9 @@ public class CodeGenerator {
             String rutaJava = this.getRutaJava(casoPrueba.getNombre());
             String rutaClass = this.getRutaClass(casoPrueba.getNombre());
             String rutaResultados = this.getRutaResultados(casoPrueba.getNombre());
+            String fileError = this.getRutaFileError(casoPrueba.getNombre());
 
-            this.compileTest(jars, rutaJava, rutaClass);
+            this.compileTest(jars, rutaJava, rutaClass, fileError);
             Class clase = this.setClassPath(rutaClass, jars, casoPrueba.getNombre());
             this.runTest(clase, rutaResultados, casoPrueba.getNombre());
 
@@ -161,8 +160,8 @@ public class CodeGenerator {
         return clase;
     }
 
-    public void compileTest(ArrayList<File> jars, String rutaJava, String rutaClass) {
-        OutputStream seqOut = null;
+    public void compileTest(ArrayList<File> jars, String rutaJava, String rutaClass, String fileError) {
+        OutputStream salida = null;
         try {
             String jarList = "";
             int cont = 1;
@@ -176,13 +175,13 @@ public class CodeGenerator {
                 cont++;
             }
 
-            File outPut = new File("/Users/maya/Desktop/error.txt");
+            File fileErrors = new File(fileError);
 
-            seqOut = new FileOutputStream(outPut);
+            salida = new FileOutputStream(fileErrors);
 
             JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-            int compilationResult = compiler.run(null, null, seqOut, "-classpath", jarList, rutaJava, "-d", rutaClass);
-            String error = FileUtils.readFileToString(outPut);
+            int compilationResult = compiler.run(null, null, salida, "-classpath", jarList, rutaJava, "-d", rutaClass);
+            String error = FileUtils.readFileToString(fileErrors);
 
             if (compilationResult == 0) {
                 System.out.println("");
@@ -334,8 +333,11 @@ public class CodeGenerator {
         File resultados = new File(casoPruebaFile.getPath()
                 + System.getProperty("file.separator") + "resultados"
                 + System.getProperty("file.separator"));
+        File html = new File(resultados.getPath()
+                + System.getProperty("file.separator") + "html"
+                + System.getProperty("file.separator"));
 
-        rutaClass = resultados.getPath();
+        rutaClass = html.getPath();
 
         return rutaClass;
     }
@@ -374,6 +376,27 @@ public class CodeGenerator {
         rutaReportes = command.getPath();
 
         return rutaReportes;
+    }
+
+    public String getRutaFileError(String casoPrueba) {
+        String rutaErrores = "";
+
+        File casoPruebaFile = new File(System.getProperty("user.home")
+                + System.getProperty("file.separator") + casoPrueba
+                + System.getProperty("file.separator"));
+        File resultados = new File(casoPruebaFile.getPath()
+                + System.getProperty("file.separator") + "resultados"
+                + System.getProperty("file.separator"));
+        File error = new File(resultados.getPath()
+                + System.getProperty("file.separator") + "error"
+                + System.getProperty("file.separator"));
+        File archivo = new File(error.getPath()
+                + System.getProperty("file.separator") + "error.txt"
+                + System.getProperty("file.separator"));
+
+        rutaErrores = archivo.getPath();
+
+        return rutaErrores;
     }
 
     /**

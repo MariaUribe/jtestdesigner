@@ -65,7 +65,6 @@ public final class JavadocFrame extends javax.swing.JFrame {
 
             while (matcherExterno.find()) {
                 String javadocMetodo = matcherExterno.group().substring(0, matcherExterno.group().indexOf("<HR>"));
-                System.out.println(javadocMetodo);
                 editorPanel.setText(javadocMetodo);
                 editorPanel.setContentType("text/html");
                 

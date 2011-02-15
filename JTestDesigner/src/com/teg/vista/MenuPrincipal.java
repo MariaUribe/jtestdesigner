@@ -307,23 +307,33 @@ public class MenuPrincipal extends javax.swing.JInternalFrame {
                 + System.getProperty("file.separator"));
         resultados.mkdir();
 
+        File html = new File(resultados.getPath()
+                + System.getProperty("file.separator") + "html"
+                + System.getProperty("file.separator"));
+        html.mkdir();
+
         File pdf = new File(resultados.getPath()
                 + System.getProperty("file.separator") + "pdf"
                 + System.getProperty("file.separator"));
         pdf.mkdir();
 
-        String cssContent = ".invocation-failed,  .test-failed  { background-color: #DD0000; } "
-                + ".invocation-percent, .test-percent { background-color: #006600; } "
-                + ".invocation-passed,  .test-passed  { background-color: #00AA00; } "
-                + ".invocation-skipped, .test-skipped { background-color: #CCCC00; } "
-                + ".main-page { "
-                + " font-size: x-large; "
-                + " }"
-                + " ;";
+        File error = new File(resultados.getPath()
+                + System.getProperty("file.separator") + "error"
+                + System.getProperty("file.separator"));
+        error.mkdir();
 
-        Utils.writeFile(resultados.getPath()
-                + System.getProperty("file.separator"), "my-testng.css", cssContent);
-        
+//        String cssContent = ".invocation-failed,  .test-failed  { background-color: #DD0000; } "
+//                + ".invocation-percent, .test-percent { background-color: #006600; } "
+//                + ".invocation-passed,  .test-passed  { background-color: #00AA00; } "
+//                + ".invocation-skipped, .test-skipped { background-color: #CCCC00; } "
+//                + ".main-page { "
+//                + " font-size: x-large; "
+//                + " }"
+//                + " ;";
+//
+//        Utils.writeFile(resultados.getPath()
+//                + System.getProperty("file.separator"), "my-testng.css", cssContent);
+//
         inicio.setDirectorioCasoPrueba(metawidget);
 
     }

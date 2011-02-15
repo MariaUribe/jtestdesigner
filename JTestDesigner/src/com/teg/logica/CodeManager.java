@@ -8,6 +8,7 @@ import com.teg.dominio.Metodo;
 import java.io.File;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Clase para el manejo del codigo a imprimir en el template
@@ -23,7 +24,7 @@ public class CodeManager {
      */
     public CodeManager() {
     }
-
+    
     public boolean esClaseEnvolvente(String tipoDato) {
         boolean esEnvolvente = false;
         String[] datoArray = tipoDato.split("\\.");
@@ -31,10 +32,12 @@ public class CodeManager {
         String lang = datoArray[1];
         String nombre = datoArray[2];
 
+        java.util.Date fecha = new Date();
+
         if (java.equals("java") && lang.equals("lang")) {
             if (nombre.equals("Integer") || nombre.equals("Byte") || nombre.equals("Float")
                     || nombre.equals("Character") || nombre.equals("Long") || nombre.equals("Short")
-                    || nombre.equals("Double") || nombre.equals("Boolean") || nombre.equals("Void")) {
+                    || nombre.equals("Double") || nombre.equals("Boolean") || nombre.equals("Void") || nombre.equals("Void")) {
                 esEnvolvente = true;
             }
         } else {

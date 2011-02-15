@@ -381,7 +381,6 @@ public class MethodsManager extends javax.swing.JInternalFrame {
             }catch (java.lang.ArrayIndexOutOfBoundsException e){
                 System.out.println(e);
             }
-             System.out.println("metodos hereados generic string");
 
             for(Method method : methodsHeritance){
                

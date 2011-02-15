@@ -15,6 +15,8 @@ import com.teg.dominio.MapaInstancia;
 import com.teg.logica.WidgetObjectLoading;
 
 import com.teg.util.SwingDialog;
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 
 import java.awt.BorderLayout;
 
@@ -101,69 +103,39 @@ import org.metawidget.swing.widgetprocessor.binding.beansbinding.BeansBindingPro
 public class InstanceMapForm extends javax.swing.JFrame {
 
     private ArrayList<Class> instanceInspect;
-
     private String path;
-
     private int mapaId;
-
     private WidgetObjectLoading listWidget = new WidgetObjectLoading();
-
     private SwingMetawidget metawidget;
-
     private SwingMetawidget secondMetawidget;
-
     private static Map mapa;
-
     private int caso = 0;
-
     private javax.swing.JPanel panelSeleccion;
-
     private javax.swing.JList listaSeleccionKey;
-
     private javax.swing.JList listaSeleccionValue;
-
     private javax.swing.JTabbedPane tabPanel;
-
     private javax.swing.JPanel panelKey;
-
     private javax.swing.JPanel panelValue;
-
     private org.jdom.Document docXml;
-
     private Class clase;
-
     private Object instanceClass;
-
     private javax.swing.JButton buttonCancelar;
-
     private javax.swing.JButton buttonGuardar;
-
     private javax.swing.JButton buttonCrearOtro;
-
     private javax.swing.JButton aceptarSeleccion;
-
     private javax.swing.JButton cancelarSeleccion;
-
     private javax.swing.JPanel buttonPanel;
-
     private javax.swing.JTextField keyField;
-
     private javax.swing.JTextField valueField;
-
     private ArrayList<Class> clasesJars;
-
     private Class claseKey;
-
     private Class claseValue;
-
     private MapaInstancia mapaInstancia;
-
     private ArrayList<Class> clasesColeccion;
-
     private Inicio inicio;
-
     private javax.swing.JList listaSeleccionMapa;
     private SwingDialog dialogoColeccion;
+    private String casoPrueba;
 
     /** Creates new form InstanceMapForm */
     public InstanceMapForm() {
@@ -180,6 +152,8 @@ public class InstanceMapForm extends javax.swing.JFrame {
         this.listWidget = listObject;
 
         mapaInstancia = mapInstancia;
+
+        casoPrueba = inicio.getNombreCasoPrueba();
 
         obtenerMapa(argument);
 
@@ -205,6 +179,8 @@ public class InstanceMapForm extends javax.swing.JFrame {
 
         this.mapaId = mapaId;
 
+        this.casoPrueba = inicio.getNombreCasoPrueba();
+        
         if (instanceInspect.isEmpty() == true) {
 
             initGenericEmpty();
@@ -251,23 +227,14 @@ public class InstanceMapForm extends javax.swing.JFrame {
 
         boolean verificado = false;
         if (clase.getName().equals("java.lang.Integer")
-
                 || clase.getName().equals("java.lang.Float")
-
                 || clase.getName().equals("java.lang.Double")
-
                 || clase.getName().equals("java.lang.Long")
-
                 || clase.getName().equals("java.lang.Short")
-
                 || clase.getName().equals("java.lang.Byte")
-
                 || clase.getName().equals("java.lang.Character")
-
                 || clase.getName().equals("java.lang.String")
-
                 || clase.getName().equals("java.lang.Boolean")
-
                 || clase.isPrimitive() == true) {
 
             verificado = true;
@@ -1152,7 +1119,7 @@ public class InstanceMapForm extends javax.swing.JFrame {
 
         dialogoColeccion = new com.teg.util.SwingDialog();
 
-        int opcion = dialogoColeccion.advertenciaDialog("Se perderan todos los objetos guardados, Desea continuar ?", this);     
+        int opcion = dialogoColeccion.advertenciaDialog("Se perderan todos los objetos guardados, Desea continuar ?", this);
 
         if (opcion == 0) {
 
@@ -1169,7 +1136,7 @@ public class InstanceMapForm extends javax.swing.JFrame {
             aceptarSeleccion.setEnabled(true);
         }
 
-       
+
 
     }
 
@@ -1179,9 +1146,9 @@ public class InstanceMapForm extends javax.swing.JFrame {
 
         obtenerMapa(claseMapa);
 
-      buttonGuardar.setEnabled(true);
+        buttonGuardar.setEnabled(true);
 
-      buttonCrearOtro.setEnabled(true);
+        buttonCrearOtro.setEnabled(true);
 
         if (instanceInspect.isEmpty() == true) {
 
@@ -1577,7 +1544,7 @@ public class InstanceMapForm extends javax.swing.JFrame {
 
 
 
-      aceptarSeleccion.setEnabled(false);
+        aceptarSeleccion.setEnabled(false);
 
 
     }
@@ -1836,64 +1803,76 @@ public class InstanceMapForm extends javax.swing.JFrame {
         }
 
         listWidget.setMapa(mapa);
-        System.out.println("ola");
+
+        this.crearXML(mapa, casoPrueba);
 
         this.dispose();
 
+    }
+
+    public void crearXML(Map mapa, String casoPrueba) {
+        try {
+            System.out.println("");
+            System.out.println("crear xml");
+            mapaId++;
+            File casoPruebaFile = new File(System.getProperty("user.home")
+                    + System.getProperty("file.separator") + casoPrueba
+                    + System.getProperty("file.separator"));
+
+            File metadata = new File(casoPruebaFile.getPath()
+                    + System.getProperty("file.separator") + "metadata"
+                    + System.getProperty("file.separator"));
+
+            FileOutputStream fos;
+
+            fos = new FileOutputStream(metadata.getPath()
+                    + System.getProperty("file.separator")
+                    + "mapa" + mapaId + ".xml");
+
+            XStream xstream = new XStream(new DomDriver());
+
+            //  xstream.alias("" + instanceClass.getClass().getSimpleName().toLowerCase() + "", instanceClass.getClass());
+            xstream.toXML(mapa, fos);
+
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(InstanceForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private void buttonCrearOtroGenericoActionPerformed(java.awt.event.ActionEvent evt) {
 
 
 
-        if (instanceInspect == null || instanceInspect.isEmpty() == true){
+        if (instanceInspect == null || instanceInspect.isEmpty() == true) {
 
 
-        if (caso == 1) {
+            if (caso == 1) {
 
-            mapa.put(keyField.getText(), valueField.getText());
+                mapa.put(keyField.getText(), valueField.getText());
 
-            keyField.setText("");
-
-            valueField.setText("");
-
-        } else {
-
-            if (caso == 2) {
-
-                mapa.put(metawidget.getToInspect(), valueField.getText());
-
-                panelKey.removeAll();
-
-                Object object = getNuevoObjeto(claseKey);
+                keyField.setText("");
 
                 valueField.setText("");
 
-                this.repaint();
-
-                InspectObject(object, panelKey);
-
             } else {
 
-                if (caso == 3) {
+                if (caso == 2) {
 
-                    mapa.put(metawidget.getToInspect(), secondMetawidget.getToInspect());
-
-                    panelValue.removeAll();
+                    mapa.put(metawidget.getToInspect(), valueField.getText());
 
                     panelKey.removeAll();
 
-                    Object firstObj = getNuevoObjeto(claseKey);
+                    Object object = getNuevoObjeto(claseKey);
 
-                    Object secondObj = getNuevoObjeto(claseValue);
+                    valueField.setText("");
 
-                    InspectObject(firstObj, panelKey);
+                    this.repaint();
 
-                    InspectSecondObject(secondObj, panelValue);
+                    InspectObject(object, panelKey);
 
                 } else {
 
-                    if (caso == 4) {
+                    if (caso == 3) {
 
                         mapa.put(metawidget.getToInspect(), secondMetawidget.getToInspect());
 
@@ -1907,115 +1886,132 @@ public class InstanceMapForm extends javax.swing.JFrame {
 
                         InspectObject(firstObj, panelKey);
 
-                        InspectObject(secondObj, panelValue);
+                        InspectSecondObject(secondObj, panelValue);
 
                     } else {
 
-                        if (caso == 5) {
+                        if (caso == 4) {
 
-                            mapa.put(keyField.getText(), metawidget.getToInspect());
+                            mapa.put(metawidget.getToInspect(), secondMetawidget.getToInspect());
 
                             panelValue.removeAll();
 
-                            Object object = getNuevoObjeto(claseValue);
+                            panelKey.removeAll();
 
-                            keyField.setText("");
+                            Object firstObj = getNuevoObjeto(claseKey);
 
-                            this.repaint();
+                            Object secondObj = getNuevoObjeto(claseValue);
 
-                            InspectObject(object, panelValue);
+                            InspectObject(firstObj, panelKey);
 
+                            InspectObject(secondObj, panelValue);
+
+                        } else {
+
+                            if (caso == 5) {
+
+                                mapa.put(keyField.getText(), metawidget.getToInspect());
+
+                                panelValue.removeAll();
+
+                                Object object = getNuevoObjeto(claseValue);
+
+                                keyField.setText("");
+
+                                this.repaint();
+
+                                InspectObject(object, panelValue);
+
+                            }
                         }
                     }
                 }
             }
-        }
 
-        }else
-        {
-            if (instanceInspect.isEmpty() == false){
+        } else {
+            if (instanceInspect.isEmpty() == false) {
 
                 if (caso == 1) {
 
-            mapa.put(keyField.getText(), valueField.getText());
+                    mapa.put(keyField.getText(), valueField.getText());
 
-            keyField.setText("");
+                    keyField.setText("");
 
-            valueField.setText("");
-
-        } else {
-
-            if (caso == 2) {
-
-                mapa.put(metawidget.getToInspect(), valueField.getText());
-
-                panelKey.removeAll();
-
-                Object object = getNuevoObjeto(instanceInspect.get(0));
-
-                valueField.setText("");
-
-                this.repaint();
-
-                InspectObject(object, panelKey);
-
-            } else {
-
-                if (caso == 3) {
-
-                    mapa.put(metawidget.getToInspect(), secondMetawidget.getToInspect());
-
-                    panelValue.removeAll();
-
-                    panelKey.removeAll();
-
-                    Object firstObj = getNuevoObjeto(instanceInspect.get(0));
-
-                    Object secondObj = getNuevoObjeto(instanceInspect.get(1));
-
-                    InspectObject(firstObj, panelKey);
-
-                    InspectSecondObject(secondObj, panelValue);
+                    valueField.setText("");
 
                 } else {
 
-                    if (caso == 4) {
+                    if (caso == 2) {
 
-                        mapa.put(metawidget.getToInspect(), secondMetawidget.getToInspect());
-
-                        panelValue.removeAll();
+                        mapa.put(metawidget.getToInspect(), valueField.getText());
 
                         panelKey.removeAll();
 
-                        Object firstObj = getNuevoObjeto(instanceInspect.get(0));
+                        Object object = getNuevoObjeto(instanceInspect.get(0));
 
-                        Object secondObj = getNuevoObjeto(instanceInspect.get(1));
+                        valueField.setText("");
 
-                        InspectObject(firstObj, panelKey);
+                        this.repaint();
 
-                        InspectObject(secondObj, panelValue);
+                        InspectObject(object, panelKey);
 
                     } else {
 
-                        if (caso == 5) {
+                        if (caso == 3) {
 
-                            mapa.put(keyField.getText(), metawidget.getToInspect());
+                            mapa.put(metawidget.getToInspect(), secondMetawidget.getToInspect());
 
                             panelValue.removeAll();
 
-                            Object object = getNuevoObjeto(instanceInspect.get(1));
+                            panelKey.removeAll();
 
-                            keyField.setText("");
+                            Object firstObj = getNuevoObjeto(instanceInspect.get(0));
 
-                            this.repaint();
+                            Object secondObj = getNuevoObjeto(instanceInspect.get(1));
 
-                            InspectObject(object, panelValue);
+                            InspectObject(firstObj, panelKey);
 
+                            InspectSecondObject(secondObj, panelValue);
+
+                        } else {
+
+                            if (caso == 4) {
+
+                                mapa.put(metawidget.getToInspect(), secondMetawidget.getToInspect());
+
+                                panelValue.removeAll();
+
+                                panelKey.removeAll();
+
+                                Object firstObj = getNuevoObjeto(instanceInspect.get(0));
+
+                                Object secondObj = getNuevoObjeto(instanceInspect.get(1));
+
+                                InspectObject(firstObj, panelKey);
+
+                                InspectObject(secondObj, panelValue);
+
+                            } else {
+
+                                if (caso == 5) {
+
+                                    mapa.put(keyField.getText(), metawidget.getToInspect());
+
+                                    panelValue.removeAll();
+
+                                    Object object = getNuevoObjeto(instanceInspect.get(1));
+
+                                    keyField.setText("");
+
+                                    this.repaint();
+
+                                    InspectObject(object, panelValue);
+
+                                }
+                            }
                         }
                     }
                 }
-            }
-        }
 
             }
         }
@@ -2080,7 +2076,7 @@ public class InstanceMapForm extends javax.swing.JFrame {
         });
 
         setLayout(new BorderLayout());
- 
+
         tabPanel.addTab("Objecto key", panelKey);
 
         tabPanel.setMnemonicAt(0, KeyEvent.VK_1);
@@ -2270,7 +2266,6 @@ public class InstanceMapForm extends javax.swing.JFrame {
             out.output(doc, System.out);
 
         } catch (Exception e) {
-
         }
     }
 
@@ -2665,7 +2660,6 @@ public class InstanceMapForm extends javax.swing.JFrame {
         nestedLayoutConfig.setRequiredAlignment(2);
 
         TabbedPaneLayoutDecoratorConfig layoutConfig = new TabbedPaneLayoutDecoratorConfig().setLayout(
-
                 new org.metawidget.swing.layout.GridBagLayout(nestedLayoutConfig));
 
         secondMetawidget.setMetawidgetLayout(new TabbedPaneLayoutDecorator(layoutConfig));
@@ -2708,10 +2702,8 @@ public class InstanceMapForm extends javax.swing.JFrame {
             PropertyTypeInspector inspector = new PropertyTypeInspector();
 
             inspectorConfig = new CompositeInspectorConfig().setInspectors(
-
                     new Inspector[]{new PropertyTypeInspector(),
-
-                    new XmlInspector(xmlConfig)});
+                        new XmlInspector(xmlConfig)});
 
         } catch (FileNotFoundException ex) {
         }
@@ -2721,7 +2713,6 @@ public class InstanceMapForm extends javax.swing.JFrame {
         nestedLayoutConfig.setRequiredAlignment(2);
 
         TabbedPaneLayoutDecoratorConfig layoutConfig = new TabbedPaneLayoutDecoratorConfig().setLayout(
-
                 new org.metawidget.swing.layout.GridBagLayout(nestedLayoutConfig));
 
         metawidget.setMetawidgetLayout(new TabbedPaneLayoutDecorator(layoutConfig));
@@ -2797,19 +2788,19 @@ public class InstanceMapForm extends javax.swing.JFrame {
                         if (argument.getName().equals("java.util.WeakHashMap")) {
 
                             mapa = new WeakHashMap();
-                        
+
                         } else {
 
                             if (argument.getName().equals("java.util.jar.Attributes")) {
 
                                 mapa = new java.util.jar.Attributes();
-                            
+
                             } else {
 
                                 if (argument.getName().equals("java.util.concurrent.ConcurrentHashMap")) {
 
                                     mapa = new java.util.concurrent.ConcurrentHashMap();
-                                
+
                                 } else {
 
                                     if (argument.getName().equals("java.util.concurrent.ConcurrentSkipListMap")) {
