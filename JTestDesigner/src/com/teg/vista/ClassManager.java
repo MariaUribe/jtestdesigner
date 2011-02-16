@@ -106,6 +106,7 @@ public class ClassManager extends javax.swing.JInternalFrame {
         jScrollPane2.setViewportView(jarLista);
 
         continuar.setText("Continuar");
+        continuar.setEnabled(false);
         continuar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 continuarActionPerformed(evt);
@@ -305,6 +306,8 @@ public class ClassManager extends javax.swing.JInternalFrame {
 
         clasesLista.setListData(clasesIzquierda.toArray());
         clasesSeleccionadasLista.setListData(clasesDerecha.toArray());
+        
+        this.setVisibilidadContinuar();
 }//GEN-LAST:event_seleccionarTodasMouseClicked
 
     private void removerTodasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_removerTodasMouseClicked
@@ -319,6 +322,8 @@ public class ClassManager extends javax.swing.JInternalFrame {
 
         clasesLista.setListData(clasesIzquierda.toArray());
         clasesSeleccionadasLista.setListData(clasesDerecha.toArray());
+
+        this.setVisibilidadContinuar();
 }//GEN-LAST:event_removerTodasMouseClicked
 
     private void removerClasesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_removerClasesMouseClicked
@@ -338,6 +343,8 @@ public class ClassManager extends javax.swing.JInternalFrame {
 
         clasesLista.setListData(clasesIzquierda.toArray());
         clasesSeleccionadasLista.setListData(clasesDerecha.toArray());
+
+        this.setVisibilidadContinuar();
     }//GEN-LAST:event_removerClasesMouseClicked
 
     private void seleccionarClasesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_seleccionarClasesMouseClicked
@@ -357,6 +364,8 @@ public class ClassManager extends javax.swing.JInternalFrame {
 
         clasesLista.setListData(clasesIzquierda.toArray());
         clasesSeleccionadasLista.setListData(clasesDerecha.toArray());
+
+        this.setVisibilidadContinuar();
     }//GEN-LAST:event_seleccionarClasesMouseClicked
 
     private void continuarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_continuarActionPerformed
@@ -390,6 +399,16 @@ public class ClassManager extends javax.swing.JInternalFrame {
     private javax.swing.JLabel seleccionarTodas;
     private javax.swing.JButton volver;
     // End of variables declaration//GEN-END:variables
+
+    public void setVisibilidadContinuar(){
+        int cantidadDeElementos = clasesSeleccionadasLista.getModel().getSize();
+
+        if(cantidadDeElementos <= 0){
+            continuar.setEnabled(false);
+        } else {
+            continuar.setEnabled(true);
+        }
+    }
 
     public ArrayList<Class> getClases() {
 
