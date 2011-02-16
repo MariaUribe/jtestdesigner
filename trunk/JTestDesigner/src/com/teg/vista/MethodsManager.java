@@ -205,6 +205,7 @@ public class MethodsManager extends javax.swing.JInternalFrame {
         jLabel1.setText("Clases escogidas:");
 
         continuar.setText("Continuar");
+        continuar.setEnabled(false);
         continuar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 continuarActionPerformed(evt);
@@ -275,10 +276,10 @@ public class MethodsManager extends javax.swing.JInternalFrame {
         metodosDerecha.addAll(metodosIzquierda);
         metodosIzquierda.removeAll(metodosIzquierda);
 
-        System.out.println(metodosDerecha.size());
-
         metodosLista.setListData(metodosIzquierda.toArray());
         selectedMethodsList.setListData(metodosDerecha.toArray());
+
+        this.setVisibilidadContinuar();
 }//GEN-LAST:event_selectAllOptionMouseClicked
 
     private void unselectAllOptionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_unselectAllOptionMouseClicked
@@ -294,6 +295,8 @@ public class MethodsManager extends javax.swing.JInternalFrame {
 
         metodosLista.setListData(metodosIzquierda.toArray());
         selectedMethodsList.setListData(metodosDerecha.toArray());
+
+        this.setVisibilidadContinuar();
 }//GEN-LAST:event_unselectAllOptionMouseClicked
 
     private void unselectOptionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_unselectOptionMouseClicked
@@ -313,6 +316,8 @@ public class MethodsManager extends javax.swing.JInternalFrame {
 
         metodosLista.setListData(metodosIzquierda.toArray());
         selectedMethodsList.setListData(metodosDerecha.toArray());
+
+        this.setVisibilidadContinuar();
 }//GEN-LAST:event_unselectOptionMouseClicked
 
     private void selectOptionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectOptionMouseClicked
@@ -332,6 +337,8 @@ public class MethodsManager extends javax.swing.JInternalFrame {
 
         metodosLista.setListData(metodosIzquierda.toArray());
         selectedMethodsList.setListData(metodosDerecha.toArray());
+
+        this.setVisibilidadContinuar();
     }//GEN-LAST:event_selectOptionMouseClicked
 
     private void selectOptionMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectOptionMouseMoved
@@ -419,6 +426,16 @@ public class MethodsManager extends javax.swing.JInternalFrame {
     private void volverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_volverActionPerformed
         this.inicio.methodsToClass(this);
     }//GEN-LAST:event_volverActionPerformed
+
+    public void setVisibilidadContinuar(){
+        int cantidadDeElementos = selectedMethodsList.getModel().getSize();
+
+        if(cantidadDeElementos <= 0){
+            continuar.setEnabled(false);
+        } else {
+            continuar.setEnabled(true);
+        }
+    }
 
     /**
      * Metodo para obtener los metodos seleccionados
