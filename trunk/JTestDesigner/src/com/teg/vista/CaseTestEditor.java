@@ -154,7 +154,13 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
     private Document docXml;
 
-    private Integer contComplejo = 1;
+    private Integer contObject = 1;
+
+    private Integer contColeccion = 1;
+
+    private Integer contArreglo = 1;
+
+    private Integer contMapa = 1;
 
     private SwingDialog dialogo = new SwingDialog();
 
@@ -2659,6 +2665,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
     public ArrayList<Argumento> getArgumentos(Method method) {
 
         Integer contSimple = 1;
+        
         String valorComplejo = "";
         ArrayList<Argumento> argumentos = new ArrayList<Argumento>();
         Class[] parametros = method.getParameterTypes();
@@ -2699,14 +2706,14 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                         isMap = Map.class.isAssignableFrom(myClass);
 
                         if (isCollection) {
-                            argumento.setValor("coleccion" + coleccionId);
+                            argumento.setValor("coleccion" + contColeccion);
                             argumento.setComplejo(true);
                             argumento.setArreglo(false);
                             argumento.setMapa(false);
                             argumento.setGenerarXstream(true);
 
                         } else if (isMap){
-                            argumento.setValor("mapa" + mapaId);
+                            argumento.setValor("mapa" + contMapa);
                             argumento.setComplejo(true);
                             argumento.setArreglo(false);
                             argumento.setMapa(true);
@@ -2723,13 +2730,13 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                 } else {
                     //if startswitd 'var tablaArgumentos.getValueAt(contSimple - 1, 1).toString()
                     if (clazz.isArray()) {
-                        valorComplejo = "arreglo" + arregloId;
+                        valorComplejo = "arreglo" + contArreglo;
                         argumento.setValor(valorComplejo);
                         argumento.setComplejo(true);
                         argumento.setGenerarXstream(true);
 
                     } else {
-                        valorComplejo = "object" + objId;
+                        valorComplejo = "object" + contObject;
                         argumento.setValor(valorComplejo);
                         argumento.setComplejo(true);
                         argumento.setArreglo(false);
@@ -2752,7 +2759,12 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                     + " valor: " + argumento.getValor()
                     + " complejo?: " + argumento.isComplejo());
             argumentos.add(argumento);
+
             contSimple++;
+            contObject++;
+            contColeccion++;
+            contMapa++;
+            contArreglo++;
         }
         return argumentos;
     }

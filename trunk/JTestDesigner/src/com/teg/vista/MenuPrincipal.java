@@ -256,6 +256,7 @@ public class MenuPrincipal extends javax.swing.JInternalFrame {
         
     }//GEN-LAST:event_casoPruebaKeyTyped
 
+    // AQUI VA COLOCAR ERROR EN CASO DE FALLAR LA GENERACION DEL REPOSITORIO
     /**
      * Metodo para la creacion de los directorios de la prueba
      * @param nombreCasoPrueba nombre del caso de prueba que sera creado
@@ -322,18 +323,6 @@ public class MenuPrincipal extends javax.swing.JInternalFrame {
                 + System.getProperty("file.separator"));
         error.mkdir();
 
-//        String cssContent = ".invocation-failed,  .test-failed  { background-color: #DD0000; } "
-//                + ".invocation-percent, .test-percent { background-color: #006600; } "
-//                + ".invocation-passed,  .test-passed  { background-color: #00AA00; } "
-//                + ".invocation-skipped, .test-skipped { background-color: #CCCC00; } "
-//                + ".main-page { "
-//                + " font-size: x-large; "
-//                + " }"
-//                + " ;";
-//
-//        Utils.writeFile(resultados.getPath()
-//                + System.getProperty("file.separator"), "my-testng.css", cssContent);
-//
         inicio.setDirectorioCasoPrueba(metawidget);
 
     }
