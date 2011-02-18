@@ -16,15 +16,17 @@ public class MockObject {
     private String nombreVar;
     private String escenario;
     private String codigo;
+    private Boolean imprimirMock;
 
     public MockObject() {
     }
 
-    public MockObject(Metodo metodoSet, String nombreVar, String escenario, String codigo) {
+    public MockObject(Metodo metodoSet, String nombreVar, String escenario, String codigo, Boolean imprimirMock) {
         this.metodoSet = metodoSet;
         this.nombreVar = nombreVar;
         this.escenario = escenario;
         this.codigo = codigo;
+        this.imprimirMock = imprimirMock;
     }
 
     /**
@@ -81,6 +83,20 @@ public class MockObject {
      */
     public void setCodigo(String codigo) {
         this.codigo = codigo;
+    }
+
+    /**
+     * @return the imprimirMock
+     */
+    public Boolean getImprimirMock() {
+        return imprimirMock;
+    }
+
+    /**
+     * @param imprimirMock the imprimirMock to set
+     */
+    public void setImprimirMock(Boolean imprimirMock) {
+        this.imprimirMock = imprimirMock;
     }
 
 

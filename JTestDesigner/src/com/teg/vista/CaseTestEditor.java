@@ -286,17 +286,17 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
         if (metodoRetorno.isPrimitive()) {
 
-            assertVariables.setSelectedItem("var" + countVar);
+            assertVariables.setSelectedItem("resultado" + countVar);
 
         } else {
 
-            assertVariables.addItem("var" + countVar);
+            assertVariables.addItem("resultado" + countVar);
 
             Field[] fields = metodoRetorno.getDeclaredFields();
 
             for (Field field : fields) {
 
-                assertVariables.addItem("var" + countVar
+                assertVariables.addItem("resultado" + countVar
                         + "." + field.getName());
             }
 
@@ -2615,6 +2615,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                 if (assertCondiciones.getSelectedItem().toString().equals("Igual")
                         || assertCondiciones.getSelectedItem().equals("No Igual")) {
                     assertion.setValorAssert(resultadoAssert.getText());
+                    //
                 }
             }
         }
@@ -2750,7 +2751,8 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                 argumento.setGenerarXstream(false);
             }
 
-            if(tablaArgumentos.getValueAt(contSimple - 1, 1).toString().startsWith("var")){
+           // if(tablaArgumentos.getValueAt(contSimple - 1, 1).toString().startsWith("var")){
+            if(tablaArgumentos.getValueAt(contSimple - 1, 1).toString().startsWith("resultado")){
                 argumento.setValor(tablaArgumentos.getValueAt(contSimple - 1, 1).toString());
                 argumento.setGenerarXstream(false);
             } 

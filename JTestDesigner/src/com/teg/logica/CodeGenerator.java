@@ -2,7 +2,7 @@ package com.teg.logica;
 
 import com.teg.dominio.CasoPrueba;
 import com.teg.dominio.ClaseTemplate;
-import com.teg.reportes.JyperionListener;
+import com.teg.reportes.ReporterManager;
 import com.teg.util.SwingDialog;
 import com.teg.vista.Inicio;
 
@@ -216,7 +216,7 @@ public class CodeGenerator {
 
     public void generarReportePDF(TestListenerAdapter tla) {
 
-        JyperionListener jl = new JyperionListener();
+        ReporterManager jl = new ReporterManager();
         List<ITestContext> testsContexts = tla.getTestContexts();
 
         for (ITestContext iTestContext : testsContexts) {
