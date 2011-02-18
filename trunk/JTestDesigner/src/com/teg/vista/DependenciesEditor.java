@@ -15,8 +15,8 @@ import com.teg.dominio.ClaseTest;
 import com.teg.dominio.EscenarioPrueba;
 import com.teg.dominio.Metodo;
 import com.teg.dominio.MockObject;
-import com.teg.logica.CodeManager;
 import com.teg.logica.XmlManager;
+import com.teg.util.EscenarioPersonalizado;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -26,6 +26,10 @@ import java.util.ArrayList;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import javax.swing.*;
 import javax.swing.JEditorPane;
@@ -125,27 +129,42 @@ public class DependenciesEditor extends javax.swing.JInternalFrame {
         botonPanel.add(atras);
         botonPanel.add(finalizar);
 
+        int idEscenario = 1;
+        int idMock = 1;
 
         for (Method metodoSetSelected : metodosSetSeleccionados) {
+            ButtonGroup grupoRadios = new ButtonGroup();
+
             Class[] paramArreglo = metodoSetSelected.getParameterTypes();
             Class parametro = paramArreglo[0];
 
             String metodo = metodoSetSelected.getName() + "(" + parametro.getName() + ")";
-            String objeto = parametro.getName() + " " + "jmock" + parametro.getSimpleName();
+            String objeto = parametro.getName() + " " + "jmock" + parametro.getSimpleName() + idMock;
 
             String metodoObjeto = "<HTML><strong>Método: </strong>" + metodo + "<BR><BR><strong>Objeto: </strong>" + objeto + "<BR><BR></HTML>";
-            String escenarios = "<HTML>Seleccione el escenario donde se introducirá el código:<BR><BR></HTML>";
+            String escenarios = "<HTML>Seleccione el escenario donde se introducirá el código:<BR></HTML>";
             String codigo = "<HTML><BR>Código:<BR><BR></HTML>";
+            String dependencia = "<HTML>Seleccione el manejo de dependencias:<BR></HTML>";
 
-            MyComboBox myComboBox = new MyComboBox();
+            MyComboBox myComboBox = new MyComboBox(idEscenario);
             MyEditorPane myEditorPane = new MyEditorPane();
+            MyRadioButton radioMock = new MyRadioButton("Inyección con JMock", idEscenario);
+            radioMock.setSelected(true);
+            MyRadioButton radioOtro = new MyRadioButton("Código Personalizado", idEscenario);
+            grupoRadios.add(radioMock);
+            grupoRadios.add(radioOtro);
 
             scrollPaneContent.add(new MyLabel(metodoObjeto, false));
+            scrollPaneContent.add(new MyLabel(dependencia, true));
+            scrollPaneContent.add(radioMock);
+            scrollPaneContent.add(radioOtro);
             scrollPaneContent.add(new MyLabel(escenarios, true));
             scrollPaneContent.add(myComboBox);
             scrollPaneContent.add(new MyLabel(codigo, true));
             scrollPaneContent.add(new ScrollEditorPane(myEditorPane));
             scrollPaneContent.add(new MySpaceLabel());
+            idEscenario++;
+            idMock++;
         }
 
         contentPane.add(titulo);
@@ -164,17 +183,24 @@ public class DependenciesEditor extends javax.swing.JInternalFrame {
     private void finalizarButtonActionPerformed() {
         // generacion de codigo
 
-        ArrayList<String> escenarios = new ArrayList<String>();
+        //ArrayList<String> escenarios = new ArrayList<String>();
+        ArrayList<EscenarioPersonalizado> escenarios = new ArrayList<EscenarioPersonalizado>();
         ArrayList<String> codigos = new ArrayList<String>();
 
         Component[] componentes = scrollPaneContent.getComponents();
 
         for (Component componente : componentes) {
+        Boolean escenarioHabilitado = Boolean.FALSE;
 
-            if (componente.getName().equals("escenarios")) {
+            if (componente.getName().startsWith("escenarios")) {
                 JComboBox comboBox = (JComboBox) componente;
-                escenarios.add(comboBox.getSelectedItem().toString());
-                System.out.println("combobox: " + comboBox.getSelectedItem().toString());
+                if (componente.isEnabled()) {
+                    escenarioHabilitado = Boolean.TRUE;
+                    escenarios.add(new EscenarioPersonalizado(comboBox.getSelectedItem().toString(), escenarioHabilitado));
+                } else {
+                    escenarioHabilitado = Boolean.FALSE;
+                    escenarios.add(new EscenarioPersonalizado(comboBox.getSelectedItem().toString(), escenarioHabilitado));
+                }
             }
 
             if (componente.getName().equals("scroll")) {
@@ -190,30 +216,44 @@ public class DependenciesEditor extends javax.swing.JInternalFrame {
                     }
                 }
             }
+
         }
 
         int cont = 0;
+        int idVariable = 1;
 
         for (Method metodoSetSelected : metodosSetSeleccionados) {
 
-            Class[] paramArreglo = metodoSetSelected.getParameterTypes();
-            Class parametro = paramArreglo[0];
-            String parametroCompleto = parametro.getName();
-            String parametroSimple = parametro.getSimpleName();
+                Class[] paramArreglo = metodoSetSelected.getParameterTypes();
+                Class parametro = paramArreglo[0];
 
-            ClaseTest clase = new ClaseTest(parametroCompleto, parametroSimple);
+                String parametroCompleto = parametro.getName();
+                String parametroSimple = parametro.getSimpleName();
 
-            String nombreVar = "jmock" + parametro.getSimpleName();
+                ClaseTest clase = new ClaseTest(parametroCompleto, parametroSimple);
 
-            Metodo metodoSet = new Metodo(metodoSetSelected.getName(), clase);
+                String nombreVar = "jmock" + parametro.getSimpleName() + idVariable;
 
-            MockObject mockObject = new MockObject(metodoSet, nombreVar, escenarios.get(cont), codigos.get(cont));
-            mockObjects.add(mockObject);
+                Metodo metodoSet = new Metodo(metodoSetSelected.getName(), clase);
+
+                MockObject mockObject = new MockObject(metodoSet, nombreVar, escenarios.get(cont).getEscenario(), codigos.get(cont), escenarios.get(cont).getEscenarioHabilitado());
+                mockObjects.add(mockObject);
 
             cont++;
+            idVariable++;
         }
 
+        Boolean flag = false;
+        for (EscenarioPersonalizado escenario : escenarios) {
+            if(escenario.getEscenarioHabilitado()){
+                flag = true;
+                break;
+            }
+        }
 
+        boolean hasMock = flag;
+
+        casoPrueba.setMock(hasMock);
         casoPrueba.setMockObjects(mockObjects);
 
         XmlManager xmlManager = new XmlManager();
@@ -239,11 +279,11 @@ public class DependenciesEditor extends javax.swing.JInternalFrame {
 
     private class MyComboBox extends JComboBox {
 
-        public MyComboBox() {
+        public MyComboBox(int idEscenario) {
 
             ArrayList<EscenarioPrueba> escenarios = casoPrueba.getEscenariosPrueba();
 
-            setName("escenarios");
+            setName("escenarios" + idEscenario);
             for (EscenarioPrueba escenario : escenarios) {
                 addItem(escenario.getNombre());
             }
@@ -263,6 +303,46 @@ public class DependenciesEditor extends javax.swing.JInternalFrame {
             setVisible(true);
 
             pack();
+        }
+    }
+
+    private class MyRadioButton extends JRadioButton {
+
+        private int idEscenario;
+
+        public MyRadioButton(String texto, int idEscenario) {
+            setName("radio");
+            setText(texto);
+            this.idEscenario = idEscenario;
+
+            addActionListener(new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    radioButtonActionPerformed();
+                }
+            });
+        }
+
+        private void radioButtonActionPerformed() {
+            Component[] componentes = scrollPaneContent.getComponents();
+
+            if (getText().equals("Código Personalizado")) {
+
+                for (Component componente : componentes) {
+                    if (componente.getName().equals("escenarios" + idEscenario)) {
+                        componente.setEnabled(false);
+                    }
+                }
+
+            } else {
+
+                for (Component componente : componentes) {
+                    if (componente.getName().equals("escenarios" + idEscenario)) {
+                        componente.setEnabled(true);
+                    }
+                }
+            }
         }
     }
 

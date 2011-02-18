@@ -101,6 +101,13 @@ public class ${claseTemplate.nombreClase} {
         ${mockObject.nombreVar} = jmockContext.mock(${mockObject.metodoSet.clase.nombre}.class);
     </#list>
     </#if>
+    <#list casoPrueba.mockObjects as mockObject>
+    <#assign imprimirMock = mockObject.imprimirMock />
+    <#if !imprimirMock>
+        ${mockObject.codigo}
+    </#if>
+    </#list>
+
     }
 
     @AfterClass
@@ -114,9 +121,13 @@ public class ${claseTemplate.nombreClase} {
     @Test
     public void ${escenario.nombre}(){
     <#list casoPrueba.mockObjects as mockObject>
+    <#assign imprimirMock = mockObject.imprimirMock />
+    <#if imprimirMock>
         <#if mockObject.escenario == escenario.nombre>
         ${mockObject.codigo}
         </#if>
+    </#if>
+
     </#list>
     <#assign isEmpty = codeManager.escenarioVacio(escenario) />
     <#if isEmpty><#else>

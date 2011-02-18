@@ -78,6 +78,5 @@ public class CasoPrueba {
     public void setMock(boolean mock) {
         this.mock = mock;
     }
-
-
+    
 }

@@ -173,7 +173,7 @@ public class XmlManager {
         Metodo miMetodo = new Metodo(method.getName(), new ClaseTest(method.getDeclaringClass().getName(),
                 method.getDeclaringClass().getSimpleName()));
         miMetodo.setRetorno(new Retorno(method.getReturnType().getName(), 
-                method.getReturnType().getSimpleName(), "var" + numVariable));
+                method.getReturnType().getSimpleName(), "resultado" + numVariable));
         miMetodo.setArgumentos(argumentos);
         miMetodo.setAssertLinea(condAssert);
 

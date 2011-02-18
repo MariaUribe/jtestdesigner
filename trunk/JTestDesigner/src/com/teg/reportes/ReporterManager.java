@@ -35,7 +35,7 @@ import java.io.File;
  *
  * @author maya
  */
-public class JyperionListener implements ITestListener {
+public class ReporterManager implements ITestListener {
 
     /**
      * Document
@@ -59,9 +59,9 @@ public class JyperionListener implements ITestListener {
     private String rutaPDF;
 
     /**
-     * JyperionListener
+     * ReporterManager
      */
-    public JyperionListener() {
+    public ReporterManager() {
         log("JyperionListener()");
 
         this.document = new Document();
@@ -268,7 +268,7 @@ public class JyperionListener implements ITestListener {
             //com.lowagie.text.Image image = com.lowagie.text.Image.getInstance("/Users/maya/Desktop/java.jpg");
             //document.add(image);
         } catch (BadElementException ex) {
-            Logger.getLogger(JyperionListener.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ReporterManager.class.getName()).log(Level.SEVERE, null, ex);
         } catch (DocumentException e1) {
             System.out.println(e1.getMessage());
         }
@@ -368,7 +368,7 @@ public class JyperionListener implements ITestListener {
      * @param o
      */
     public static void log(Object o) {
-        //System.out.println("[JyperionListener] " + o);
+        //System.out.println("[ReporterManager] " + o);
     }
 
     public void onTestStart(ITestResult itr) {
