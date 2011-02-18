@@ -36,6 +36,7 @@ public class MethodsManager extends javax.swing.JInternalFrame {
         this.inicio = inicio;
         this.clases = clases;
         this.inicio.getSeleccionarJar().setEnabled(false);
+        this.inicio.getAgregarJAR().setEnabled(false);
         ArrayList<String> nameClass = new ArrayList<String>();
 
         for (Class clazz : clases) {

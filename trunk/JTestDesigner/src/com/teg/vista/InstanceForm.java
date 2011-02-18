@@ -135,6 +135,7 @@ public class InstanceForm extends javax.swing.JFrame {
         this.inicio = inicio;
 
         this.objId = objId;
+        
 
        
     }

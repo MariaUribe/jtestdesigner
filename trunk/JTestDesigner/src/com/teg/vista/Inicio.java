@@ -71,6 +71,9 @@ public class Inicio extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         seleccionarJar = new javax.swing.JMenuItem();
+        agregarJAR = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        cerrar = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -104,6 +107,26 @@ public class Inicio extends javax.swing.JFrame {
             }
         });
         jMenu1.add(seleccionarJar);
+
+        agregarJAR.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/teg/recursos/imagenes/Add.png"))); // NOI18N
+        agregarJAR.setText("Añadir JAR al Classpath");
+        agregarJAR.setEnabled(false);
+        agregarJAR.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                agregarJARActionPerformed(evt);
+            }
+        });
+        jMenu1.add(agregarJAR);
+        jMenu1.add(jSeparator1);
+
+        cerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/teg/recursos/imagenes/Close.png"))); // NOI18N
+        cerrar.setText("Cerrar");
+        cerrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cerrarActionPerformed(evt);
+            }
+        });
+        jMenu1.add(cerrar);
 
         jMenuBar1.add(jMenu1);
 
@@ -142,6 +165,29 @@ public class Inicio extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_seleccionarJarActionPerformed
+
+    private void cerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cerrarActionPerformed
+        this.setVisible(false);
+        this.dispose();
+    }//GEN-LAST:event_cerrarActionPerformed
+
+    private void agregarJARActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarJARActionPerformed
+
+        JFileChooser fc = new JFileChooser();
+        fc.addChoosableFileFilter(new Extension());
+        int returnVal = fc.showOpenDialog(Inicio.this);
+
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+
+            File jarFile = fc.getSelectedFile();
+            String jarString = jarFile.getPath();
+            File jar = new File(jarString);
+            this.copyToLib(jar);
+            this.jarsRuta.add(jar);
+            this.setJarsRuta(jarsRuta);
+        }
+
+    }//GEN-LAST:event_agregarJARActionPerformed
 
     public File getJava(String nombreCasoPrueba){
         File javaTest = null;
@@ -426,9 +472,12 @@ public class Inicio extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem agregarJAR;
+    private javax.swing.JMenuItem cerrar;
     private javax.swing.JDesktopPane jDesktopPane;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JMenuItem seleccionarJar;
     private javax.swing.JPanel tapa;
     // End of variables declaration//GEN-END:variables
@@ -515,5 +564,19 @@ public class Inicio extends javax.swing.JFrame {
      */
     public void setDirectorioCasoPrueba(File directorioCasoPrueba) {
         this.directorioCasoPrueba = directorioCasoPrueba;
+    }
+
+    /**
+     * @return the agregarJAR
+     */
+    public javax.swing.JMenuItem getAgregarJAR() {
+        return agregarJAR;
+    }
+
+    /**
+     * @param agregarJAR the agregarJAR to set
+     */
+    public void setAgregarJAR(javax.swing.JMenuItem agregarJAR) {
+        this.agregarJAR = agregarJAR;
     }
 }

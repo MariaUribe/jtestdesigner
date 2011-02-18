@@ -6,103 +6,61 @@
 package com.teg.vista;
 
 import com.teg.dominio.Argumento;
-
 import com.teg.dominio.ArregloInstancia;
-
 import com.teg.dominio.AssertTest;
-
 import com.teg.dominio.CasoPrueba;
-
 import com.teg.dominio.ColeccionInstancia;
-
 import com.teg.dominio.EscenarioPrueba;
-
 import com.teg.dominio.MapaInstancia;
-
 import com.teg.dominio.Metodo;
-
 import com.teg.dominio.VariableInstancia;
-
 import com.teg.logica.WidgetObjectLoading;
-
 import com.teg.logica.XmlManager;
-
 import com.teg.util.SwingDialog;
 
 import java.awt.Color;
-
 import java.awt.Component;
-
 import java.awt.Dimension;
-
 import java.awt.Toolkit;
-
 import java.awt.event.MouseEvent;
-
 import java.awt.event.MouseListener;
 
 import java.io.BufferedReader;
-
 import java.io.File;
-
 import java.io.FileOutputStream;
-
 import java.io.FileReader;
-
 import java.io.IOException;
 
 import java.lang.reflect.Field;
-
 import java.lang.reflect.InvocationTargetException;
-
 import java.lang.reflect.Method;
-
 import java.lang.reflect.Modifier;
-
 import java.lang.reflect.ParameterizedType;
-
 import java.lang.reflect.Type;
 
 import java.util.ArrayList;
-
 import java.util.Collection;
-
 import java.util.Map;
-
 import java.util.Vector;
-
 import java.util.logging.Level;
-
 import java.util.logging.Logger;
-
 import java.util.regex.Matcher;
-
 import java.util.regex.Pattern;
 
 import javax.swing.BorderFactory;
-
 import javax.swing.DefaultCellEditor;
-
 import javax.swing.JComboBox;
 
 import org.jdom.*;
-
 import org.jdom.output.*;
 
 import javax.swing.JMenuItem;
-
 import javax.swing.JTable;
-
 import javax.swing.JTextField;
-
 import javax.swing.border.Border;
-
 import javax.swing.event.PopupMenuEvent;
-
 import javax.swing.event.PopupMenuListener;
-
 import javax.swing.table.DefaultTableModel;
-
 import javax.swing.table.TableCellEditor;
 
 /**
@@ -111,57 +69,31 @@ import javax.swing.table.TableCellEditor;
  */
 public class CaseTestEditor extends javax.swing.JInternalFrame {
 
-
     private ArrayList<Method> metodos = new ArrayList<Method>();
-
     private ArrayList<DefaultCellEditor> editores = new ArrayList<DefaultCellEditor>();
-
     private ArrayList<Metodo> metodosGuardados = new ArrayList<Metodo>();
-
     private ArrayList<VariableInstancia> variablesGuardadas = new ArrayList<VariableInstancia>();
-
     private ArrayList<ColeccionInstancia> coleccionesGuardadas = new ArrayList<ColeccionInstancia>();
-
     private Object[] arregloGuardado;
-
     private ArrayList<MapaInstancia> mapasGuardados = new ArrayList<MapaInstancia>();
-
     private ArrayList<ArregloInstancia> arreglosGuardados = new ArrayList<ArregloInstancia>();
-
     private ArrayList<File> archivosJavaDoc = new ArrayList<File>();
-
     private ArrayList<EscenarioPrueba> escenariosPrueba = new ArrayList<EscenarioPrueba>();
-
     private WidgetObjectLoading listWidget = new WidgetObjectLoading();
-
     private static int varId = 0;
-
     private static int objId = 0;
-
     private static int coleccionId = 0;
-
     private static int mapaId = 0;
-
     private static int arregloId = 0;
-
     private Class tipoVarRetorno;
-
     private String actualNameMethod;
-
     private JTable tablaArgumentos;
-
     private Inicio inicio;
-
     private Document docXml;
-
     private Integer contObject = 1;
-
     private Integer contColeccion = 1;
-
     private Integer contArreglo = 1;
-
     private Integer contMapa = 1;
-
     private SwingDialog dialogo = new SwingDialog();
 
     /** Creates new form CaseTestEditor */
@@ -175,6 +107,8 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
         this.inicio = inicio;
 
         this.inicio.getSeleccionarJar().setEnabled(false);
+        
+        this.inicio.getAgregarJAR().setEnabled(false);
 
         archivosJavaDoc = inicio.getArchivosJavaDoc();
 
@@ -1047,21 +981,13 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
 
         if (clase.getName().equals("java.lang.Integer")
-
                 || clase.getName().equals("java.lang.Float")
-
                 || clase.getName().equals("java.lang.Double")
-
                 || clase.getName().equals("java.lang.Long")
-
                 || clase.getName().equals("java.lang.Short")
-
                 || clase.getName().equals("java.lang.Byte")
-
                 || clase.getName().equals("java.lang.Character")
-
                 || clase.getName().equals("java.lang.String")
-
                 || clase.getName().equals("java.lang.Boolean")) {
 
             verificado = true;
@@ -1100,8 +1026,11 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
         for (Class class1 : clasesJars) {
 
-            if (class1.getSuperclass().getName().equals(claseAbstracta.getName())) {
-                clasesImplAbstracta.add(class1);
+            if (!Modifier.isAbstract(class1.getModifiers())) {
+
+                if (class1.getSuperclass().getName().equals(claseAbstracta.getName())) {
+                    clasesImplAbstracta.add(class1);
+                }
             }
         }
 
@@ -1254,10 +1183,10 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                                     }
                                 }
                             } else {
-                                if (Modifier.isAbstract(argument.getModifiers()) == true) {
+                                if (Modifier.isAbstract(argument.getModifiers())) {
 
                                     InstanceForm editorInstance = new InstanceForm(obtenerClasesDeClaseAbstracta(argument), inicio.getDirectorioCasoPrueba().getPath(), listWidget, metodo, inicio, objId);
-
+                                    editorInstance.setVisible(true);
 
                                 } else {
 
@@ -1281,7 +1210,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
                                                 editorMap.getMapa();
 
-                                                 mapaInstancia = new MapaInstancia();
+                                                mapaInstancia = new MapaInstancia();
 
                                                 mapaInstancia.setClaseKey(classInstances.get(0));
 
@@ -1326,7 +1255,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
                                                         editorList.getColeccion();
 
-                                                         coleccionInstancia = new ColeccionInstancia();
+                                                        coleccionInstancia = new ColeccionInstancia();
 
 
 
@@ -1373,7 +1302,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
                                                         editorList.getColeccion();
 
-                                                         coleccionInstancia = new ColeccionInstancia();
+                                                        coleccionInstancia = new ColeccionInstancia();
 
 
 
@@ -1408,7 +1337,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                                                         if (argumentoEsMapa(argument) == true) {
 
 
-                                                             mapaInstancia = new MapaInstancia();
+                                                            mapaInstancia = new MapaInstancia();
 
                                                             InstanceMapForm selector = new InstanceMapForm(obtenerClasesJars(), listWidget, argument, inicio, mapaId, mapaInstancia);
 
@@ -2406,12 +2335,12 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                 System.out.println("metodo: " + method.getDeclaringClass().getName());
             } else {
                 //for (Class clase : clases) {
-                  //  if (!existeClase(clase.getName(), clases)) {
-                    if (!existeClase(method.getDeclaringClass().getName(), clases)) {
-                        clases.add(method.getDeclaringClass());
-                        System.out.println("metodo: " + method.getDeclaringClass().getName());
-                    }
-               // }
+                //  if (!existeClase(clase.getName(), clases)) {
+                if (!existeClase(method.getDeclaringClass().getName(), clases)) {
+                    clases.add(method.getDeclaringClass());
+                    System.out.println("metodo: " + method.getDeclaringClass().getName());
+                }
+                // }
             }
         }
 
@@ -2491,10 +2420,9 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-       EscenariosVista vistaEscenarios = new EscenariosVista(inicio, true, escenariosPrueba);
-       vistaEscenarios.setVisible(true);
+        EscenariosVista vistaEscenarios = new EscenariosVista(inicio, true, escenariosPrueba);
+        vistaEscenarios.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox assertCondiciones;
     private javax.swing.JTextField assertMensaje;
@@ -2666,7 +2594,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
     public ArrayList<Argumento> getArgumentos(Method method) {
 
         Integer contSimple = 1;
-        
+
         String valorComplejo = "";
         ArrayList<Argumento> argumentos = new ArrayList<Argumento>();
         Class[] parametros = method.getParameterTypes();
@@ -2713,7 +2641,7 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                             argumento.setMapa(false);
                             argumento.setGenerarXstream(true);
 
-                        } else if (isMap){
+                        } else if (isMap) {
                             argumento.setValor("mapa" + contMapa);
                             argumento.setComplejo(true);
                             argumento.setArreglo(false);
@@ -2751,11 +2679,11 @@ public class CaseTestEditor extends javax.swing.JInternalFrame {
                 argumento.setGenerarXstream(false);
             }
 
-           // if(tablaArgumentos.getValueAt(contSimple - 1, 1).toString().startsWith("var")){
-            if(tablaArgumentos.getValueAt(contSimple - 1, 1).toString().startsWith("resultado")){
+            // if(tablaArgumentos.getValueAt(contSimple - 1, 1).toString().startsWith("var")){
+            if (tablaArgumentos.getValueAt(contSimple - 1, 1).toString().startsWith("resultado")) {
                 argumento.setValor(tablaArgumentos.getValueAt(contSimple - 1, 1).toString());
                 argumento.setGenerarXstream(false);
-            } 
+            }
 
             System.out.println("ARGUMENTO ACTUAL, tipo: " + argumento.getTipo()
                     + " valor: " + argumento.getValor()

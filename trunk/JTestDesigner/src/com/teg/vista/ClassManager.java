@@ -42,6 +42,7 @@ public class ClassManager extends javax.swing.JInternalFrame {
         this.jarsRuta = jarsRuta;
         this.nombresJar = nombresJar;
         this.inicio.getSeleccionarJar().setEnabled(true);
+        this.inicio.getAgregarJAR().setEnabled(true);
 
         javax.swing.plaf.InternalFrameUI ifu = this.getUI();
         ((javax.swing.plaf.basic.BasicInternalFrameUI) ifu).setNorthPane(null);
