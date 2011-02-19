@@ -45,19 +45,19 @@ public class AyudaMetodos extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jLabel25.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        jLabel25.setFont(new java.awt.Font("Lucida Grande", 1, 14));
         jLabel25.setText(org.openide.util.NbBundle.getMessage(AyudaMetodos.class, "AyudaMetodos.jLabel25.text")); // NOI18N
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
-        jLabel26.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/teg/recursos/imagenes/ayudaMetodos.png"))); // NOI18N
+        jLabel26.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/teg/recursos/imagenes/AyudaMetodos.png"))); // NOI18N
         jLabel26.setText(org.openide.util.NbBundle.getMessage(AyudaMetodos.class, "AyudaMetodos.jLabel26.text")); // NOI18N
         jLabel26.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
         jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
-        jLabel27.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
+        jLabel27.setFont(new java.awt.Font("Lucida Grande", 1, 13));
 
         jLabel28.setText(org.openide.util.NbBundle.getMessage(AyudaMetodos.class, "AyudaMetodos.jLabel28.text")); // NOI18N
 
@@ -72,13 +72,11 @@ public class AyudaMetodos extends javax.swing.JDialog {
                 .add(jPanel6Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jPanel6Layout.createSequentialGroup()
                         .add(jPanel6Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(jPanel6Layout.createSequentialGroup()
-                                .add(jLabel27)
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 253, Short.MAX_VALUE))
+                            .add(jLabel27)
                             .add(jLabel28))
                         .addContainerGap())
                     .add(jPanel6Layout.createSequentialGroup()
-                        .add(jLabel30, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 332, Short.MAX_VALUE)
+                        .add(jLabel30, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 343, Short.MAX_VALUE)
                         .add(46, 46, 46))))
         );
         jPanel6Layout.setVerticalGroup(
@@ -131,7 +129,7 @@ public class AyudaMetodos extends javax.swing.JDialog {
             .add(layout.createSequentialGroup()
                 .addContainerGap()
                 .add(jLabel25)
-                .addContainerGap(362, Short.MAX_VALUE))
+                .addContainerGap(373, Short.MAX_VALUE))
             .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
